@@ -5,7 +5,7 @@ import mapStateOnServer from './server';
 import { reducePropsToState } from './utils';
 import Provider, { providerShape } from './Provider';
 
-export default class InstanceStore extends Component {
+export default class Dispatcher extends Component {
   static contextTypes = providerShape;
 
   shouldComponentUpdate(nextProps) {
@@ -13,14 +13,14 @@ export default class InstanceStore extends Component {
   }
 
   emitChange() {
-    const { helmetInstances } = this.context;
+    const { helmetInstances, setHelmet } = this.context;
     let state = reducePropsToState(helmetInstances.get().map(instance => instance.props));
     if (Provider.canUseDOM) {
       handleStateChangeOnClient(state);
     } else if (mapStateOnServer) {
       state = mapStateOnServer(state);
     }
-    this.context.helmet(state);
+    setHelmet(state);
   }
 
   componentWillMount() {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import deepEqual from 'deep-equal';
 import invariant from 'invariant';
-import InstanceStore from './InstanceStore';
+import Dispatcher from './Dispatcher';
 import { TAG_NAMES, VALID_TAG_NAMES, HTML_TAG_MAP } from './constants';
 
 /* eslint-disable class-methods-use-this */
@@ -50,10 +50,6 @@ export default class Helmet extends Component {
     defer: true,
     encodeSpecialCharacters: true,
   };
-
-  static renderStatic = InstanceStore.rewind;
-  static rewind = InstanceStore.rewind;
-  static peek = InstanceStore.peek;
 
   shouldComponentUpdate(nextProps) {
     return !deepEqual(this.props, nextProps);
@@ -218,6 +214,6 @@ export default class Helmet extends Component {
       newProps = this.mapChildrenToProps(children, newProps);
     }
 
-    return <InstanceStore {...newProps} />;
+    return <Dispatcher {...newProps} />;
   }
 }

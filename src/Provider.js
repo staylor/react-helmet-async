@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import mapStateOnServer from './server';
 
 export const providerShape = {
-  helmet: PropTypes.func,
+  setHelmet: PropTypes.func,
   helmetInstances: PropTypes.shape({
     get: PropTypes.func,
     add: PropTypes.func,
@@ -31,7 +31,7 @@ export default class Provider extends Component {
 
   getChildContext() {
     return {
-      helmet: store => {
+      setHelmet: store => {
         // eslint-disable-next-line react/prop-types
         this.props.context.helmet = store;
       },
