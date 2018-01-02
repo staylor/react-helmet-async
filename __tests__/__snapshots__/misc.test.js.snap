@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`misc API encodes special characters 1`] = `"<meta name=\\"description\\" content=\\"This is &quot;quoted&quot; text and &amp; and '.\\" data-rh=\\"true\\">"`;
+
+exports[`misc API only adds new tags and preserves tags when rendering additional Helmet instances 1`] = `"<meta name=\\"description\\" content=\\"Test description\\" data-rh=\\"true\\">"`;
+
+exports[`misc API only adds new tags and preserves tags when rendering additional Helmet instances 2`] = `"<link href=\\"http://localhost/style.css\\" rel=\\"stylesheet\\" type=\\"text/css\\" data-rh=\\"true\\">"`;
+
+exports[`misc API only adds new tags and preserves tags when rendering additional Helmet instances 3`] = `"<meta name=\\"description\\" content=\\"New description\\" data-rh=\\"true\\">"`;
+
+exports[`misc API only adds new tags and preserves tags when rendering additional Helmet instances 4`] = `"<link href=\\"http://localhost/style2.css\\" rel=\\"stylesheet\\" type=\\"text/css\\" data-rh=\\"true\\">"`;
+
+exports[`misc API only adds new tags and preserves tags when rendering additional Helmet instances 5`] = `"<meta name=\\"description\\" content=\\"Test description\\" data-rh=\\"true\\">"`;
+
+exports[`misc API recognizes valid tags regardless of attribute ordering 1`] = `"<meta content=\\"Test Description\\" name=\\"description\\" data-rh=\\"true\\">"`;
+
+exports[`misc Declarative API encodes special characters 1`] = `"<meta name=\\"description\\" content=\\"This is &quot;quoted&quot; text and &amp; and '.\\" data-rh=\\"true\\">"`;
+
+exports[`misc Declarative API only adds new tags and preserves tags when rendering additional Helmet instances 1`] = `"<meta name=\\"description\\" content=\\"Test description\\" data-rh=\\"true\\">"`;
+
+exports[`misc Declarative API only adds new tags and preserves tags when rendering additional Helmet instances 2`] = `"<link href=\\"http://localhost/style.css\\" rel=\\"stylesheet\\" type=\\"text/css\\" data-rh=\\"true\\">"`;
+
+exports[`misc Declarative API only adds new tags and preserves tags when rendering additional Helmet instances 3`] = `"<meta name=\\"description\\" content=\\"New description\\" data-rh=\\"true\\">"`;
+
+exports[`misc Declarative API only adds new tags and preserves tags when rendering additional Helmet instances 4`] = `"<link href=\\"http://localhost/style2.css\\" rel=\\"stylesheet\\" type=\\"text/css\\" data-rh=\\"true\\">"`;
+
+exports[`misc Declarative API only adds new tags and preserves tags when rendering additional Helmet instances 5`] = `"<meta name=\\"description\\" content=\\"Test description\\" data-rh=\\"true\\">"`;
+
+exports[`misc Declarative API recognizes valid tags regardless of attribute ordering 1`] = `"<meta content=\\"Test Description\\" name=\\"description\\" data-rh=\\"true\\">"`;

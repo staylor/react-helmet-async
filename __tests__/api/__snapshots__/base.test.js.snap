@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`base tag API sets base tag based on deepest nested component 1`] = `"<base href=\\"http://mysite.com/public\\" data-rh=\\"true\\">"`;
+
+exports[`base tag Declarative API sets base tag based on deepest nested component 1`] = `"<base href=\\"http://mysite.com/public\\" data-rh=\\"true\\">"`;
