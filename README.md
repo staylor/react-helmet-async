@@ -15,7 +15,7 @@ tree. If you use libraries like Redux or Apollo, you are already familiar with t
 import Helmet, { HelmetProvider } from 'react-helmet-async';
 
 const app = (
-  <Provider>
+  <HelmetProvider>
     <App>
       <Helmet>
         <title>Hello World</title>
@@ -37,7 +37,7 @@ import { HelmetProvider } from 'react-helmet-async';
 const helmetContext = {};
 
 const app = (
-  <Provider context={helmetContext}>
+  <HelmetProvider context={helmetContext}>
     <App>
       <Helmet>
         <title>Hello World</title>
@@ -68,7 +68,7 @@ import template from 'server/template';
 const helmetContext = {};
 
 const app = (
-  <Provider context={helmetContext}>
+  <HelmetProvider context={helmetContext}>
     <App>
       <Helmet>
         <title>Hello World</title>
