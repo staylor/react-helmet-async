@@ -23,7 +23,7 @@ const app = (
       </Helmet>
       <h1>Hello World</h1>
     </App>
-  </Provider>
+  </HelmetProvider>
 );
 ```
 
@@ -45,7 +45,7 @@ const app = (
       </Helmet>
       <h1>Hello World</h1>
     </App>
-  </Provider>
+  </HelmetProvider>
 );
 
 const { helmet } = helmetContext;
@@ -76,7 +76,7 @@ const app = (
       </Helmet>
       <h1>Hello World</h1>
     </App>
-  </Provider>
+  </HelmetProvider>
 );
 
 await getDataFromTree(app);
