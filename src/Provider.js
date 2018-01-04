@@ -2,6 +2,8 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import mapStateOnServer from './server';
 
+/* eslint-disable react/prop-types */
+
 export const providerShape = {
   setHelmet: PropTypes.func,
   helmetInstances: PropTypes.shape({
@@ -31,9 +33,9 @@ export default class Provider extends Component {
 
   getChildContext() {
     return {
-      setHelmet: store => {
-        // eslint-disable-next-line react/prop-types
-        this.props.context.helmet = store;
+      setHelmet: (serverState, state) => {
+        this.props.context.helmet = serverState;
+        this.props.context.state = state;
       },
       helmetInstances: {
         get: () => this.instances,

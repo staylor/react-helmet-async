@@ -14,13 +14,14 @@ export default class Dispatcher extends Component {
 
   emitChange() {
     const { helmetInstances, setHelmet } = this.context;
-    let state = reducePropsToState(helmetInstances.get().map(instance => instance.props));
+    let serverState = null;
+    const state = reducePropsToState(helmetInstances.get().map(instance => instance.props));
     if (Provider.canUseDOM) {
       handleStateChangeOnClient(state);
     } else if (mapStateOnServer) {
-      state = mapStateOnServer(state);
+      serverState = mapStateOnServer(state);
     }
-    setHelmet(state);
+    setHelmet(serverState, state);
   }
 
   componentWillMount() {
