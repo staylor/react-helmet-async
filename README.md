@@ -101,3 +101,7 @@ renderToNodeStream(app)
   )
   .pipe(res);
 ```
+
+## License
+
+Licensed under the MIT License, Copyright © 2018 Scott Taylor
