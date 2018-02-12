@@ -3,9 +3,9 @@
   "version": "0.0.5",
   "description": "Thread-safe Helmet for React 16+ and friends",
   "main": "lib/index.js",
-  "repository": "http://github.com/staylor/react-helmet-async",
+  "repository": "http://github.com/NYTimes/react-helmet-async",
   "author": "Scott Taylor <scott.c.taylor@mac.com>",
-  "license": "MIT",
+  "license": "Apache 2.0",
   "dependencies": {
     "deep-equal": "^1.0.1",
     "invariant": "^2.2.2",
