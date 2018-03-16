@@ -6,6 +6,7 @@
   "repository": "http://github.com/NYTimes/react-helmet-async",
   "author": "Scott Taylor <scott.c.taylor@mac.com>",
   "license": "Apache 2.0",
+  "typings": "index.d.ts",
   "dependencies": {
     "deep-equal": "^1.0.1",
     "invariant": "^2.2.2",
