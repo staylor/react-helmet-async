@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import deepEqual from 'deep-equal';
 import invariant from 'invariant';
+import Context from './Context';
 import Dispatcher from './Dispatcher';
 import { TAG_NAMES, VALID_TAG_NAMES, HTML_TAG_MAP } from './constants';
 
@@ -216,6 +217,10 @@ export default class Helmet extends Component {
       newProps = this.mapChildrenToProps(children, newProps);
     }
 
-    return <Dispatcher {...newProps} />;
+    return (
+      <Context.Consumer>
+        {context => <Dispatcher {...newProps} context={context} />}
+      </Context.Consumer>
+    );
   }
 }

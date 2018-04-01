@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import Helmet from '../../src';
 import Provider from '../../src/Provider';
@@ -9,7 +9,12 @@ Helmet.defaultProps.defer = false;
 const mount = document.getElementById('mount');
 
 const render = node => {
-  ReactDOM.render(<Provider>{node}</Provider>, mount);
+  ReactDOM.render(
+    <StrictMode>
+      <Provider>{node}</Provider>
+    </StrictMode>,
+    mount
+  );
 };
 
 describe('body attributes', () => {
