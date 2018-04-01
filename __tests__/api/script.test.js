@@ -1,21 +1,9 @@
-import React, { StrictMode } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 import Helmet from '../../src';
-import Provider from '../../src/Provider';
 import { HELMET_ATTRIBUTE } from '../../src/constants';
+import { render } from './utils';
 
 Helmet.defaultProps.defer = false;
-
-const mount = document.getElementById('mount');
-
-const render = node => {
-  ReactDOM.render(
-    <StrictMode>
-      <Provider>{node}</Provider>
-    </StrictMode>,
-    mount
-  );
-};
 
 describe('script tags', () => {
   describe('API', () => {
