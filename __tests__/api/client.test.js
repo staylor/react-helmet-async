@@ -1,10 +1,12 @@
 import React from 'react';
-import Helmet from '../../src';
 import { render } from './utils';
 
-Helmet.defaultProps.defer = false;
-
 describe('onChangeClientState', () => {
+  window.requestAnimationFrame = fn => setTimeout(fn, 0);
+
+  const Helmet = require('../../src').default; // eslint-disable-line global-require
+  Helmet.defaultProps.defer = false;
+
   describe('API', () => {
     it('when handling client state change, calls the function with new state, addedTags and removedTags ', () => {
       const onChange = jest.fn();
@@ -75,23 +77,24 @@ describe('onChangeClientState', () => {
       expect(removedTags).toEqual({});
     });
 
-    //   it('calls the deepest defined callback with the deepest state', () => {
-    //     const onChange = jest.fn();
-    //     render(
-    //       <div>
-    //         <Helmet title="Main Title" onChangeClientState={onChange} />
-    //         <Helmet title="Deeper Title" />
-    //       </div>
-    //     );
-    //
-    //     expect(onChange).toBeCalled();
-    //     expect(onChange.mock.calls).toHaveLength(1);
-    //     expect(onChange.mock.calls[0][0]).toEqual(
-    //       expect.objectContaining({
-    //         title: 'Deeper Title',
-    //       })
-    //     );
-    //   });
+    it('calls the deepest defined callback with the deepest state', () => {
+      const onChange = jest.fn();
+      render(
+        <div>
+          <Helmet defer title="Main Title" onChangeClientState={onChange} />
+          <Helmet defer title="Deeper Title" />
+        </div>
+      );
+
+      expect(onChange).toBeCalled();
+
+      expect(onChange.mock.calls).toHaveLength(1);
+      expect(onChange.mock.calls[0][0]).toEqual(
+        expect.objectContaining({
+          title: 'Deeper Title',
+        })
+      );
+    });
   });
 
   describe('Declarative API', () => {
@@ -154,25 +157,25 @@ describe('onChangeClientState', () => {
     });
   });
 
-  // it('calls the deepest defined callback with the deepest state', () => {
-  //   const onChange = jest.fn();
-  //   render(
-  //     <div>
-  //       <Helmet onChangeClientState={onChange}>
-  //         <title>Main Title</title>
-  //       </Helmet>
-  //       <Helmet>
-  //         <title>Deeper Title</title>
-  //       </Helmet>
-  //     </div>
-  //   );
-  //
-  //   expect(onChange).toBeCalled();
-  //   expect(onChange.mock.calls).toHaveLength(1);
-  //   expect(onChange.mock.calls[0][0]).toEqual(
-  //     expect.objectContaining({
-  //       title: 'Deeper Title',
-  //     })
-  //   );
-  // });
+  it('calls the deepest defined callback with the deepest state', () => {
+    const onChange = jest.fn();
+    render(
+      <div>
+        <Helmet defer onChangeClientState={onChange}>
+          <title>Main Title</title>
+        </Helmet>
+        <Helmet defer>
+          <title>Deeper Title</title>
+        </Helmet>
+      </div>
+    );
+
+    expect(onChange).toBeCalled();
+    expect(onChange.mock.calls).toHaveLength(1);
+    expect(onChange.mock.calls[0][0]).toEqual(
+      expect.objectContaining({
+        title: 'Deeper Title',
+      })
+    );
+  });
 });
