@@ -1,17 +1,17 @@
 # react-helmet-async
 
 This package is a fork of [React Helmet](https://github.com/nfl/react-helmet).
-`<Helmet>` usage is synonymous, but SSR is radically different.
+`<Helmet>` usage is synonymous, but server and client now requires `<HelmetProvider>` to encapsulate state per request.
 
-`react-helmet` relies on `react-side-effect`, which is not thread-safe. If you are doing anything asynchronous on the server,
-you need Helmet to to encapsulate data on a per-request basis, this package does just that.
+`react-helmet` relies on `react-side-effect`, which is not thread-safe. If you are doing anything asynchronous on the server, you need Helmet to to encapsulate data on a per-request basis, this package does just that.
 
 ## Usage
 
-The main way that this package differs from `react-helmet` is that it requires using a Provider to encapsulate Helmet state for your React
-tree. If you use libraries like Redux or Apollo, you are already familiar with this paradigm:
+The main way that this package differs from `react-helmet` is that it requires using a Provider to encapsulate Helmet state for your React tree. If you use libraries like Redux or Apollo, you are already familiar with this paradigm:
 
 ```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
 import Helmet, { HelmetProvider } from 'react-helmet-async';
 
 const app = (
@@ -25,6 +25,11 @@ const app = (
     </App>
   </HelmetProvider>
 );
+
+ReactDOM.hydrate(
+  app,
+  document.getElementById(‘app’)
+);
 ```
 
 On the server, we will no longer use static methods to extract state. `react-side-effect`
@@ -32,7 +37,9 @@ exposed a `.rewind()` method, which Helmet used when calling `Helmet.renderStati
 to pass a `context` prop to `HelmetProvider`, which will hold our state specific to each request.
 
 ```javascript
-import { HelmetProvider } from 'react-helmet-async';
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import Helmet, { HelmetProvider } from 'react-helmet-async';
 
 const helmetContext = {};
 
@@ -48,9 +55,11 @@ const app = (
   </HelmetProvider>
 );
 
+const html = renderToString(app);
+
 const { helmet } = helmetContext;
 
-// helmet.title.toString() etc...
+// helmet.title.toString() etc…
 ```
 
 ## Streams
@@ -104,4 +113,4 @@ renderToNodeStream(app)
 
 ## License
 
-Licensed under the MIT License, Copyright © 2018 Scott Taylor
+Licensed under the Apache 2.0 License, Copyright © 2018 Scott Taylor
