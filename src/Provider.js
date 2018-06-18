@@ -30,9 +30,8 @@ export default class Provider extends Component {
 
   instances = [];
   value = {
-    setHelmet: (serverState, state) => {
+    setHelmet: serverState => {
       this.props.context.helmet = serverState;
-      this.props.context.state = state;
     },
     helmetInstances: {
       get: () => this.instances,

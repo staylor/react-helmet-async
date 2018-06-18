@@ -46,7 +46,7 @@ export default class Dispatcher extends Component {
     } else if (mapStateOnServer) {
       serverState = mapStateOnServer(state);
     }
-    setHelmet(serverState, state);
+    setHelmet(serverState);
   }
 
   componentDidUpdate() {
