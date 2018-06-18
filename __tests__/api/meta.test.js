@@ -1,18 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Helmet from '../../src';
-import Provider from '../../src/Provider';
 import { HELMET_ATTRIBUTE } from '../../src/constants';
+import { render } from './utils';
 
 /* eslint-disable no-console */
 
 Helmet.defaultProps.defer = false;
-
-const mount = document.getElementById('mount');
-
-const render = node => {
-  ReactDOM.render(<Provider>{node}</Provider>, mount);
-};
 
 describe('meta tags', () => {
   describe('API', () => {

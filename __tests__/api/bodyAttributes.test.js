@@ -1,16 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Helmet from '../../src';
-import Provider from '../../src/Provider';
 import { HELMET_ATTRIBUTE, HTML_TAG_MAP } from '../../src/constants';
+import { render } from './utils';
 
 Helmet.defaultProps.defer = false;
-
-const mount = document.getElementById('mount');
-
-const render = node => {
-  ReactDOM.render(<Provider>{node}</Provider>, mount);
-};
 
 describe('body attributes', () => {
   describe('valid attributes', () => {

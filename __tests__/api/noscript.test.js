@@ -1,16 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Helmet from '../../src';
-import Provider from '../../src/Provider';
 import { HELMET_ATTRIBUTE } from '../../src/constants';
+import { render } from './utils';
 
 Helmet.defaultProps.defer = false;
-
-const mount = document.getElementById('mount');
-
-const render = node => {
-  ReactDOM.render(<Provider>{node}</Provider>, mount);
-};
 
 describe('noscript tags', () => {
   describe('API', () => {

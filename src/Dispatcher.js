@@ -6,28 +6,47 @@ import { reducePropsToState } from './utils';
 import Provider, { providerShape } from './Provider';
 
 export default class Dispatcher extends Component {
-  static contextTypes = providerShape;
+  static propTypes = {
+    context: providerShape.isRequired,
+  };
+
+  rendered = false;
+
+  // componentWillMount will be deprecated
+  // for SSR, initialize on first render
+  // constructor is also unsafe in StrictMode
+  init() {
+    if (this.rendered) {
+      return;
+    }
+
+    this.rendered = true;
+
+    const { helmetInstances } = this.props.context;
+    helmetInstances.add(this);
+    this.emitChange();
+  }
 
   shouldComponentUpdate(nextProps) {
     return !shallowEqual(nextProps, this.props);
   }
 
   emitChange() {
-    const { helmetInstances, setHelmet } = this.context;
+    const { helmetInstances, setHelmet } = this.props.context;
     let serverState = null;
-    const state = reducePropsToState(helmetInstances.get().map(instance => instance.props));
+    const state = reducePropsToState(
+      helmetInstances.get().map(instance => {
+        const props = Object.assign({}, instance.props);
+        delete props.context;
+        return props;
+      })
+    );
     if (Provider.canUseDOM) {
       handleStateChangeOnClient(state);
     } else if (mapStateOnServer) {
       serverState = mapStateOnServer(state);
     }
-    setHelmet(serverState, state);
-  }
-
-  componentWillMount() {
-    const { helmetInstances } = this.context;
-    helmetInstances.add(this);
-    this.emitChange();
+    setHelmet(serverState);
   }
 
   componentDidUpdate() {
@@ -35,12 +54,14 @@ export default class Dispatcher extends Component {
   }
 
   componentWillUnmount() {
-    const { helmetInstances } = this.context;
+    const { helmetInstances } = this.props.context;
     helmetInstances.remove(this);
     this.emitChange();
   }
 
   render() {
+    this.init();
+
     return null;
   }
 }

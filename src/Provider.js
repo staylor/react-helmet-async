@@ -1,17 +1,18 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Context from './Context';
 import mapStateOnServer from './server';
 
 /* eslint-disable react/prop-types */
 
-export const providerShape = {
+export const providerShape = PropTypes.shape({
   setHelmet: PropTypes.func,
   helmetInstances: PropTypes.shape({
     get: PropTypes.func,
     add: PropTypes.func,
     remove: PropTypes.func,
   }),
-};
+});
 
 const canUseDOM = typeof document !== 'undefined';
 
@@ -27,28 +28,22 @@ export default class Provider extends Component {
     context: {},
   };
 
-  static childContextTypes = providerShape;
-
   instances = [];
-
-  getChildContext() {
-    return {
-      setHelmet: (serverState, state) => {
-        this.props.context.helmet = serverState;
-        this.props.context.state = state;
+  value = {
+    setHelmet: serverState => {
+      this.props.context.helmet = serverState;
+    },
+    helmetInstances: {
+      get: () => this.instances,
+      add: instance => {
+        this.instances.push(instance);
       },
-      helmetInstances: {
-        get: () => this.instances,
-        add: instance => {
-          this.instances.push(instance);
-        },
-        remove: instance => {
-          const index = this.instances.indexOf(instance);
-          this.instances.splice(index, 1);
-        },
+      remove: instance => {
+        const index = this.instances.indexOf(instance);
+        this.instances.splice(index, 1);
       },
-    };
-  }
+    },
+  };
 
   constructor(props) {
     super(props);
@@ -71,6 +66,6 @@ export default class Provider extends Component {
   }
 
   render() {
-    return this.props.children;
+    return <Context.Provider value={this.value}>{this.props.children}</Context.Provider>;
   }
 }

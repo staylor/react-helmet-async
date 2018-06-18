@@ -1,16 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ReactServer from 'react-dom/server';
 import Helmet from '../../src';
 import Provider from '../../src/Provider';
+import { render } from './utils';
 
 Helmet.defaultProps.defer = false;
-
-const mount = document.getElementById('mount');
-
-const render = (node, context = {}) => {
-  ReactDOM.render(<Provider context={context}>{node}</Provider>, mount);
-};
 
 beforeAll(() => {
   Provider.canUseDOM = false;
