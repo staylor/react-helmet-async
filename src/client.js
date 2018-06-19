@@ -196,7 +196,7 @@ const handleStateChangeOnClient = newState => {
     cancelAnimationFrame(_helmetCallback);
   }
 
-  if (newState.defer) {
+  if (newState.defer && !_helmetCallback) {
     _helmetCallback = requestAnimationFrame(() => {
       commitTagChanges(newState, () => {
         _helmetCallback = null;
