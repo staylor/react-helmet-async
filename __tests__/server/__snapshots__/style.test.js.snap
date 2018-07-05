@@ -7,3 +7,7 @@ exports[`server API renders style tags as string 1`] = `"<style data-rh=\\"true\
 exports[`server Declarative API renders style tags as React components 1`] = `"<style data-rh=\\"true\\" type=\\"text/css\\">body {background-color: green;}</style><style data-rh=\\"true\\" type=\\"text/css\\">p {font-size: 12px;}</style>"`;
 
 exports[`server Declarative API renders style tags as string 1`] = `"<style data-rh=\\"true\\" type=\\"text/css\\">body {background-color: green;}</style><style data-rh=\\"true\\" type=\\"text/css\\">p {font-size: 12px;}</style>"`;
+
+exports[`server disableHelmetAttribute renders style tags as React components 1`] = `"<style type=\\"text/css\\">body {background-color: green;}</style><style type=\\"text/css\\">p {font-size: 12px;}</style>"`;
+
+exports[`server disableHelmetAttribute renders style tags as string 1`] = `"<style type=\\"text/css\\">body {background-color: green;}</style><style type=\\"text/css\\">p {font-size: 12px;}</style>"`;

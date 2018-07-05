@@ -355,4 +355,41 @@ describe('server', () => {
       expect(markup).toMatchSnapshot();
     });
   });
+
+  describe('disableHelmetAttribute', () => {
+    beforeAll(() => {
+      Provider.disableHelmetAttribute = true;
+    });
+    afterAll(() => {
+      Provider.disableHelmetAttribute = false;
+    });
+
+    it('renders title as React component', () => {
+      const context = {};
+      render(
+        <Helmet>
+          <title>{`Dangerous <script> include`}</title>
+        </Helmet>,
+        context
+      );
+
+      const head = context.helmet;
+
+      expect(head.title).toBeDefined();
+      expect(head.title.toComponent).toBeDefined();
+
+      const titleComponent = head.title.toComponent();
+
+      expect(titleComponent).toEqual(isArray);
+      expect(titleComponent).toHaveLength(1);
+
+      titleComponent.forEach(title => {
+        expect(title).not.toEqual(expect.objectContaining({ 'data-rh': true }));
+      });
+
+      const markup = ReactServer.renderToStaticMarkup(titleComponent);
+
+      expect(markup).toMatchSnapshot();
+    });
+  });
 });

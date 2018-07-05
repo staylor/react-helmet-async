@@ -126,4 +126,58 @@ describe('server', () => {
       expect(head.link.toString()).toMatchSnapshot();
     });
   });
+
+  describe('disableHelmetAttribute', () => {
+    beforeAll(() => {
+      Provider.disableHelmetAttribute = true;
+    });
+    afterAll(() => {
+      Provider.disableHelmetAttribute = false;
+    });
+    it('renders link tags as React components', () => {
+      const context = {};
+      render(
+        <Helmet>
+          <link href="http://localhost/helmet" rel="canonical" />
+          <link href="http://localhost/style.css" rel="stylesheet" type="text/css" />
+        </Helmet>,
+        context
+      );
+
+      const head = context.helmet;
+
+      expect(head.link).toBeDefined();
+      expect(head.link.toComponent).toBeDefined();
+
+      const linkComponent = head.link.toComponent();
+
+      expect(linkComponent).toEqual(isArray);
+      expect(linkComponent).toHaveLength(2);
+
+      linkComponent.forEach(link => {
+        expect(link).not.toEqual(expect.objectContaining({ 'data-rh': true }));
+      });
+
+      const markup = ReactServer.renderToStaticMarkup(linkComponent);
+
+      expect(markup).toMatchSnapshot();
+    });
+
+    it('renders link tags as string', () => {
+      const context = {};
+      render(
+        <Helmet>
+          <link href="http://localhost/helmet" rel="canonical" />
+          <link href="http://localhost/style.css" rel="stylesheet" type="text/css" />
+        </Helmet>,
+        context
+      );
+
+      const head = context.helmet;
+
+      expect(head.link).toBeDefined();
+      expect(head.link.toString).toBeDefined();
+      expect(head.link.toString()).toMatchSnapshot();
+    });
+  });
 });

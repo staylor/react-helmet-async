@@ -142,4 +142,70 @@ describe('server', () => {
       expect(head.meta.toString()).toMatchSnapshot();
     });
   });
+
+  describe('disableHelmetAttribute', () => {
+    beforeAll(() => {
+      Provider.disableHelmetAttribute = true;
+    });
+    afterAll(() => {
+      Provider.disableHelmetAttribute = false;
+    });
+    it('renders meta tags as React components', () => {
+      const context = {};
+      render(
+        <Helmet>
+          <meta charSet="utf-8" />
+          <meta
+            name="description"
+            content={'Test description & encoding of special characters like \' " > < `'}
+          />
+          <meta httpEquiv="content-type" content="text/html" />
+          <meta property="og:type" content="article" />
+          <meta itemProp="name" content="Test name itemprop" />
+        </Helmet>,
+        context
+      );
+
+      const head = context.helmet;
+
+      expect(head.meta).toBeDefined();
+      expect(head.meta.toComponent).toBeDefined();
+
+      const metaComponent = head.meta.toComponent();
+
+      expect(metaComponent).toEqual(isArray);
+      expect(metaComponent).toHaveLength(5);
+
+      metaComponent.forEach(meta => {
+        expect(meta).not.toEqual(expect.objectContaining({ 'data-rh': true }));
+      });
+
+      const markup = ReactServer.renderToStaticMarkup(<Fragment>{metaComponent}</Fragment>);
+
+      expect(markup).toMatchSnapshot();
+    });
+
+    it('renders meta tags as string', () => {
+      const context = {};
+      render(
+        <Helmet>
+          <meta charSet="utf-8" />
+          <meta
+            name="description"
+            content="Test description &amp; encoding of special characters like &#x27; &quot; &gt; &lt; `"
+          />
+          <meta httpEquiv="content-type" content="text/html" />
+          <meta property="og:type" content="article" />
+          <meta itemProp="name" content="Test name itemprop" />
+        </Helmet>,
+        context
+      );
+
+      const head = context.helmet;
+
+      expect(head.meta).toBeDefined();
+      expect(head.meta.toString).toBeDefined();
+      expect(head.meta.toString()).toMatchSnapshot();
+    });
+  });
 });

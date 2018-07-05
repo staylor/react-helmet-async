@@ -121,4 +121,54 @@ describe('server', () => {
       expect(head.style.toString()).toMatchSnapshot();
     });
   });
+
+  describe('disableHelmetAttribute', () => {
+    beforeAll(() => {
+      Provider.disableHelmetAttribute = true;
+    });
+    afterAll(() => {
+      Provider.disableHelmetAttribute = false;
+    });
+    it('renders style tags as React components', () => {
+      const context = {};
+      render(
+        <Helmet>
+          <style type="text/css">{`body {background-color: green;}`}</style>
+          <style type="text/css">{`p {font-size: 12px;}`}</style>
+        </Helmet>,
+        context
+      );
+
+      const head = context.helmet;
+
+      expect(head.style).toBeDefined();
+      expect(head.style.toComponent).toBeDefined();
+
+      const styleComponent = head.style.toComponent();
+
+      expect(styleComponent).toEqual(isArray);
+      expect(styleComponent).toHaveLength(2);
+
+      const markup = ReactServer.renderToStaticMarkup(styleComponent);
+
+      expect(markup).toMatchSnapshot();
+    });
+
+    it('renders style tags as string', () => {
+      const context = {};
+      render(
+        <Helmet>
+          <style type="text/css">{`body {background-color: green;}`}</style>
+          <style type="text/css">{`p {font-size: 12px;}`}</style>
+        </Helmet>,
+        context
+      );
+
+      const head = context.helmet;
+
+      expect(head.style).toBeDefined();
+      expect(head.style.toString).toBeDefined();
+      expect(head.style.toString()).toMatchSnapshot();
+    });
+  });
 });

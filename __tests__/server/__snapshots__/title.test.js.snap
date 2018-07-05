@@ -30,6 +30,8 @@ exports[`server Declarative API renders title with itemprop name as React compon
 
 exports[`server Declarative API renders title with itemprop name as string 1`] = `"<title data-rh=\\"true\\" itemprop=\\"name\\">Title with Itemprop</title>"`;
 
+exports[`server disableHelmetAttribute renders title as React component 1`] = `"<title>Dangerous &lt;script&gt; include</title>"`;
+
 exports[`server renderStatic does html encode title 1`] = `"<title data-rh=\\"true\\">Dangerous &lt;script&gt; include</title>"`;
 
 exports[`server renderStatic renders title as React component 1`] = `"<title data-rh=\\"true\\">Dangerous &lt;script&gt; include</title>"`;

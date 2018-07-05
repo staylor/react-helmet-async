@@ -7,6 +7,7 @@ import {
   ATTRIBUTE_NAMES,
 } from './constants';
 import { flattenArray } from './utils';
+import Provider from './Provider';
 
 const SELF_CLOSING_TAGS = [TAG_NAMES.NOSCRIPT, TAG_NAMES.SCRIPT, TAG_NAMES.STYLE];
 
@@ -32,15 +33,13 @@ const generateElementAttributesAsString = attributes =>
 const generateTitleAsString = (type, title, attributes, encode) => {
   const attributeString = generateElementAttributesAsString(attributes);
   const flattenedTitle = flattenArray(title);
+  const helmetAttribute = !Provider.disableHelmetAttribute ? ` ${HELMET_ATTRIBUTE}="true"` : '';
   return attributeString
-    ? `<${type} ${HELMET_ATTRIBUTE}="true" ${attributeString}>${encodeSpecialCharacters(
+    ? `<${type}${helmetAttribute} ${attributeString}>${encodeSpecialCharacters(
         flattenedTitle,
         encode
       )}</${type}>`
-    : `<${type} ${HELMET_ATTRIBUTE}="true">${encodeSpecialCharacters(
-        flattenedTitle,
-        encode
-      )}</${type}>`;
+    : `<${type}${helmetAttribute}>${encodeSpecialCharacters(flattenedTitle, encode)}</${type}>`;
 };
 
 const generateTagsAsString = (type, tags, encode) =>
@@ -61,8 +60,8 @@ const generateTagsAsString = (type, tags, encode) =>
     const tagContent = tag.innerHTML || tag.cssText || '';
 
     const isSelfClosing = SELF_CLOSING_TAGS.indexOf(type) === -1;
-
-    return `${str}<${type} ${HELMET_ATTRIBUTE}="true" ${attributeHtml}${
+    const helmetAttribute = !Provider.disableHelmetAttribute ? ` ${HELMET_ATTRIBUTE}="true"` : '';
+    return `${str}<${type}${helmetAttribute} ${attributeHtml}${
       isSelfClosing ? `/>` : `>${tagContent}</${type}>`
     }`;
   }, '');
@@ -77,8 +76,10 @@ const generateTitleAsReactComponent = (type, title, attributes) => {
   // assigning into an array to define toString function on it
   const initProps = {
     key: title,
-    [HELMET_ATTRIBUTE]: true,
   };
+  if (Provider.disableHelmetAttribute === false) {
+    initProps[HELMET_ATTRIBUTE] = true;
+  }
   const props = convertElementAttributesToReactProps(attributes, initProps);
 
   return [React.createElement(TAG_NAMES.TITLE, props, title)];
@@ -88,8 +89,10 @@ const generateTagsAsReactComponent = (type, tags) =>
   tags.map((tag, i) => {
     const mappedTag = {
       key: i,
-      [HELMET_ATTRIBUTE]: true,
     };
+    if (Provider.disableHelmetAttribute === false) {
+      mappedTag[HELMET_ATTRIBUTE] = true;
+    }
 
     Object.keys(tag).forEach(attribute => {
       const mappedAttribute = REACT_TAG_MAP[attribute] || attribute;

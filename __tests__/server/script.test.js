@@ -130,4 +130,58 @@ describe('server', () => {
       expect(head.script.toString()).toMatchSnapshot();
     });
   });
+
+  describe('disableHelmetAttribute', () => {
+    beforeAll(() => {
+      Provider.disableHelmetAttribute = true;
+    });
+    afterAll(() => {
+      Provider.disableHelmetAttribute = false;
+    });
+    it('renders script tags as React components', () => {
+      const context = {};
+      render(
+        <Helmet>
+          <script src="http://localhost/test.js" type="text/javascript" />
+          <script src="http://localhost/test2.js" type="text/javascript" />
+        </Helmet>,
+        context
+      );
+
+      const head = context.helmet;
+
+      expect(head.script).toBeDefined();
+      expect(head.script.toComponent).toBeDefined();
+
+      const scriptComponent = head.script.toComponent();
+
+      expect(scriptComponent).toEqual(isArray);
+      expect(scriptComponent).toHaveLength(2);
+
+      scriptComponent.forEach(script => {
+        expect(script).not.toEqual(expect.objectContaining({ 'data-rh': true }));
+      });
+
+      const markup = ReactServer.renderToStaticMarkup(scriptComponent);
+
+      expect(markup).toMatchSnapshot();
+    });
+
+    it('renders script tags as string', () => {
+      const context = {};
+      render(
+        <Helmet>
+          <script src="http://localhost/test.js" type="text/javascript" />
+          <script src="http://localhost/test2.js" type="text/javascript" />
+        </Helmet>,
+        context
+      );
+
+      const head = context.helmet;
+
+      expect(head.script).toBeDefined();
+      expect(head.script.toString).toBeDefined();
+      expect(head.script.toString()).toMatchSnapshot();
+    });
+  });
 });

@@ -88,4 +88,41 @@ describe('server', () => {
       expect(markup).toMatchSnapshot();
     });
   });
+
+  describe('disableHelmetAttribute', () => {
+    beforeAll(() => {
+      Provider.disableHelmetAttribute = true;
+    });
+    afterAll(() => {
+      Provider.disableHelmetAttribute = false;
+    });
+    it('renders noscript tags as React components', () => {
+      const context = {};
+      render(
+        <Helmet>
+          <noscript id="foo">{`<link rel="stylesheet" type="text/css" href="/style.css" />`}</noscript>
+          <noscript id="bar">{`<link rel="stylesheet" type="text/css" href="/style2.css" />`}</noscript>
+        </Helmet>,
+        context
+      );
+
+      const head = context.helmet;
+
+      expect(head.noscript).toBeDefined();
+      expect(head.noscript.toComponent).toBeDefined();
+
+      const noscriptComponent = head.noscript.toComponent();
+
+      expect(noscriptComponent).toEqual(isArray);
+      expect(noscriptComponent).toHaveLength(2);
+
+      noscriptComponent.forEach(noscript => {
+        expect(noscript).not.toEqual(expect.objectContaining({ 'data-rh': true }));
+      });
+
+      const markup = ReactServer.renderToStaticMarkup(noscriptComponent);
+
+      expect(markup).toMatchSnapshot();
+    });
+  });
 });
