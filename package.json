@@ -8,9 +8,9 @@
   "license": "Apache-2.0",
   "typings": "index.d.ts",
   "dependencies": {
-    "deep-equal": "^1.0.1",
     "invariant": "^2.2.4",
     "prop-types": "^15.6.1",
+    "react-fast-compare": "^2.0.2",
     "shallowequal": "^1.0.2"
   },
   "devDependencies": {
