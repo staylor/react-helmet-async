@@ -1,5 +1,7 @@
 # react-helmet-async
 
+[![CircleCI](https://circleci.com/gh/staylor/react-helmet-async.svg?style=svg)](https://circleci.com/gh/staylor/react-helmet-async)
+
 This package is a fork of [React Helmet](https://github.com/nfl/react-helmet).
 `<Helmet>` usage is synonymous, but server and client now requires `<HelmetProvider>` to encapsulate state per request.
 
