@@ -157,11 +157,10 @@ const getTagsFromPropsList = (tagName, primaryAttributes, propsList) => {
       const keys = Object.keys(instanceSeenTags);
       for (let i = 0; i < keys.length; i += 1) {
         const attributeKey = keys[i];
-        const tagUnion = Object.assign(
-          {},
-          approvedSeenTags[attributeKey],
-          instanceSeenTags[attributeKey]
-        );
+        const tagUnion = {
+          ...approvedSeenTags[attributeKey],
+          ...instanceSeenTags[attributeKey],
+        };
 
         approvedSeenTags[attributeKey] = tagUnion;
       }
