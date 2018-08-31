@@ -3,7 +3,7 @@
 This package is a fork of [React Helmet](https://github.com/nfl/react-helmet).
 `<Helmet>` usage is synonymous, but server and client now requires `<HelmetProvider>` to encapsulate state per request.
 
-`react-helmet` relies on `react-side-effect`, which is not thread-safe. If you are doing anything asynchronous on the server, you need Helmet to to encapsulate data on a per-request basis, this package does just that.
+`react-helmet` relies on `react-side-effect`, which is not thread-safe. If you are doing anything asynchronous on the server, you need Helmet to encapsulate data on a per-request basis, this package does just that.
 
 ## Usage
 
