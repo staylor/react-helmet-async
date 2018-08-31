@@ -179,9 +179,18 @@ export default class Helmet extends Component {
         return obj;
       }, {});
 
-      this.warnOnInvalidChildren(child, nestedChildren);
+      let { type } = child;
+      if (typeof type === 'symbol') {
+        type = type.toString();
+      } else {
+        this.warnOnInvalidChildren(child, nestedChildren);
+      }
 
-      switch (child.type) {
+      switch (type) {
+        case TAG_NAMES.FRAGMENT:
+          newProps = this.mapChildrenToProps(nestedChildren, newProps);
+          break;
+
         case TAG_NAMES.LINK:
         case TAG_NAMES.META:
         case TAG_NAMES.NOSCRIPT:

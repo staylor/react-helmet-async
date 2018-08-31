@@ -28,6 +28,7 @@ export const TAG_NAMES = {
   SCRIPT: 'script',
   STYLE: 'style',
   TITLE: 'title',
+  FRAGMENT: 'Symbol(react.fragment)',
 };
 
 export const VALID_TAG_NAMES = Object.keys(TAG_NAMES).map(name => TAG_NAMES[name]);
