@@ -51,7 +51,7 @@
     "compile": "npm run compile:commonjs && npm run compile:es",
     "compile:commonjs": "babel src --out-dir lib",
     "compile:es": "babel src --out-dir es",
-    "prepublish": "npm run compile"
+    "prepare": "npm run compile"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>/jest.setup.js",
