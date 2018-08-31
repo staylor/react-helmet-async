@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import deepEqual from 'deep-equal';
+import fastCompare from 'react-fast-compare';
 import invariant from 'invariant';
 import Context from './Context';
 import Dispatcher from './Dispatcher';
@@ -55,7 +55,7 @@ export default class Helmet extends Component {
   };
 
   shouldComponentUpdate(nextProps) {
-    return !deepEqual(this.props, nextProps);
+    return !fastCompare(this.props, nextProps);
   }
 
   mapNestedChildrenToProps(child, nestedChildren) {
