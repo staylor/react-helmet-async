@@ -36,7 +36,7 @@ export default class Dispatcher extends Component {
     let serverState = null;
     const state = reducePropsToState(
       helmetInstances.get().map(instance => {
-        const props = {...instance.props};
+        const props = { ...instance.props };
         delete props.context;
         return props;
       })
