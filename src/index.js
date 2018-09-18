@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import fastCompare from 'react-fast-compare';
 import invariant from 'invariant';
-import Context from './Context';
+import { Context } from './Provider';
 import Dispatcher from './Dispatcher';
 import { TAG_NAMES, VALID_TAG_NAMES, HTML_TAG_MAP } from './constants';
 

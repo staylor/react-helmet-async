@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Context from './Context';
 import mapStateOnServer from './server';
 
 /* eslint-disable react/prop-types */
+
+const defaultValue = {};
+
+export const Context = React.createContext(defaultValue);
 
 export const providerShape = PropTypes.shape({
   setHelmet: PropTypes.func,
