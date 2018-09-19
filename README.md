@@ -2,6 +2,8 @@
 
 [![CircleCI](https://circleci.com/gh/staylor/react-helmet-async.svg?style=svg)](https://circleci.com/gh/staylor/react-helmet-async)
 
+[Announcement post on Times Open blog](https://open.nytimes.com/the-future-of-meta-tag-management-for-modern-react-development-ec26a7dc9183)
+
 This package is a fork of [React Helmet](https://github.com/nfl/react-helmet).
 `<Helmet>` usage is synonymous, but server and client now requires `<HelmetProvider>` to encapsulate state per request.
 
