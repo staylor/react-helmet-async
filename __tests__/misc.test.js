@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Helmet from '../src';
 import Provider from '../src/Provider';
-import { requestAnimationFrame } from '../src/client';
 import { HELMET_ATTRIBUTE } from '../src/constants';
 
 Helmet.defaultProps.defer = false;

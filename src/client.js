@@ -1,23 +1,6 @@
 import { HELMET_ATTRIBUTE, TAG_NAMES, TAG_PROPERTIES } from './constants';
 import { flattenArray } from './utils';
 
-const rafPolyfill = (() => {
-  let clock = Date.now();
-
-  return (callback: Function) => {
-    const currentTime = Date.now();
-
-    if (currentTime - clock > 16) {
-      clock = currentTime;
-      callback(currentTime);
-    } else {
-      setTimeout(() => {
-        rafPolyfill(callback);
-      }, 0);
-    }
-  };
-})();
-
 const updateTags = (type, tags) => {
   const headElement = document.head || document.querySelector(TAG_NAMES.HEAD);
   const tagNodes = headElement.querySelectorAll(`${type}[${HELMET_ATTRIBUTE}]`);
@@ -169,24 +152,6 @@ const commitTagChanges = (newState, cb) => {
 
   onChangeClientState(newState, addedTags, removedTags);
 };
-
-const cafPolyfill = (id: string | number) => clearTimeout(id);
-
-export const requestAnimationFrame =
-  typeof window !== 'undefined'
-    ? window.requestAnimationFrame ||
-      window.webkitRequestAnimationFrame ||
-      window.mozRequestAnimationFrame ||
-      rafPolyfill
-    : global.requestAnimationFrame || rafPolyfill;
-
-const cancelAnimationFrame =
-  typeof window !== 'undefined'
-    ? window.cancelAnimationFrame ||
-      window.webkitCancelAnimationFrame ||
-      window.mozCancelAnimationFrame ||
-      cafPolyfill
-    : global.cancelAnimationFrame || cafPolyfill;
 
 // eslint-disable-next-line
 let _helmetCallback = null;
