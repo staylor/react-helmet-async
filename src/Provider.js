@@ -22,7 +22,7 @@ const canUseDOM = typeof document !== 'undefined';
 export default class Provider extends Component {
   static canUseDOM = canUseDOM;
 
-  static disableHelmetAttribute = false;
+  static ssrOnly = false;
 
   static propTypes = {
     context: PropTypes.shape({}),

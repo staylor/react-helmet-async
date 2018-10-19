@@ -33,7 +33,7 @@ const generateElementAttributesAsString = attributes =>
 const generateTitleAsString = (type, title, attributes, encode) => {
   const attributeString = generateElementAttributesAsString(attributes);
   const flattenedTitle = flattenArray(title);
-  const helmetAttribute = !Provider.disableHelmetAttribute ? ` ${HELMET_ATTRIBUTE}="true"` : '';
+  const helmetAttribute = !Provider.ssrOnly ? ` ${HELMET_ATTRIBUTE}="true"` : '';
   return attributeString
     ? `<${type}${helmetAttribute} ${attributeString}>${encodeSpecialCharacters(
         flattenedTitle,
@@ -60,7 +60,7 @@ const generateTagsAsString = (type, tags, encode) =>
     const tagContent = tag.innerHTML || tag.cssText || '';
 
     const isSelfClosing = SELF_CLOSING_TAGS.indexOf(type) === -1;
-    const helmetAttribute = !Provider.disableHelmetAttribute ? ` ${HELMET_ATTRIBUTE}="true"` : '';
+    const helmetAttribute = !Provider.ssrOnly ? ` ${HELMET_ATTRIBUTE}="true"` : '';
     return `${str}<${type}${helmetAttribute} ${attributeHtml}${
       isSelfClosing ? `/>` : `>${tagContent}</${type}>`
     }`;
@@ -77,7 +77,7 @@ const generateTitleAsReactComponent = (type, title, attributes) => {
   const initProps = {
     key: title,
   };
-  if (Provider.disableHelmetAttribute === false) {
+  if (Provider.ssrOnly === false) {
     initProps[HELMET_ATTRIBUTE] = true;
   }
   const props = convertElementAttributesToReactProps(attributes, initProps);
@@ -90,7 +90,7 @@ const generateTagsAsReactComponent = (type, tags) =>
     const mappedTag = {
       key: i,
     };
-    if (Provider.disableHelmetAttribute === false) {
+    if (Provider.ssrOnly === false) {
       mappedTag[HELMET_ATTRIBUTE] = true;
     }
 

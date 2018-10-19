@@ -122,12 +122,12 @@ describe('server', () => {
     });
   });
 
-  describe('disableHelmetAttribute', () => {
+  describe('ssrOnly', () => {
     beforeAll(() => {
-      Provider.disableHelmetAttribute = true;
+      Provider.ssrOnly = true;
     });
     afterAll(() => {
-      Provider.disableHelmetAttribute = false;
+      Provider.ssrOnly = false;
     });
     it('renders style tags as React components', () => {
       const context = {};

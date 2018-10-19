@@ -8,6 +8,6 @@ exports[`server Declarative API renders base tag as React component 1`] = `"<bas
 
 exports[`server Declarative API renders base tags as string 1`] = `"<base data-rh=\\"true\\" target=\\"_blank\\" href=\\"http://localhost/\\"/>"`;
 
-exports[`server disableHelmetAttribute renders base tag as React component 1`] = `"<base target=\\"_blank\\" href=\\"http://localhost/\\"/>"`;
+exports[`server ssrOnly renders base tag as React component 1`] = `"<base target=\\"_blank\\" href=\\"http://localhost/\\"/>"`;
 
-exports[`server disableHelmetAttribute renders base tags as string 1`] = `"<base target=\\"_blank\\" href=\\"http://localhost/\\"/>"`;
+exports[`server ssrOnly renders base tags as string 1`] = `"<base target=\\"_blank\\" href=\\"http://localhost/\\"/>"`;
