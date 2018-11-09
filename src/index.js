@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import fastCompare from 'react-fast-compare';
-import invariant from 'invariant';
-import { Context } from './Provider';
-import Dispatcher from './Dispatcher';
-import { TAG_NAMES, VALID_TAG_NAMES, HTML_TAG_MAP } from './constants';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import fastCompare from "react-fast-compare";
+import invariant from "invariant";
+import { Context } from "./Provider";
+import Dispatcher from "./Dispatcher";
+import { TAG_NAMES, VALID_TAG_NAMES, HTML_TAG_MAP } from "./constants";
 
-export { default as HelmetProvider } from './Provider';
+export { default as HelmetProvider } from "./Provider";
 
 /* eslint-disable class-methods-use-this */
 
@@ -32,7 +32,10 @@ export default class Helmet extends Component {
   static propTypes = {
     base: PropTypes.object,
     bodyAttributes: PropTypes.object,
-    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+    children: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node
+    ]),
     defaultTitle: PropTypes.string,
     defer: PropTypes.bool,
     encodeSpecialCharacters: PropTypes.bool,
@@ -45,13 +48,13 @@ export default class Helmet extends Component {
     style: PropTypes.arrayOf(PropTypes.object),
     title: PropTypes.string,
     titleAttributes: PropTypes.object,
-    titleTemplate: PropTypes.string,
+    titleTemplate: PropTypes.string
   };
   /* eslint-enable react/prop-types, react/forbid-prop-types, react/require-default-props */
 
   static defaultProps = {
     defer: true,
-    encodeSpecialCharacters: true,
+    encodeSpecialCharacters: true
   };
 
   shouldComponentUpdate(nextProps) {
@@ -67,12 +70,12 @@ export default class Helmet extends Component {
       case TAG_NAMES.SCRIPT:
       case TAG_NAMES.NOSCRIPT:
         return {
-          innerHTML: nestedChildren,
+          innerHTML: nestedChildren
         };
 
       case TAG_NAMES.STYLE:
         return {
-          cssText: nestedChildren,
+          cssText: nestedChildren
         };
       default:
         throw new Error(
@@ -83,16 +86,21 @@ export default class Helmet extends Component {
     }
   }
 
-  flattenArrayTypeChildren({ child, arrayTypeChildren, newChildProps, nestedChildren }) {
+  flattenArrayTypeChildren({
+    child,
+    arrayTypeChildren,
+    newChildProps,
+    nestedChildren
+  }) {
     return {
       ...arrayTypeChildren,
       [child.type]: [
         ...(arrayTypeChildren[child.type] || []),
         {
           ...newChildProps,
-          ...this.mapNestedChildrenToProps(child, nestedChildren),
-        },
-      ],
+          ...this.mapNestedChildrenToProps(child, nestedChildren)
+        }
+      ]
     };
   }
 
@@ -102,24 +110,24 @@ export default class Helmet extends Component {
         return {
           ...newProps,
           [child.type]: nestedChildren,
-          titleAttributes: { ...newChildProps },
+          titleAttributes: { ...newChildProps }
         };
 
       case TAG_NAMES.BODY:
         return {
           ...newProps,
-          bodyAttributes: { ...newChildProps },
+          bodyAttributes: { ...newChildProps }
         };
 
       case TAG_NAMES.HTML:
         return {
           ...newProps,
-          htmlAttributes: { ...newChildProps },
+          htmlAttributes: { ...newChildProps }
         };
       default:
         return {
           ...newProps,
-          [child.type]: { ...newChildProps },
+          [child.type]: { ...newChildProps }
         };
     }
   }
@@ -130,7 +138,7 @@ export default class Helmet extends Component {
     Object.keys(arrayTypeChildren).forEach(arrayChildName => {
       newFlattenedProps = {
         ...newFlattenedProps,
-        [arrayChildName]: arrayTypeChildren[arrayChildName],
+        [arrayChildName]: arrayTypeChildren[arrayChildName]
       };
     });
 
@@ -140,10 +148,10 @@ export default class Helmet extends Component {
   warnOnInvalidChildren(child, nestedChildren) {
     invariant(
       VALID_TAG_NAMES.some(name => child.type === name),
-      typeof child.type === 'function'
+      typeof child.type === "function"
         ? `You may be attempting to nest <Helmet> components within each other, which is not allowed. Refer to our API for more information.`
         : `Only elements types ${VALID_TAG_NAMES.join(
-            ', '
+            ", "
           )} are allowed. Helmet does not support rendering <${
             child.type
           }> elements. Refer to our API for more information.`
@@ -151,14 +159,14 @@ export default class Helmet extends Component {
 
     invariant(
       !nestedChildren ||
-        typeof nestedChildren === 'string' ||
+        typeof nestedChildren === "string" ||
         (Array.isArray(nestedChildren) &&
-          !nestedChildren.some(nestedChild => typeof nestedChild !== 'string')),
+          !nestedChildren.some(nestedChild => typeof nestedChild !== "string")),
       `Helmet expects a string as a child of <${
         child.type
-      }>. Did you forget to wrap your children in braces? ( <${child.type}>{\`\`}</${
+      }>. Did you forget to wrap your children in braces? ( <${
         child.type
-      }> ) Refer to our API for more information.`
+      }>{\`\`}</${child.type}> ) Refer to our API for more information.`
     );
 
     return true;
@@ -180,7 +188,7 @@ export default class Helmet extends Component {
       }, {});
 
       let { type } = child;
-      if (typeof type === 'symbol') {
+      if (typeof type === "symbol") {
         type = type.toString();
       } else {
         this.warnOnInvalidChildren(child, nestedChildren);
@@ -200,7 +208,7 @@ export default class Helmet extends Component {
             child,
             arrayTypeChildren,
             newChildProps,
-            nestedChildren,
+            nestedChildren
           });
           break;
 
@@ -209,7 +217,7 @@ export default class Helmet extends Component {
             child,
             newProps,
             newChildProps,
-            nestedChildren,
+            nestedChildren
           });
           break;
       }
@@ -228,7 +236,9 @@ export default class Helmet extends Component {
 
     return (
       <Context.Consumer>
-        {context => <Dispatcher {...newProps} context={context} />}
+        {context =>
+          context ? <Dispatcher {...newProps} context={context} /> : null
+        }
       </Context.Consumer>
     );
   }
