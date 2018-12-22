@@ -2,14 +2,14 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:8.9.1
+      - image: circleci/node
 
     steps:
       - checkout
 
       - restore_cache:
           keys:
-          - deps-{{ checksum "package.json" }}
+            - deps-{{ checksum "package.json" }}
 
       - run: npm install
 

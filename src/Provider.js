@@ -32,6 +32,7 @@ export default class Provider extends Component {
   };
 
   instances = [];
+
   value = {
     setHelmet: serverState => {
       this.props.context.helmet = serverState;
@@ -52,6 +53,7 @@ export default class Provider extends Component {
     super(props);
 
     if (!Provider.canUseDOM) {
+      // eslint-disable-next-line no-param-reassign
       props.context.helmet = mapStateOnServer({
         baseTag: [],
         bodyAttributes: {},

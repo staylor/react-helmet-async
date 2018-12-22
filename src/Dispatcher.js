@@ -12,23 +12,18 @@ export default class Dispatcher extends Component {
 
   rendered = false;
 
-  // componentWillMount will be deprecated
-  // for SSR, initialize on first render
-  // constructor is also unsafe in StrictMode
-  init() {
-    if (this.rendered) {
-      return;
-    }
+  shouldComponentUpdate(nextProps) {
+    return !shallowEqual(nextProps, this.props);
+  }
 
-    this.rendered = true;
-
-    const { helmetInstances } = this.props.context;
-    helmetInstances.add(this);
+  componentDidUpdate() {
     this.emitChange();
   }
 
-  shouldComponentUpdate(nextProps) {
-    return !shallowEqual(nextProps, this.props);
+  componentWillUnmount() {
+    const { helmetInstances } = this.props.context;
+    helmetInstances.remove(this);
+    this.emitChange();
   }
 
   emitChange() {
@@ -49,13 +44,18 @@ export default class Dispatcher extends Component {
     setHelmet(serverState);
   }
 
-  componentDidUpdate() {
-    this.emitChange();
-  }
+  // componentWillMount will be deprecated
+  // for SSR, initialize on first render
+  // constructor is also unsafe in StrictMode
+  init() {
+    if (this.rendered) {
+      return;
+    }
 
-  componentWillUnmount() {
+    this.rendered = true;
+
     const { helmetInstances } = this.props.context;
-    helmetInstances.remove(this);
+    helmetInstances.add(this);
     this.emitChange();
   }
 
