@@ -126,7 +126,7 @@ describe('server', () => {
           <meta charSet="utf-8" />
           <meta
             name="description"
-            content="Test description &amp; encoding of special characters like &#x27; &quot; &gt; &lt; `"
+            content='Test description &amp; encoding of special characters like &#x27; " &gt; &lt; `'
           />
           <meta httpEquiv="content-type" content="text/html" />
           <meta property="og:type" content="article" />

@@ -175,6 +175,7 @@ export default class Helmet extends Component {
       const { children: nestedChildren, ...childProps } = child.props;
       // convert React props to HTML attributes
       const newChildProps = Object.keys(childProps).reduce((obj, key) => {
+        // eslint-disable-next-line no-param-reassign
         obj[HTML_TAG_MAP[key] || key] = childProps[key];
         return obj;
       }, {});
@@ -188,6 +189,7 @@ export default class Helmet extends Component {
 
       switch (type) {
         case TAG_NAMES.FRAGMENT:
+          // eslint-disable-next-line no-param-reassign
           newProps = this.mapChildrenToProps(nestedChildren, newProps);
           break;
 
@@ -205,6 +207,7 @@ export default class Helmet extends Component {
           break;
 
         default:
+          // eslint-disable-next-line no-param-reassign
           newProps = this.mapObjectTypeChildren({
             child,
             newProps,

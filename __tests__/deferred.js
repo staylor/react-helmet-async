@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Helmet from '../src';
-import { requestAnimationFrame } from '../src/utils';
 
 /* eslint-disable no-underscore-dangle */
 
