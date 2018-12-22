@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import mapStateOnServer from './server';
 
-/* eslint-disable react/prop-types */
-
 const defaultValue = {};
 
 export const Context = React.createContext(defaultValue);
@@ -35,6 +33,7 @@ export default class Provider extends Component {
 
   value = {
     setHelmet: serverState => {
+      // eslint-disable-next-line react/prop-types
       this.props.context.helmet = serverState;
     },
     helmetInstances: {

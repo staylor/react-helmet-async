@@ -1,11 +1,18 @@
 {
-  "presets": [
-    ["kyt-react", {"modules": true}]
-  ],
+  "presets": ["@babel/preset-env", "@babel/preset-react"],
   "plugins": [
-    "transform-class-properties",
-    "transform-es2015-modules-commonjs",
-    "transform-object-rest-spread",
-    "transform-regenerator"
-  ]
+    "@babel/plugin-proposal-class-properties"
+  ],
+  "env": {
+    "production": {
+      "plugins": [
+        [
+          "babel-plugin-transform-react-remove-prop-types",
+          {
+            "ignoreFilenames": ["node_modules"]
+          }
+        ]
+      ]
+    }
+  }
 }
