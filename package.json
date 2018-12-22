@@ -1,6 +1,6 @@
 {
   "name": "react-helmet-async",
-  "version": "0.2.0",
+  "version": "0.3.0-beta.0",
   "description": "Thread-safe Helmet for React 16+ and friends",
   "main": "lib/index.js",
   "repository": "http://github.com/NYTimes/react-helmet-async",
@@ -8,20 +8,21 @@
   "license": "Apache-2.0",
   "typings": "index.d.ts",
   "dependencies": {
-    "invariant": "^2.2.4",
-    "prop-types": "^15.6.1",
-    "react-fast-compare": "^2.0.2",
-    "shallowequal": "^1.0.2"
+    "invariant": "2.2.4",
+    "prop-types": "15.6.2",
+    "react-fast-compare": "2.0.4",
+    "shallowequal": "1.1.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.3",
-    "babel-jest": "^22.4.4",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-kyt-react": "^0.3.0",
+    "@babel/cli": "7.2.3",
+    "@babel/core": "7.2.2",
+    "@babel/plugin-proposal-class-properties": "7.2.3",
+    "@babel/preset-env": "7.2.3",
+    "@babel/preset-react": "7.0.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "10.0.1",
+    "babel-jest": "23.6.0",
+    "babel-plugin-transform-react-remove-prop-types": "0.4.21",
     "enzyme": "3.8.0",
     "enzyme-adapter-react-16": "1.7.1",
     "eslint": "5.10.0",
@@ -40,8 +41,7 @@
     "prettier-eslint-cli": "4.7.1",
     "raf": "3.4.1",
     "react": "16.7.0",
-    "react-dom": "16.7.0",
-    "regenerator-runtime": "^0.11.1"
+    "react-dom": "16.7.0"
   },
   "peerDependencies": {
     "react": "^16.7.0",
@@ -53,7 +53,7 @@
     "test": "jest --no-cache",
     "test-watch": "npm run test -- --watch",
     "test-update": "npm run test -- -u",
-    "compile": "npm run compile:commonjs && npm run compile:es",
+    "compile": "NODE_ENV=production npm run compile:commonjs && npm run compile:es",
     "compile:commonjs": "babel src --out-dir lib",
     "compile:es": "babel src --out-dir es",
     "prepare": "npm run compile"
@@ -67,7 +67,8 @@
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/src/",
-      "/lib/"
+      "/lib/",
+      "/es/"
     ]
   }
 }
