@@ -66,11 +66,11 @@ const { helmet } = helmetContext;
 // helmet.title.toString() etc…
 ```
 
-## Usage with Next.js
+## Usage with Next.js
 
 To make this package work with next.js you've to do the following adjustements:
 
-1. Create a _document.js in pages folder and put the following content:
+1. Create a `_document.js` in pages folder and put the following content:
 
 ```javascript
 import React from "react";
@@ -126,7 +126,7 @@ export default class CustomDocument extends Document {
 }
 ```
 
-2. Create a _app.js in pages folder with the following content:
+2. Create an `_app.js in pages folder with the following content:
 
 ```javascript
 import React from 'react';
