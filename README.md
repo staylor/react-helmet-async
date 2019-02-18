@@ -66,6 +66,105 @@ const { helmet } = helmetContext;
 // helmet.title.toString() etc…
 ```
 
+## Usage with Next.js
+
+To make this package work with next.js you've to do the following adjustements:
+
+1. Create a _document.js in pages folder and put the following content:
+
+```javascript
+import React from "react";
+import Document, { Head, Main, NextScript } from "next/document";
+
+export default class CustomDocument extends Document {
+    static async getInitialProps(ctx) {
+        let helmetContext;
+        
+        const page = ctx.renderPage({
+            enhanceApp: App => props => {
+                const app = new App(props);
+                helmetContext = app.helmetContext;
+                return app;
+            },
+            enhancePage: Page => page
+        });
+        
+        const documentProps = await Document.getInitialProps(ctx);
+
+        return {
+            ...documentProps,
+            ...page,
+            helmetContext
+        };
+    };
+
+    render() {
+        const { helmetContext } = this.props;
+
+        return (
+            <html lang="es" dir="ltr">
+                <Head>
+                    <meta
+                        name="viewport"
+                        content="user-scalable=0, initial-scale=1, minimum-scale=1, width=device-width, height=device-height"
+                    />
+                    {helmetContext.helmet.meta.toComponent()}
+                    {helmetContext.helmet.link.toComponent()}
+                    {helmetContext.helmet.title.toComponent()}
+                    {helmetContext.helmet.script.toComponent()}
+                </Head>
+                <body>
+                    <noscript>
+                        You need javascript to use this site.
+                    </noscript>
+                    <Main />
+                    <NextScript />
+                </body>
+            </html>
+        );
+    }
+}
+```
+
+2. Create a _app.js in pages folder with the following content:
+
+```javascript
+import React from 'react';
+import PropTypes from "prop-types";
+import App, { Container } from 'next/app';
+import { HelmetProvider } from 'react-helmet-async';
+
+export default class MainApp extends App {
+    static displayName = "App";
+
+    static async getInitialProps({ Component, ctx }) {
+        // data fetching stuff
+       return {};
+    }
+
+    constructor(props) {
+        super(props);
+        // You need to declare it!!!
+        this.helmetContext = {};
+    }
+  
+    render() {
+        const { Component } = this.props
+        
+        return (
+            <Container>
+                {/** Then pass helmetContext to the Provider so you can use helmet on every child **/}
+                <HelmetProvider context={this.helmetContext}>
+                    <Component helmetContext={this.helmetContext} />
+                </HelmetProvider>
+            </Container>
+        );
+    }
+}
+```
+
+This way you'll have `react-helmet-async` setup correctly in next.js
+
 ## Streams
 
 This package only works with streaming if your `<head>` data is output outside of `renderToNodeStream()`.
