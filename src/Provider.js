@@ -21,7 +21,9 @@ export default class Provider extends Component {
   static canUseDOM = canUseDOM;
 
   static propTypes = {
-    context: PropTypes.shape({}),
+    context: PropTypes.shape({
+      helmet: PropTypes.shape(),
+    }),
     children: PropTypes.node.isRequired,
   };
 
