@@ -6,14 +6,17 @@
   "umd:main": "lib/index.umd.js",
   "module": "lib/index.mjs",
   "source": "src/index.js",
+  "types": "index.d.ts",
   "repository": "http://github.com/NYTimes/react-helmet-async",
   "author": "Scott Taylor <scott.c.taylor@mac.com>",
   "license": "Apache-2.0",
-  "typings": "index.d.ts",
+  "files": [
+    "lib/",
+    "index.d.ts"
+  ],
   "dependencies": {
     "@babel/runtime": "7.3.4",
     "invariant": "2.2.4",
-    "jsdom": "11.12.0",
     "prop-types": "15.7.2",
     "react-fast-compare": "2.0.4",
     "shallowequal": "1.1.0"
@@ -23,7 +26,6 @@
     "@babel/core": "7.3.4",
     "@babel/plugin-proposal-class-properties": "7.3.4",
     "babel-eslint": "10.0.1",
-    "babel-plugin-transform-react-remove-prop-types": "0.4.24",
     "babel-preset-kyt-react": "1.0.0-alpha.365f23ad",
     "enzyme": "3.9.0",
     "enzyme-adapter-react-16": "1.10.0",
@@ -32,7 +34,6 @@
     "eslint-config-airbnb": "17.1.0",
     "eslint-config-kyt": "1.0.0-alpha.365f23ad",
     "eslint-config-prettier": "4.1.0",
-    "eslint-import-resolver-babel-module": "5.0.1",
     "eslint-plugin-import": "2.16.0",
     "eslint-plugin-jest": "22.3.0",
     "eslint-plugin-json": "1.4.0",
@@ -41,23 +42,26 @@
     "eslint-plugin-prettier": "3.0.1",
     "eslint-plugin-react": "7.12.4",
     "jest": "24.3.1",
+    "jsdom": "11.12.0",
     "microbundle": "^0.11.0",
     "prettier": "1.16.4",
     "raf": "3.4.1",
     "react": "16.8.4",
-    "react-dom": "16.8.4"
+    "react-dom": "16.8.4",
+    "rimraf": "^2.6.3"
   },
   "peerDependencies": {
     "react": "^16.6.0",
     "react-dom": "^16.6.0"
   },
   "scripts": {
+    "clean": "rimraf lib",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
     "test": "KYT_ENV_TYPE=test jest --no-cache",
     "test-watch": "npm run test -- --watch",
     "test-update": "npm run test -- -u",
-    "compile": "KYT_ENV_TYPE=client NODE_ENV=production microbundle",
+    "compile": "npm run clean && KYT_ENV_TYPE=client NODE_ENV=production microbundle",
     "prepare": "npm run compile"
   },
   "jest": {
