@@ -54,6 +54,8 @@ export default class Helmet extends Component {
     encodeSpecialCharacters: true,
   };
 
+  static displayName = 'Helmet';
+
   shouldComponentUpdate(nextProps) {
     return !fastCompare(this.props, nextProps);
   }

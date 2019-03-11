@@ -31,6 +31,8 @@ export default class Provider extends Component {
     context: {},
   };
 
+  static displayName = 'HelmetProvider';
+
   instances = [];
 
   value = {
