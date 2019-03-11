@@ -61,7 +61,7 @@
     "test": "KYT_ENV_TYPE=test jest --no-cache",
     "test-watch": "npm run test -- --watch",
     "test-update": "npm run test -- -u",
-    "compile": "npm run clean && KYT_ENV_TYPE=client NODE_ENV=production microbundle",
+    "compile": "npm run clean && KYT_ENV_TYPE=client NODE_ENV=production microbundle --jsx React.createElement",
     "prepare": "npm run compile"
   },
   "jest": {
