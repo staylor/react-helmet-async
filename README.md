@@ -11,12 +11,14 @@ This package is a fork of [React Helmet](https://github.com/nfl/react-helmet).
 
 ## Usage
 
+**New is 1.0.0:** No more default export! `import { Helmet } from 'react-helmet-async'`
+
 The main way that this package differs from `react-helmet` is that it requires using a Provider to encapsulate Helmet state for your React tree. If you use libraries like Redux or Apollo, you are already familiar with this paradigm:
 
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Helmet, { HelmetProvider } from 'react-helmet-async';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const app = (
   <HelmetProvider>
@@ -43,7 +45,7 @@ to pass a `context` prop to `HelmetProvider`, which will hold our state specific
 ```javascript
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import Helmet, { HelmetProvider } from 'react-helmet-async';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const helmetContext = {};
 
@@ -75,7 +77,7 @@ This is possible if your data hydration method already parses your React tree. E
 import through from 'through';
 import { renderToNodeStream } from 'react-dom/server';
 import { getDataFromTree } from 'react-apollo';
-import Helmet, { HelmetProvider } from 'react-helmet-async';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import template from 'server/template';
 
 const helmetContext = {};
