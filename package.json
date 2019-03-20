@@ -1,6 +1,6 @@
 {
   "name": "react-helmet-async",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0",
   "description": "Thread-safe Helmet for React 16+ and friends",
   "main": "lib/index.js",
   "umd:main": "lib/index.umd.js",
@@ -44,12 +44,12 @@
     "eslint-plugin-react": "7.12.4",
     "jest": "24.3.1",
     "jsdom": "11.12.0",
-    "microbundle": "^0.11.0",
+    "microbundle": "0.11.0",
     "prettier": "1.16.4",
     "raf": "3.4.1",
     "react": "16.8.4",
     "react-dom": "16.8.4",
-    "rimraf": "^2.6.3"
+    "rimraf": "2.6.3"
   },
   "peerDependencies": {
     "react": "^16.6.0",
