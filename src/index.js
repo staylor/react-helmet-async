@@ -10,7 +10,7 @@ export { default as HelmetProvider } from './Provider';
 
 /* eslint-disable class-methods-use-this */
 
-export default class Helmet extends Component {
+export class Helmet extends Component {
   /**
    * @param {Object} base: {"target": "_blank", "href": "http://mysite.com/"}
    * @param {Object} bodyAttributes: {"className": "root"}
@@ -53,6 +53,8 @@ export default class Helmet extends Component {
     defer: true,
     encodeSpecialCharacters: true,
   };
+
+  static displayName = 'Helmet';
 
   shouldComponentUpdate(nextProps) {
     return !fastCompare(this.props, nextProps);

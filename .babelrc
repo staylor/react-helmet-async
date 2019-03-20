@@ -1,18 +1,22 @@
 {
-  "presets": ["@babel/preset-env", "@babel/preset-react"],
+  "presets": [
+    ["babel-preset-kyt-react", {
+      "includeRuntime": true,
+      "useProductionTransforms": false,
+      "envOptions": {
+        "client": {
+          "modules": "commonjs"
+        },
+        "server": {
+          "modules": "commonjs"
+        },
+        "test": {
+          "modules": "commonjs"
+        }
+      }
+    }]
+  ],
   "plugins": [
     "@babel/plugin-proposal-class-properties"
-  ],
-  "env": {
-    "production": {
-      "plugins": [
-        [
-          "babel-plugin-transform-react-remove-prop-types",
-          {
-            "ignoreFilenames": ["node_modules"]
-          }
-        ]
-      ]
-    }
-  }
+  ]
 }

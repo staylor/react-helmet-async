@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import ReactServer from 'react-dom/server';
-import Helmet from '../../src';
+import { Helmet } from '../../src';
 import Provider from '../../src/Provider';
 import { render } from './utils';
 

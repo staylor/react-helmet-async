@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Helmet from '../src';
+import { Helmet } from '../src';
 import Provider from '../src/Provider';
 import { HELMET_ATTRIBUTE } from '../src/constants';
 

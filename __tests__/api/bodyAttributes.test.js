@@ -1,5 +1,5 @@
 import React from 'react';
-import Helmet from '../../src';
+import { Helmet } from '../../src';
 import { HELMET_ATTRIBUTE, HTML_TAG_MAP } from '../../src/constants';
 import { render } from './utils';
 

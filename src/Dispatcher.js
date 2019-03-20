@@ -10,6 +10,8 @@ export default class Dispatcher extends Component {
     context: providerShape.isRequired,
   };
 
+  static displayName = 'HelmetDispatcher';
+
   rendered = false;
 
   shouldComponentUpdate(nextProps) {

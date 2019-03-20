@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
-import Helmet from '../src';
+import { Helmet } from '../src';
 import Provider from '../src/Provider';
 
 Helmet.defaultProps.defer = false;

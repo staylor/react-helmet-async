@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Helmet from '../src';
+import { Helmet } from '../src';
 
 /* eslint-disable no-underscore-dangle */
 
