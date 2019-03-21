@@ -162,7 +162,7 @@ const handleStateChangeOnClient = newState => {
   }
 
   if (newState.defer) {
-    _helmetCallback = requestAnimationFrame(() => {
+    _helmetCallback = setTimeout(() => {
       commitTagChanges(newState, () => {
         _helmetCallback = null;
       });
