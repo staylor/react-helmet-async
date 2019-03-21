@@ -1,7 +1,7 @@
 declare module 'react-helmet-async' {
   import React from 'react';
   import Helmet, { HelmetData } from 'react-helmet';
-  export default Helmet;
+  export { Helmet };
 
   export type FilledContext = {
     helmet: HelmetData;
