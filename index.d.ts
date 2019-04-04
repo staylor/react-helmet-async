@@ -1,5 +1,5 @@
 declare module 'react-helmet-async' {
-  import React from 'react';
+  import * as React from 'react';
   import Helmet, { HelmetData } from 'react-helmet';
   export { Helmet };
 
@@ -11,5 +11,5 @@ declare module 'react-helmet-async' {
     context?: {};
   };
 
-  export class HelmetProvider extends React.Component<ProviderProps> {}
+  export const HelmetProvider: React.ComponentClass<ProviderProps>;
 }
