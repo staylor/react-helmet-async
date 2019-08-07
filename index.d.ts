@@ -1,5 +1,5 @@
 declare module 'react-helmet-async' {
-  import React from 'react';
+  import * as React from 'react';
   import Helmet, { HelmetData } from 'react-helmet';
   export { Helmet };
 
