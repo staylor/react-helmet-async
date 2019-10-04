@@ -16,11 +16,11 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@babel/runtime": "7.3.4",
-    "invariant": "2.2.4",
-    "prop-types": "15.7.2",
-    "react-fast-compare": "2.0.4",
-    "shallowequal": "1.1.0"
+    "@babel/runtime": "^7.3.4",
+    "invariant": "^2.2.4",
+    "prop-types": "^15.7.2",
+    "react-fast-compare": "^2.0.4",
+    "shallowequal": "^1.1.0"
   },
   "devDependencies": {
     "@babel/cli": "7.2.3",
