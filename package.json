@@ -19,7 +19,7 @@
     "@babel/runtime": "^7.3.4",
     "invariant": "^2.2.4",
     "prop-types": "^15.7.2",
-    "react-fast-compare": "^2.0.4",
+    "react-fast-compare": "^3.0.1",
     "shallowequal": "^1.1.0"
   },
   "devDependencies": {
