@@ -78,9 +78,7 @@ export class Helmet extends Component {
         };
       default:
         throw new Error(
-          `<${
-            child.type
-          } /> elements are self-closing and can not contain children. Refer to our API for more information.`
+          `<${child.type} /> elements are self-closing and can not contain children. Refer to our API for more information.`
         );
     }
   }
@@ -156,11 +154,7 @@ export class Helmet extends Component {
         typeof nestedChildren === 'string' ||
         (Array.isArray(nestedChildren) &&
           !nestedChildren.some(nestedChild => typeof nestedChild !== 'string')),
-      `Helmet expects a string as a child of <${
-        child.type
-      }>. Did you forget to wrap your children in braces? ( <${child.type}>{\`\`}</${
-        child.type
-      }> ) Refer to our API for more information.`
+      `Helmet expects a string as a child of <${child.type}>. Did you forget to wrap your children in braces? ( <${child.type}>{\`\`}</${child.type}> ) Refer to our API for more information.`
     );
 
     return true;
@@ -233,7 +227,9 @@ export class Helmet extends Component {
 
     return (
       <Context.Consumer>
-        {context => <Dispatcher {...newProps} context={context} />}
+        {(
+          context // eslint-disable-next-line react/jsx-props-no-spreading
+        ) => <Dispatcher {...newProps} context={context} />}
       </Context.Consumer>
     );
   }
