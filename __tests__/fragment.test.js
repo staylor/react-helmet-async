@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { Helmet } from '../src';
 import Provider from '../src/Provider';
@@ -15,9 +15,10 @@ describe('fragments', () => {
   it('parses Fragments', () => {
     render(
       <Helmet>
-        <Fragment>
+        <>
           <title>Hello</title>
-        </Fragment>
+          <meta charSet="utf-8" />
+        </>
       </Helmet>
     );
 
@@ -27,15 +28,13 @@ describe('fragments', () => {
   it('parses nested Fragments', () => {
     render(
       <Helmet>
-        <Fragment>
+        <>
           <title>Foo</title>
-          <Fragment>
+          <>
             <title>Bar</title>
-            <Fragment>
-              <title>Baz</title>
-            </Fragment>
-          </Fragment>
-        </Fragment>
+            <title>Baz</title>
+          </>
+        </>
       </Helmet>
     );
 

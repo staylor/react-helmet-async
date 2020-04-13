@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import ReactServer from 'react-dom/server';
 import { Helmet } from '../../src';
 import Provider from '../../src/Provider';
@@ -52,7 +52,7 @@ describe('server', () => {
         expect(meta).toEqual(expect.objectContaining({ type: 'meta' }));
       });
 
-      const markup = ReactServer.renderToStaticMarkup(<Fragment>{metaComponent}</Fragment>);
+      const markup = ReactServer.renderToStaticMarkup(metaComponent);
 
       expect(markup).toMatchSnapshot();
     });
@@ -114,7 +114,7 @@ describe('server', () => {
         expect(meta).toEqual(expect.objectContaining({ type: 'meta' }));
       });
 
-      const markup = ReactServer.renderToStaticMarkup(<Fragment>{metaComponent}</Fragment>);
+      const markup = ReactServer.renderToStaticMarkup(metaComponent);
 
       expect(markup).toMatchSnapshot();
     });
