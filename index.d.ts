@@ -59,7 +59,7 @@ declare module 'react-helmet-async' {
 
   export interface HelmetDatum {
     toString(): string;
-    toComponent(): React.Component<any>;
+    toComponent(): Array<React.Component<any>>;
   }
 
   export interface HelmetHTMLBodyDatum {
