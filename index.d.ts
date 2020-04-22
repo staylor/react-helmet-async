@@ -74,13 +74,13 @@ declare module 'react-helmet-async' {
 
   export interface FilledContext {
     helmet: HelmetData;
-  };
+  }
 
   interface ProviderProps {
     context?: {};
-  };
+  }
 
   export class HelmetProvider extends React.Component<ProviderProps> {
-    static canUseDOM = canUseDOM;
+    static canUseDOM: boolean;
   }
 }
