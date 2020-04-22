@@ -1,5 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`title API allows titleTemplate property to be nested 1`] = `"Page Name | Section Name | Site Name"`;
+
+exports[`title API allows titleTemplate property to be nested with a custom replace function 1`] = `"(1) Page Name | Section Name | Site Name"`;
+
 exports[`title API does not encode all characters with HTML character entity equivalents 1`] = `"膣膗 鍆錌雔"`;
 
 exports[`title API merges deepest component title with nearest upstream titleTemplate 1`] = `"This is a Second Test of the titleTemplate feature"`;

@@ -111,6 +111,35 @@ describe('title', () => {
       expect(document.title).toMatchSnapshot();
     });
 
+    it('allows titleTemplate property to be nested', () => {
+      render(
+        <div>
+          <Helmet title="Test" titleTemplate="%s | Site Name" />
+          <Helmet titleTemplate={replace => replace(`%s | Section Name`)} />
+          <Helmet title="Page Name" />
+        </div>
+      );
+
+      expect(document.title).toMatchSnapshot();
+    });
+
+    it('allows titleTemplate property to be nested with a custom replace function', () => {
+      render(
+        <div>
+          <Helmet title="Test" titleTemplate="%s | Site Name" />
+          <Helmet titleTemplate={replace => replace(`%s | Section Name`)} />
+          <Helmet
+            titleTemplate={(replace, { titleTemplate, pattern }) =>
+              titleTemplate.replace(pattern, '(1) %s')
+            }
+          />
+          <Helmet title="Page Name" />
+        </div>
+      );
+
+      expect(document.title).toMatchSnapshot();
+    });
+
     it('does not encode all characters with HTML character entity equivalents', () => {
       const chineseTitle = '膣膗 鍆錌雔';
 
