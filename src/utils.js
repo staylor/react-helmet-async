@@ -25,16 +25,16 @@ const getNestedProperty = (propsList, property) => {
     const props = propsList[i];
 
     if (Object.prototype.hasOwnProperty.call(props, property)) {
-      if (typeof props[property] === 'function') {
-        const parent = getNestedProperty(propsList.slice(0, i), property);
+      if (props[property] && typeof props[property] === 'function') {
+        const parent = getNestedProperty(propsList.slice(0, i), property) || '';
         return props[property](t => parent.replace(/%s/g, t), {
           [property]: parent,
+          pattern: /%s/g,
         });
       }
       return props[property];
     }
   }
-
   return null;
 };
 
