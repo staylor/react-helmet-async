@@ -25,6 +25,8 @@
   "devDependencies": {
     "@babel/cli": "7.8.4",
     "@babel/core": "7.9.0",
+    "@changesets/cli": "^2.6.5",
+    "@types/react": "^16.9.34",
     "babel-eslint": "10.1.0",
     "babel-preset-kyt-react": "1.0.0-beta.37",
     "enzyme": "3.11.0",
@@ -48,7 +50,8 @@
     "raf": "3.4.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "rimraf": "3.0.2"
+    "rimraf": "3.0.2",
+    "tsd": "^0.11.0"
   },
   "peerDependencies": {
     "react": "^16.6.0",
@@ -62,7 +65,10 @@
     "test-watch": "npm run test -- --watch",
     "test-update": "npm run test -- -u",
     "compile": "npm run clean && KYT_ENV_TYPE=client NODE_ENV=production microbundle --jsx React.createElement",
-    "prepare": "npm run compile"
+    "prepare": "npm run compile",
+    "verify": "npm run test && npm run lint",
+    "changeset": "changeset",
+    "release": "npm run verify && changeset publish"
   },
   "jest": {
     "setupFilesAfterEnv": [
