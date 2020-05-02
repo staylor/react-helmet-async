@@ -66,7 +66,7 @@
     "test-update": "npm run test -- -u",
     "compile": "npm run clean && KYT_ENV_TYPE=client NODE_ENV=production microbundle --jsx React.createElement",
     "prepare": "npm run compile",
-    "verify": "npm run test && npm run lint",
+    "verify": "npm run test && npm run lint && npm run tsd",
     "changeset": "changeset",
     "release": "npm run verify && changeset publish"
   },
