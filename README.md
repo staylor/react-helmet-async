@@ -110,7 +110,6 @@ export default class CustomDocument extends Document {
                     />
                     {helmetContext.helmet.meta.toComponent()}
                     {helmetContext.helmet.link.toComponent()}
-                    {helmetContext.helmet.title.toComponent()}
                     {helmetContext.helmet.script.toComponent()}
                 </Head>
                 <body>
