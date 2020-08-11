@@ -125,7 +125,7 @@ export default class CustomDocument extends Document {
 }
 ```
 
-2. Create an `_app.js in pages folder with the following content:
+2. Create an `_app.js` in pages folder with the following content:
 
 ```javascript
 import React from 'react';
