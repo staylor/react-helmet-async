@@ -69,7 +69,6 @@ const generateTagsAsString = (type, tags, encode) =>
 
 const convertElementAttributesToReactProps = (attributes, initProps = {}) =>
   Object.keys(attributes).reduce((obj, key) => {
-    // eslint-disable-next-line no-param-reassign
     obj[REACT_TAG_MAP[key] || key] = attributes[key];
     return obj;
   }, initProps);

@@ -3,7 +3,7 @@ import { Helmet } from '../../src';
 import { HELMET_ATTRIBUTE } from '../../src/constants';
 import { render } from './utils';
 
-/* eslint-disable max-nested-callbacks, jsx-a11y/html-has-lang */
+/* eslint-disable jsx-a11y/html-has-lang */
 
 Helmet.defaultProps.defer = false;
 

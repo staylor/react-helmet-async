@@ -60,7 +60,7 @@
   },
   "scripts": {
     "clean": "rimraf lib",
-    "lint": "eslint .",
+    "lint": "eslint . --report-unused-disable-directives",
     "lint-fix": "eslint . --fix",
     "test": "NODE_ENV=test BABEL_ENV=test jest",
     "test-watch": "yarn test --watch",

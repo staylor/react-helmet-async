@@ -45,7 +45,6 @@ export const REACT_TAG_MAP = {
 };
 
 export const HTML_TAG_MAP = Object.keys(REACT_TAG_MAP).reduce((obj, key) => {
-  // eslint-disable-next-line no-param-reassign
   obj[REACT_TAG_MAP[key]] = key;
   return obj;
 }, {});
