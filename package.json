@@ -25,6 +25,8 @@
   "devDependencies": {
     "@babel/cli": "7.11.6",
     "@babel/core": "7.11.6",
+    "@commitlint/cli": "11.0.0",
+    "@commitlint/config-conventional": "11.0.0",
     "babel-eslint": "10.1.0",
     "babel-preset-kyt-react": "1.0.5",
     "enzyme": "3.11.0",
@@ -42,6 +44,7 @@
     "eslint-plugin-prettier": "3.1.4",
     "eslint-plugin-react": "7.20.6",
     "eslint-plugin-react-hooks": "4.1.2",
+    "husky": "4.3.0",
     "jest": "26.4.2",
     "jsdom": "16.4.0",
     "microbundle": "0.12.3",
@@ -64,5 +67,10 @@
     "test-update": "yarn test -u",
     "compile": "yarn run clean && KYT_ENV_TYPE=client NODE_ENV=production microbundle --jsx React.createElement",
     "prepare": "yarn compile"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   }
 }
