@@ -11,11 +11,13 @@ describe('base tag', () => {
       render(<Helmet base={{ href: 'http://mysite.com/' }} />);
 
       const existingTags = document.head.querySelectorAll(`base[${HELMET_ATTRIBUTE}]`);
+
       expect(existingTags).toBeDefined();
 
       const filteredTags = [].slice
         .call(existingTags)
         .filter(tag => tag.getAttribute('href') === 'http://mysite.com/');
+
       expect(filteredTags).toHaveLength(1);
     });
 
@@ -24,8 +26,9 @@ describe('base tag', () => {
       render(<Helmet />);
 
       const existingTags = document.head.querySelectorAll(`base[${HELMET_ATTRIBUTE}]`);
+
       expect(existingTags).toBeDefined();
-      expect(existingTags.length).toEqual(0);
+      expect(existingTags).toHaveLength(0);
     });
 
     it("tags without 'href' are not accepted", () => {
@@ -48,7 +51,7 @@ describe('base tag', () => {
       const firstTag = [].slice.call(existingTags)[0];
 
       expect(existingTags).toBeDefined();
-      expect(existingTags.length).toEqual(1);
+      expect(existingTags).toHaveLength(1);
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
@@ -61,6 +64,7 @@ describe('base tag', () => {
 
       const tagNodes = document.head.querySelectorAll(`base[${HELMET_ATTRIBUTE}]`);
       const existingTags = [].slice.call(tagNodes);
+
       expect(existingTags).toHaveLength(0);
     });
   });
@@ -74,11 +78,13 @@ describe('base tag', () => {
       );
 
       const existingTags = document.head.querySelectorAll(`base[${HELMET_ATTRIBUTE}]`);
+
       expect(existingTags).toBeDefined();
 
       const filteredTags = [].slice
         .call(existingTags)
         .filter(tag => tag.getAttribute('href') === 'http://mysite.com/');
+
       expect(filteredTags).toHaveLength(1);
     });
 
@@ -121,7 +127,7 @@ describe('base tag', () => {
       const firstTag = [].slice.call(existingTags)[0];
 
       expect(existingTags).toBeDefined();
-      expect(existingTags.length).toEqual(1);
+      expect(existingTags).toHaveLength(1);
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
@@ -138,6 +144,7 @@ describe('base tag', () => {
 
       const tagNodes = document.head.querySelectorAll(`base[${HELMET_ATTRIBUTE}]`);
       const existingTags = [].slice.call(tagNodes);
+
       expect(existingTags).toHaveLength(0);
     });
   });

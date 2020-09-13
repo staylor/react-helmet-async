@@ -27,7 +27,7 @@ describe('body attributes', () => {
     };
 
     Object.keys(attributeList).forEach(attribute => {
-      it(attribute, () => {
+      it(`${attribute}`, () => {
         const attrValue = attributeList[attribute];
 
         const attr = {
@@ -43,6 +43,7 @@ describe('body attributes', () => {
         const bodyTag = document.body;
 
         const reactCompatAttr = HTML_TAG_MAP[attribute] || attribute;
+
         expect(bodyTag.getAttribute(reactCompatAttr)).toEqual(attrValue);
         expect(bodyTag.getAttribute(HELMET_ATTRIBUTE)).toEqual(reactCompatAttr);
       });

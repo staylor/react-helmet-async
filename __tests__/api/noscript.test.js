@@ -60,6 +60,7 @@ describe('noscript tags', () => {
 
       const tagNodes = document.head.querySelectorAll(`noscript[${HELMET_ATTRIBUTE}]`);
       const existingTags = [].slice.call(tagNodes);
+
       expect(existingTags).toHaveLength(0);
     });
   });
@@ -117,6 +118,7 @@ describe('noscript tags', () => {
 
       const tagNodes = document.head.querySelectorAll(`noscript[${HELMET_ATTRIBUTE}]`);
       const existingTags = [].slice.call(tagNodes);
+
       expect(existingTags).toHaveLength(0);
     });
   });

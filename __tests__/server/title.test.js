@@ -56,7 +56,7 @@ describe('server', () => {
 
     it('renders title as React component', () => {
       const context = {};
-      render(<Helmet title={'Dangerous <script> include'} />, context);
+      render(<Helmet title="Dangerous <script> include" />, context);
       const head = context.helmet;
 
       expect(head.title).toBeDefined();
@@ -103,7 +103,7 @@ describe('server', () => {
 
     it('renders title tag as string', () => {
       const context = {};
-      render(<Helmet title={'Dangerous <script> include'} />, context);
+      render(<Helmet title="Dangerous <script> include" />, context);
 
       const head = context.helmet;
 
@@ -125,6 +125,7 @@ describe('server', () => {
       expect(head.title.toString).toBeDefined();
 
       const titleString = head.title.toString();
+
       expect(titleString).toMatchSnapshot();
     });
 
@@ -176,6 +177,7 @@ describe('server', () => {
       /* eslint-enable react/no-unescaped-entities */
 
       const head = context.helmet;
+
       expect(head.title).toBeDefined();
       expect(head.title.toString).toBeDefined();
       expect(head.title.toString()).toMatchSnapshot();
@@ -286,6 +288,7 @@ describe('server', () => {
       expect(head.title.toString).toBeDefined();
 
       const titleString = head.title.toString();
+
       expect(titleString).toMatchSnapshot();
     });
 

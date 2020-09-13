@@ -21,6 +21,7 @@ describe('html attributes', () => {
       );
 
       const htmlTag = document.documentElement;
+
       expect(htmlTag.getAttribute('class')).toEqual('myClassName');
       expect(htmlTag.getAttribute('lang')).toEqual('en');
       expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('class,lang');
@@ -43,6 +44,7 @@ describe('html attributes', () => {
       );
 
       const htmlTag = document.documentElement;
+
       expect(htmlTag.getAttribute('lang')).toEqual('ja');
       expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('lang');
     });
@@ -57,6 +59,7 @@ describe('html attributes', () => {
       );
 
       const htmlTag = document.documentElement;
+
       expect(htmlTag.getAttribute('amp')).toEqual('');
       expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('amp');
     });
@@ -74,6 +77,7 @@ describe('html attributes', () => {
       render(<Helmet />);
 
       const htmlTag = document.documentElement;
+
       expect(htmlTag.getAttribute('lang')).toBeNull();
       expect(htmlTag.getAttribute('amp')).toBeNull();
       expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toBeNull();
@@ -100,6 +104,7 @@ describe('html attributes', () => {
       );
 
       const htmlTag = document.documentElement;
+
       expect(htmlTag.getAttribute('amp')).toBeNull();
       expect(htmlTag.getAttribute('lang')).toEqual('ja');
       expect(htmlTag.getAttribute('id')).toEqual('html-tag');
@@ -127,6 +132,7 @@ describe('html attributes', () => {
       );
 
       const htmlTag = document.documentElement;
+
       expect(htmlTag.getAttribute('amp')).toBeNull();
       expect(htmlTag.getAttribute('lang')).toBeNull();
       expect(htmlTag.getAttribute('id')).toEqual('html-tag');
@@ -144,6 +150,7 @@ describe('html attributes', () => {
         render(<Helmet />);
 
         const htmlTag = document.documentElement;
+
         expect(htmlTag.getAttribute('test')).toEqual('test');
         expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toBeNull();
       });
@@ -158,6 +165,7 @@ describe('html attributes', () => {
         );
 
         const htmlTag = document.documentElement;
+
         expect(htmlTag.getAttribute('test')).toEqual('helmet-attr');
         expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('test');
       });
@@ -174,6 +182,7 @@ describe('html attributes', () => {
         render(<Helmet />);
 
         const htmlTag = document.documentElement;
+
         expect(htmlTag.getAttribute('test')).toBeNull();
         expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toBeNull();
       });

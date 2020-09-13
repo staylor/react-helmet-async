@@ -45,7 +45,9 @@ describe('server', () => {
       expect(head.base.toString).toBeDefined();
       expect(head.base.toString()).toEqual('');
       expect(head.base.toComponent).toBeDefined();
+
       const baseComponent = head.base.toComponent();
+
       expect(baseComponent).toEqual(isArray);
       expect(baseComponent).toHaveLength(0);
 
@@ -53,7 +55,9 @@ describe('server', () => {
       expect(head.meta.toString).toBeDefined();
       expect(head.meta.toString()).toEqual('');
       expect(head.meta.toComponent).toBeDefined();
+
       const metaComponent = head.meta.toComponent();
+
       expect(metaComponent).toEqual(isArray);
       expect(metaComponent).toHaveLength(0);
 
@@ -61,7 +65,9 @@ describe('server', () => {
       expect(head.link.toString).toBeDefined();
       expect(head.link.toString()).toEqual('');
       expect(head.link.toComponent).toBeDefined();
+
       const linkComponent = head.link.toComponent();
+
       expect(linkComponent).toEqual(isArray);
       expect(linkComponent).toHaveLength(0);
 
@@ -69,7 +75,9 @@ describe('server', () => {
       expect(head.script.toString).toBeDefined();
       expect(head.script.toString()).toEqual('');
       expect(head.script.toComponent).toBeDefined();
+
       const scriptComponent = head.script.toComponent();
+
       expect(scriptComponent).toEqual(isArray);
       expect(scriptComponent).toHaveLength(0);
 
@@ -77,7 +85,9 @@ describe('server', () => {
       expect(head.noscript.toString).toBeDefined();
       expect(head.noscript.toString()).toEqual('');
       expect(head.noscript.toComponent).toBeDefined();
+
       const noscriptComponent = head.noscript.toComponent();
+
       expect(noscriptComponent).toEqual(isArray);
       expect(noscriptComponent).toHaveLength(0);
 
@@ -85,7 +95,9 @@ describe('server', () => {
       expect(head.style.toString).toBeDefined();
       expect(head.style.toString()).toEqual('');
       expect(head.style.toComponent).toBeDefined();
+
       const styleComponent = head.style.toComponent();
+
       expect(styleComponent).toEqual(isArray);
       expect(styleComponent).toHaveLength(0);
     });
@@ -105,6 +117,7 @@ describe('server', () => {
       );
 
       const { script } = context.helmet;
+
       expect(script.toString()).toMatchSnapshot();
     });
   });
@@ -146,7 +159,9 @@ describe('server', () => {
       expect(head.base.toString).toBeDefined();
       expect(head.base.toString()).toEqual('');
       expect(head.base.toComponent).toBeDefined();
+
       const baseComponent = head.base.toComponent();
+
       expect(baseComponent).toEqual(isArray);
       expect(baseComponent).toHaveLength(0);
 
@@ -154,7 +169,9 @@ describe('server', () => {
       expect(head.meta.toString).toBeDefined();
       expect(head.meta.toString()).toEqual('');
       expect(head.meta.toComponent).toBeDefined();
+
       const metaComponent = head.meta.toComponent();
+
       expect(metaComponent).toEqual(isArray);
       expect(metaComponent).toHaveLength(0);
 
@@ -162,7 +179,9 @@ describe('server', () => {
       expect(head.link.toString).toBeDefined();
       expect(head.link.toString()).toEqual('');
       expect(head.link.toComponent).toBeDefined();
+
       const linkComponent = head.link.toComponent();
+
       expect(linkComponent).toEqual(isArray);
       expect(linkComponent).toHaveLength(0);
 
@@ -170,7 +189,9 @@ describe('server', () => {
       expect(head.script.toString).toBeDefined();
       expect(head.script.toString()).toEqual('');
       expect(head.script.toComponent).toBeDefined();
+
       const scriptComponent = head.script.toComponent();
+
       expect(scriptComponent).toEqual(isArray);
       expect(scriptComponent).toHaveLength(0);
 
@@ -178,7 +199,9 @@ describe('server', () => {
       expect(head.noscript.toString).toBeDefined();
       expect(head.noscript.toString()).toEqual('');
       expect(head.noscript.toComponent).toBeDefined();
+
       const noscriptComponent = head.noscript.toComponent();
+
       expect(noscriptComponent).toEqual(isArray);
       expect(noscriptComponent).toHaveLength(0);
 
@@ -186,7 +209,9 @@ describe('server', () => {
       expect(head.style.toString).toBeDefined();
       expect(head.style.toString()).toEqual('');
       expect(head.style.toComponent).toBeDefined();
+
       const styleComponent = head.style.toComponent();
+
       expect(styleComponent).toEqual(isArray);
       expect(styleComponent).toHaveLength(0);
     });
@@ -201,6 +226,7 @@ describe('server', () => {
       );
 
       const { script } = context.helmet;
+
       expect(script.toString()).toMatchSnapshot();
     });
   });

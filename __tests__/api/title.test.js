@@ -133,6 +133,7 @@ describe('title', () => {
       );
 
       const titleTag = document.getElementsByTagName('title')[0];
+
       expect(document.title).toMatchSnapshot();
       expect(titleTag.getAttribute('itemprop')).toEqual('name');
     });
@@ -299,6 +300,7 @@ describe('title', () => {
       );
 
       const titleTag = document.getElementsByTagName('title')[0];
+
       expect(document.title).toMatchSnapshot();
       expect(titleTag.getAttribute('itemprop')).toEqual('name');
     });

@@ -6,7 +6,7 @@ Helmet.defaultProps.defer = false;
 
 describe('onChangeClientState', () => {
   describe('API', () => {
-    it('when handling client state change, calls the function with new state, addedTags and removedTags ', () => {
+    it('when handling client state change, calls the function with new state, addedTags and removedTags', () => {
       const onChange = jest.fn();
       render(
         <div>
@@ -31,7 +31,8 @@ describe('onChangeClientState', () => {
         </div>
       );
 
-      expect(onChange).toBeCalled();
+      expect(onChange).toHaveBeenCalled();
+
       const newState = onChange.mock.calls[0][0];
       const addedTags = onChange.mock.calls[0][1];
       const removedTags = onChange.mock.calls[0][2];
@@ -95,7 +96,7 @@ describe('onChangeClientState', () => {
   });
 
   describe('Declarative API', () => {
-    it('when handling client state change, calls the function with new state, addedTags and removedTags ', () => {
+    it('when handling client state change, calls the function with new state, addedTags and removedTags', () => {
       const onChange = jest.fn();
       render(
         <div>
@@ -109,7 +110,8 @@ describe('onChangeClientState', () => {
         </div>
       );
 
-      expect(onChange).toBeCalled();
+      expect(onChange).toHaveBeenCalled();
+
       const newState = onChange.mock.calls[0][0];
       const addedTags = onChange.mock.calls[0][1];
       const removedTags = onChange.mock.calls[0][2];

@@ -259,6 +259,7 @@ describe('meta tags', () => {
 
       const tagNodes = document.head.querySelectorAll(`meta[${HELMET_ATTRIBUTE}]`);
       const existingTags = [].slice.call(tagNodes);
+
       expect(existingTags).toHaveLength(0);
     });
 
@@ -271,10 +272,11 @@ describe('meta tags', () => {
 
       const tagNodes = document.head.querySelectorAll(`meta[${HELMET_ATTRIBUTE}]`);
       const existingTags = [].slice.call(tagNodes);
+
       expect(existingTags).toHaveLength(0);
 
-      expect(console.error).toBeCalled();
-      expect(console.warn).toBeCalled();
+      expect(console.error).toHaveBeenCalled();
+      expect(console.warn).toHaveBeenCalled();
 
       expect(console.warn.mock.calls[0][0]).toMatchSnapshot();
 
@@ -484,6 +486,7 @@ describe('meta tags', () => {
 
       const tagNodes = document.head.querySelectorAll(`meta[${HELMET_ATTRIBUTE}]`);
       const existingTags = [].slice.call(tagNodes);
+
       expect(existingTags).toHaveLength(0);
     });
   });

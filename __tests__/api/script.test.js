@@ -157,6 +157,7 @@ describe('script tags', () => {
 
       const tagNodes = document.head.querySelectorAll(`script[${HELMET_ATTRIBUTE}]`);
       const existingTags = [].slice.call(tagNodes);
+
       expect(existingTags).toHaveLength(0);
     });
 
@@ -173,6 +174,7 @@ describe('script tags', () => {
 
       const tagNodes = document.head.querySelectorAll(`script[${HELMET_ATTRIBUTE}]`);
       const existingTags = [].slice.call(tagNodes);
+
       expect(existingTags).toHaveLength(0);
     });
   });
@@ -225,7 +227,7 @@ describe('script tags', () => {
       const existingTags = document.head.querySelectorAll(`script[${HELMET_ATTRIBUTE}]`);
 
       expect(existingTags).toBeDefined();
-      expect(existingTags.length).toEqual(0);
+      expect(existingTags).toHaveLength(0);
     });
 
     it("tags without 'src' are not accepted", () => {
@@ -238,7 +240,7 @@ describe('script tags', () => {
       const existingTags = document.head.querySelectorAll(`script[${HELMET_ATTRIBUTE}]`);
 
       expect(existingTags).toBeDefined();
-      expect(existingTags.length).toEqual(0);
+      expect(existingTags).toHaveLength(0);
     });
 
     it('sets script tags based on deepest nested component', () => {
@@ -294,6 +296,7 @@ describe('script tags', () => {
 
       const tagNodes = document.head.querySelectorAll(`script[${HELMET_ATTRIBUTE}]`);
       const existingTags = [].slice.call(tagNodes);
+
       expect(existingTags).toHaveLength(0);
     });
 
@@ -306,6 +309,7 @@ describe('script tags', () => {
 
       const tagNodes = document.head.querySelectorAll(`script[${HELMET_ATTRIBUTE}]`);
       const existingTags = [].slice.call(tagNodes);
+
       expect(existingTags).toHaveLength(0);
     });
   });

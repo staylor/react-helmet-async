@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:10.13
+      - image: circleci/node:12.18
 
     steps:
       - checkout
@@ -11,11 +11,11 @@ jobs:
           keys:
             - deps-{{ checksum "package.json" }}
 
-      - run: npm install
+      - run: yarn
 
       - save_cache:
           paths:
             - node_modules
           key: deps-{{ checksum "package.json" }}
 
-      - run: npm test
+      - run: yarn test

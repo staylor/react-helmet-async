@@ -7,7 +7,9 @@ configure({ adapter: new Adapter() });
 
 const { JSDOM } = require('jsdom');
 
-const jsdom = new JSDOM('<!doctype html><html><body><div id="mount"></div></body></html>');
+const jsdom = new JSDOM('<!doctype html><html><body><div id="mount"></div></body></html>', {
+  url: 'https://nytimes.com',
+});
 const { window } = jsdom;
 
 function copyProps(src, target) {

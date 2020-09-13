@@ -77,7 +77,7 @@ describe('misc', () => {
         />
       );
 
-      expect(onChange).toBeCalled();
+      expect(onChange).toHaveBeenCalled();
 
       const [, addedTags, removedTags] = onChange.mock.calls[0];
 
@@ -103,7 +103,8 @@ describe('misc', () => {
         />
       );
 
-      expect(onChange).toBeCalled();
+      expect(onChange).toHaveBeenCalled();
+
       /* eslint-disable prefer-destructuring */
       addedTags = onChange.mock.calls[0][1];
       removedTags = onChange.mock.calls[0][2];
@@ -192,12 +193,14 @@ describe('misc', () => {
       expect(existingTag.outerHTML).toMatchSnapshot();
     });
 
-    it('requestAnimationFrame works as expected', done => {
-      requestAnimationFrame(cb => {
-        expect(cb).toBeDefined();
-        expect(typeof cb).toBe('number');
+    it('requestAnimationFrame works as expected', () => {
+      return new Promise(resolve => {
+        requestAnimationFrame(cb => {
+          expect(cb).toBeDefined();
+          expect(typeof cb).toBe('number');
 
-        done();
+          resolve();
+        });
       });
     });
   });
@@ -253,7 +256,7 @@ describe('misc', () => {
         </Helmet>
       );
 
-      expect(onChange).toBeCalled();
+      expect(onChange).toHaveBeenCalled();
 
       const [, addedTags, removedTags] = onChange.mock.calls[0];
 
@@ -272,7 +275,8 @@ describe('misc', () => {
         </Helmet>
       );
 
-      expect(onChange).toBeCalled();
+      expect(onChange).toHaveBeenCalled();
+
       /* eslint-disable prefer-destructuring */
       addedTags = onChange.mock.calls[0][1];
       removedTags = onChange.mock.calls[0][2];
@@ -462,12 +466,14 @@ describe('misc', () => {
       expect(existingTag.outerHTML).toMatchSnapshot();
     });
 
-    it('requestAnimationFrame works as expected', done => {
-      requestAnimationFrame(cb => {
-        expect(cb).toBeDefined();
-        expect(typeof cb).toBe('number');
+    it('requestAnimationFrame works as expected', () => {
+      return new Promise(resolve => {
+        requestAnimationFrame(cb => {
+          expect(cb).toBeDefined();
+          expect(typeof cb).toBe('number');
 
-        done();
+          resolve();
+        });
       });
     });
   });
