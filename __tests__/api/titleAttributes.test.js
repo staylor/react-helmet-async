@@ -21,6 +21,7 @@ describe('title attributes', () => {
       );
 
       const titleTag = document.getElementsByTagName('title')[0];
+
       expect(titleTag.getAttribute('itemprop')).toEqual('name');
       expect(titleTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('itemprop');
     });
@@ -43,6 +44,7 @@ describe('title attributes', () => {
       );
 
       const titleTag = document.getElementsByTagName('title')[0];
+
       expect(titleTag.getAttribute('lang')).toEqual('ja');
       expect(titleTag.getAttribute('hidden')).toEqual('');
       expect(titleTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('lang,hidden');
@@ -58,6 +60,7 @@ describe('title attributes', () => {
       );
 
       const titleTag = document.getElementsByTagName('title')[0];
+
       expect(titleTag.getAttribute('hidden')).toEqual('');
       expect(titleTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('hidden');
     });
@@ -75,6 +78,7 @@ describe('title attributes', () => {
       render(<Helmet />);
 
       const titleTag = document.getElementsByTagName('title')[0];
+
       expect(titleTag.getAttribute('lang')).toBeNull();
       expect(titleTag.getAttribute('hidden')).toBeNull();
       expect(titleTag.getAttribute(HELMET_ATTRIBUTE)).toBeNull();
@@ -138,9 +142,9 @@ describe('title attributes', () => {
 
       const titleTag = document.getElementsByTagName('title')[0];
 
-      expect(titleTag.getAttribute('lang')).toEqual(null);
-      expect(titleTag.getAttribute('hidden')).toEqual(null);
-      expect(titleTag.getAttribute(HELMET_ATTRIBUTE)).toEqual(null);
+      expect(titleTag.getAttribute('lang')).toBeNull();
+      expect(titleTag.getAttribute('hidden')).toBeNull();
+      expect(titleTag.getAttribute(HELMET_ATTRIBUTE)).toBeNull();
     });
   });
 });

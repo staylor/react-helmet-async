@@ -35,6 +35,7 @@ describe('style tags', () => {
     const existingTags = [].slice.call(tagNodes);
 
     const [firstTag, secondTag] = existingTags;
+
     expect(existingTags).toBeDefined();
     expect(existingTags).toHaveLength(2);
 
@@ -96,6 +97,7 @@ describe('style tags', () => {
 
     const tagNodes = document.head.querySelectorAll(`style[${HELMET_ATTRIBUTE}]`);
     const existingTags = [].slice.call(tagNodes);
+
     expect(existingTags).toHaveLength(0);
   });
 });
@@ -124,6 +126,7 @@ describe('Declarative API', () => {
     const existingTags = [].slice.call(tagNodes);
 
     const [firstTag, secondTag] = existingTags;
+
     expect(existingTags).toBeDefined();
     expect(existingTags).toHaveLength(2);
 
@@ -180,6 +183,7 @@ describe('Declarative API', () => {
 
     const tagNodes = document.head.querySelectorAll(`style[${HELMET_ATTRIBUTE}]`);
     const existingTags = [].slice.call(tagNodes);
+
     expect(existingTags).toHaveLength(0);
   });
 });

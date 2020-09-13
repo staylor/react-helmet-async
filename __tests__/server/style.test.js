@@ -49,6 +49,7 @@ describe('server', () => {
       expect(styleComponent).toHaveLength(2);
 
       const markup = ReactServer.renderToStaticMarkup(styleComponent);
+
       expect(markup).toMatchSnapshot();
     });
 

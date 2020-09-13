@@ -31,7 +31,7 @@ describe('deferred tags', () => {
       delete window.__spy__;
     });
 
-    it('executes synchronously when defer={true} and async otherwise', done => {
+    it('executes synchronously when defer={true} and async otherwise', () => {
       ReactDOM.render(
         <div>
           <Helmet
@@ -53,18 +53,21 @@ describe('deferred tags', () => {
         container
       );
 
-      expect(window.__spy__.callCount).to.equal(1);
+      expect(window.__spy__.callCount).toEqual(1);
 
-      requestAnimationFrame(() => {
-        expect(window.__spy__.callCount).to.equal(2);
-        expect(window.__spy__.args).to.deep.equal([[1], [2]]);
-        done();
+      return new Promise(resolve => {
+        requestAnimationFrame(() => {
+          expect(window.__spy__.callCount).toEqual(2);
+          expect(window.__spy__.args).toDeepEqual([[1], [2]]);
+
+          resolve();
+        });
       });
     });
   });
 
   describe('Declarative API', () => {
-    it('executes synchronously when defer={true} and async otherwise', done => {
+    it('executes synchronously when defer={true} and async otherwise', () => {
       ReactDOM.render(
         <div>
           <Helmet defer={false}>
@@ -77,12 +80,15 @@ describe('deferred tags', () => {
         container
       );
 
-      expect(window.__spy__.callCount).to.equal(1);
+      expect(window.__spy__.callCount).toEqual(1);
 
-      requestAnimationFrame(() => {
-        expect(window.__spy__.callCount).to.equal(2);
-        expect(window.__spy__.args).to.deep.equal([[1], [2]]);
-        done();
+      return new Promise(resolve => {
+        requestAnimationFrame(() => {
+          expect(window.__spy__.callCount).toEqual(2);
+          expect(window.__spy__.args).toDeepEqual([[1], [2]]);
+
+          resolve();
+        });
       });
     });
   });
