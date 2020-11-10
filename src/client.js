@@ -1,7 +1,7 @@
 import { HELMET_ATTRIBUTE, TAG_NAMES, TAG_PROPERTIES } from './constants';
 import { flattenArray } from './utils';
 
-const updateTags = (type, tags) => {
+const updateTags = (document, type, tags) => {
   const headElement = document.head || document.querySelector(TAG_NAMES.HEAD);
   const tagNodes = headElement.querySelectorAll(`${type}[${HELMET_ATTRIBUTE}]`);
   const oldTags = [].slice.call(tagNodes);
@@ -55,7 +55,7 @@ const updateTags = (type, tags) => {
   };
 };
 
-const updateAttributes = (tagName, attributes) => {
+const updateAttributes = (document, tagName, attributes) => {
   const elementTag = document.getElementsByTagName(tagName)[0];
 
   if (!elementTag) {
@@ -96,15 +96,15 @@ const updateAttributes = (tagName, attributes) => {
   }
 };
 
-const updateTitle = (title, attributes) => {
+const updateTitle = (document, title, attributes) => {
   if (typeof title !== 'undefined' && document.title !== title) {
     document.title = flattenArray(title);
   }
 
-  updateAttributes(TAG_NAMES.TITLE, attributes);
+  updateAttributes(document, TAG_NAMES.TITLE, attributes);
 };
 
-const commitTagChanges = (newState, cb) => {
+const commitTagChanges = (document, newState, cb) => {
   const {
     baseTag,
     bodyAttributes,
@@ -118,18 +118,18 @@ const commitTagChanges = (newState, cb) => {
     title,
     titleAttributes,
   } = newState;
-  updateAttributes(TAG_NAMES.BODY, bodyAttributes);
-  updateAttributes(TAG_NAMES.HTML, htmlAttributes);
+  updateAttributes(document, TAG_NAMES.BODY, bodyAttributes);
+  updateAttributes(document, TAG_NAMES.HTML, htmlAttributes);
 
-  updateTitle(title, titleAttributes);
+  updateTitle(document, title, titleAttributes);
 
   const tagUpdates = {
-    baseTag: updateTags(TAG_NAMES.BASE, baseTag),
-    linkTags: updateTags(TAG_NAMES.LINK, linkTags),
-    metaTags: updateTags(TAG_NAMES.META, metaTags),
-    noscriptTags: updateTags(TAG_NAMES.NOSCRIPT, noscriptTags),
-    scriptTags: updateTags(TAG_NAMES.SCRIPT, scriptTags),
-    styleTags: updateTags(TAG_NAMES.STYLE, styleTags),
+    baseTag: updateTags(document, TAG_NAMES.BASE, baseTag),
+    linkTags: updateTags(document, TAG_NAMES.LINK, linkTags),
+    metaTags: updateTags(document, TAG_NAMES.META, metaTags),
+    noscriptTags: updateTags(document, TAG_NAMES.NOSCRIPT, noscriptTags),
+    scriptTags: updateTags(document, TAG_NAMES.SCRIPT, scriptTags),
+    styleTags: updateTags(document, TAG_NAMES.STYLE, styleTags),
   };
 
   const addedTags = {};
@@ -156,19 +156,20 @@ const commitTagChanges = (newState, cb) => {
 // eslint-disable-next-line
 let _helmetCallback = null;
 
-const handleStateChangeOnClient = newState => {
+const handleStateChangeOnClient = (document, newState) => {
+  const window = document.defaultView;
   if (_helmetCallback) {
-    cancelAnimationFrame(_helmetCallback);
+    window.cancelAnimationFrame(_helmetCallback);
   }
 
   if (newState.defer) {
-    _helmetCallback = requestAnimationFrame(() => {
-      commitTagChanges(newState, () => {
+    _helmetCallback = window.requestAnimationFrame(() => {
+      commitTagChanges(document, newState, () => {
         _helmetCallback = null;
       });
     });
   } else {
-    commitTagChanges(newState);
+    commitTagChanges(document, newState);
     _helmetCallback = null;
   }
 };

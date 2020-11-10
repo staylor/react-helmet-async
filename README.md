@@ -117,7 +117,43 @@ renderToNodeStream(app)
   .pipe(res);
 ```
 
+## Support for iframe portals
+
+Supports usage of React Helmet inside an iframe via react portals or a library like [react-frame-component](https://github.com/ryanseddon/react-frame-component) by providing a prop to pass the document element of the iframe.
+
+For example in the following code the `<meta>` tag would be placed inside the iframe instead of the main page.
+
+```html
+<body>
+  <iframe id="iframe-target"></iframe>
+  <div id="app"></div>
+</body>
+```
+
+```jsx
+const iframeElement = document.getElementById('iframe-target');
+ReactDOM.render(
+  <Provider document={iframeElement.contentDocument}>
+    <div>
+      {ReactDOM.createPortal(
+        <Helmet
+          meta={[
+            {
+              name: 'description',
+              content: 'a description tag',
+            },
+          ]}
+        />,
+        iframeElement
+      )}
+    </div>
+  </Provider>,
+  document.getElementById('app')
+);
+```
+
 ## Usage in Jest
+
 While testing in using jest, if there is a need to emulate SSR, the following string is required to have the test behave the way they are expected to.
 
 ```javascript

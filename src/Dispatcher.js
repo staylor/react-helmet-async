@@ -29,7 +29,7 @@ export default class Dispatcher extends Component {
   }
 
   emitChange() {
-    const { helmetInstances, setHelmet } = this.props.context;
+    const { helmetInstances, setHelmet, document } = this.props.context;
     let serverState = null;
     const state = reducePropsToState(
       helmetInstances.get().map(instance => {
@@ -39,7 +39,7 @@ export default class Dispatcher extends Component {
       })
     );
     if (Provider.canUseDOM) {
-      handleStateChangeOnClient(state);
+      handleStateChangeOnClient(document, state);
     } else if (mapStateOnServer) {
       serverState = mapStateOnServer(state);
     }

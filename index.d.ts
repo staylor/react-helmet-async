@@ -41,9 +41,8 @@ declare module 'react-helmet-async' {
     titleTemplate?: string;
   }
 
-  export class Helmet extends React.Component<HelmetProps> {
-  }
-  
+  export class Helmet extends React.Component<HelmetProps> {}
+
   export interface HelmetData {
     base: HelmetDatum;
     bodyAttributes: HelmetHTMLBodyDatum;
@@ -78,6 +77,7 @@ declare module 'react-helmet-async' {
 
   interface ProviderProps {
     context?: {};
+    window?: Window;
   }
 
   export class HelmetProvider extends React.Component<ProviderProps> {

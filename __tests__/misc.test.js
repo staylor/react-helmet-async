@@ -477,4 +477,111 @@ describe('misc', () => {
       });
     });
   });
+
+  describe('Custom window', () => {
+    let iframeElement;
+
+    beforeEach(
+      () =>
+        new Promise(resolve => {
+          iframeElement = document.createElement('iframe');
+          iframeElement.onload = resolve;
+          document.body.append(iframeElement);
+        })
+    );
+
+    afterEach(() => {
+      document.body.removeChild(iframeElement);
+    });
+
+    it('correctly renders in an iframe portal', () => {
+      ReactDOM.render(
+        <Provider document={iframeElement.contentDocument}>
+          <div>
+            {ReactDOM.createPortal(
+              <Helmet
+                meta={[
+                  {
+                    name: 'description',
+                    content: 'a description tag',
+                  },
+                ]}
+              />,
+              iframeElement
+            )}
+          </div>
+        </Provider>,
+        mount
+      );
+
+      const existingTags = document.head.querySelectorAll(`meta[${HELMET_ATTRIBUTE}]`);
+      const iframeTags = iframeElement.contentDocument.head.querySelectorAll(
+        `meta[${HELMET_ATTRIBUTE}]`
+      );
+
+      expect(existingTags).toHaveLength(0);
+      expect(iframeTags).toHaveLength(1);
+
+      const existingTag = iframeTags[0];
+
+      expect(existingTag.getAttribute).toBeDefined();
+      expect(existingTag.getAttribute('name')).toEqual('description');
+      expect(existingTag.getAttribute('content')).toEqual('a description tag');
+      expect(existingTag.outerHTML).toMatchSnapshot();
+    });
+
+    it('renders both inside and outside an iframe portal', () => {
+      ReactDOM.render(
+        <Provider>
+          <div>
+            <Helmet
+              meta={[
+                {
+                  name: 'description',
+                  content: 'outer',
+                },
+              ]}
+            />
+            <Provider document={iframeElement.contentDocument}>
+              <div>
+                {ReactDOM.createPortal(
+                  <Helmet
+                    meta={[
+                      {
+                        name: 'description',
+                        content: 'iframe',
+                      },
+                    ]}
+                  />,
+                  iframeElement
+                )}
+              </div>
+            </Provider>
+          </div>
+        </Provider>,
+        mount
+      );
+
+      const existingTags = document.head.querySelectorAll(`meta[${HELMET_ATTRIBUTE}]`);
+      const iframeTags = iframeElement.contentDocument.head.querySelectorAll(
+        `meta[${HELMET_ATTRIBUTE}]`
+      );
+
+      expect(existingTags).toHaveLength(1);
+      expect(iframeTags).toHaveLength(1);
+
+      const iframeTag = iframeTags[0];
+      const existingTag = existingTags[0];
+
+      expect(existingTags).toBeDefined();
+      expect(existingTags).toHaveLength(1);
+
+      expect(iframeTag.getAttribute).toBeDefined();
+      expect(iframeTag.getAttribute('name')).toEqual('description');
+      expect(iframeTag.getAttribute('content')).toEqual('iframe');
+      expect(existingTag.getAttribute).toBeDefined();
+      expect(existingTag.getAttribute('name')).toEqual('description');
+      expect(existingTag.getAttribute('content')).toEqual('outer');
+    });
+  });
 });

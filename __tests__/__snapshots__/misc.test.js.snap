@@ -14,6 +14,8 @@ exports[`misc API only adds new tags and preserves tags when rendering additiona
 
 exports[`misc API recognizes valid tags regardless of attribute ordering 1`] = `"<meta content=\\"Test Description\\" name=\\"description\\" data-rh=\\"true\\">"`;
 
+exports[`misc Custom window correctly renders in an iframe portal 1`] = `"<meta name=\\"description\\" content=\\"a description tag\\" data-rh=\\"true\\">"`;
+
 exports[`misc Declarative API encodes special characters 1`] = `"<meta name=\\"description\\" content=\\"This is &quot;quoted&quot; text and &amp; and '.\\" data-rh=\\"true\\">"`;
 
 exports[`misc Declarative API only adds new tags and preserves tags when rendering additional Helmet instances 1`] = `"<meta name=\\"description\\" content=\\"Test description\\" data-rh=\\"true\\">"`;

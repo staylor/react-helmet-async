@@ -13,6 +13,8 @@ export const providerShape = PropTypes.shape({
     add: PropTypes.func,
     remove: PropTypes.func,
   }),
+  // eslint-disable-next-line react/forbid-prop-types
+  document: PropTypes.object,
 });
 
 const canUseDOM = typeof document !== 'undefined';
@@ -25,10 +27,13 @@ export default class Provider extends Component {
       helmet: PropTypes.shape(),
     }),
     children: PropTypes.node.isRequired,
+    // eslint-disable-next-line react/forbid-prop-types
+    document: PropTypes.object,
   };
 
   static defaultProps = {
     context: {},
+    document: null,
   };
 
   static displayName = 'HelmetProvider';
@@ -68,6 +73,8 @@ export default class Provider extends Component {
         title: '',
         titleAttributes: {},
       });
+    } else {
+      this.value.document = props.document || document;
     }
   }
 
