@@ -52,13 +52,13 @@
     "microbundle": "0.12.4",
     "prettier": "2.1.2",
     "raf": "3.4.1",
-    "react": "16.14.0",
-    "react-dom": "16.14.0",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
     "rimraf": "3.0.2"
   },
   "peerDependencies": {
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0"
+    "react": "^16.6.0 || ^17.0.0",
+    "react-dom": "^16.6.0 || ^17.0.0"
   },
   "scripts": {
     "clean": "rimraf lib",
