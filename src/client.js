@@ -1,10 +1,22 @@
-import { HELMET_ATTRIBUTE, TAG_NAMES, TAG_PROPERTIES } from './constants';
+import {
+  HELMET_ATTRIBUTE,
+  HELMET_SSR_ATTRIBUTE_VALUE,
+  HELMET_DEFAULT_ATTRIBUTE_VALUE,
+  TAG_NAMES,
+  TAG_PROPERTIES,
+} from './constants';
 import { flattenArray } from './utils';
 
 const updateTags = (type, tags) => {
   const headElement = document.head || document.querySelector(TAG_NAMES.HEAD);
-  const tagNodes = headElement.querySelectorAll(`${type}[${HELMET_ATTRIBUTE}]`);
+  const tagNodes = headElement.querySelectorAll(
+    `${type}[${HELMET_ATTRIBUTE}='${HELMET_DEFAULT_ATTRIBUTE_VALUE}']`
+  );
+  const ssrTagNodes = headElement.querySelectorAll(
+    `${type}[${HELMET_ATTRIBUTE}='${HELMET_SSR_ATTRIBUTE_VALUE}']`
+  );
   const oldTags = [].slice.call(tagNodes);
+  const ssrTags = [].slice.call(ssrTagNodes);
   const newTags = [];
   let indexToDelete;
 
@@ -30,9 +42,8 @@ const updateTags = (type, tags) => {
         }
       }
 
-      newElement.setAttribute(HELMET_ATTRIBUTE, 'true');
-
-      // Remove a duplicate tag from domTagstoRemove, so it isn't cleared.
+      // Do no clear existing tags equals to rendered element
+      newElement.setAttribute(HELMET_ATTRIBUTE, HELMET_DEFAULT_ATTRIBUTE_VALUE);
       if (
         oldTags.some((existingTag, index) => {
           indexToDelete = index;
@@ -40,12 +51,26 @@ const updateTags = (type, tags) => {
         })
       ) {
         oldTags.splice(indexToDelete, 1);
-      } else {
-        newTags.push(newElement);
+        return;
       }
+
+      // Mark existing SSR tags as rendered from client-side (kind of "hydrate" on first render)
+      newElement.setAttribute(HELMET_ATTRIBUTE, HELMET_SSR_ATTRIBUTE_VALUE);
+      const existingTagToUpdate = ssrTags.find(existingTag => {
+        return newElement.isEqualNode(existingTag);
+      });
+      if (existingTagToUpdate) {
+        existingTagToUpdate.setAttribute(HELMET_ATTRIBUTE, HELMET_DEFAULT_ATTRIBUTE_VALUE);
+        return;
+      }
+
+      // Create new tag if doesn't exists
+      newElement.setAttribute(HELMET_ATTRIBUTE, HELMET_DEFAULT_ATTRIBUTE_VALUE);
+      newTags.push(newElement);
     });
   }
 
+  // Remove tags marked with Helmet attribute and orphaned/obsolete
   oldTags.forEach(tag => tag.parentNode.removeChild(tag));
   newTags.forEach(tag => headElement.appendChild(tag));
 

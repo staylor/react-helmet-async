@@ -50,3 +50,5 @@ export const HTML_TAG_MAP = Object.keys(REACT_TAG_MAP).reduce((obj, key) => {
 }, {});
 
 export const HELMET_ATTRIBUTE = 'data-rh';
+export const HELMET_SSR_ATTRIBUTE_VALUE = 'ssr';
+export const HELMET_DEFAULT_ATTRIBUTE_VALUE = 'true';
