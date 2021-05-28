@@ -7,7 +7,7 @@
   "module": "lib/index.module.js",
   "source": "src/index.js",
   "types": "index.d.ts",
-  "repository": "http://github.com/NYTimes/react-helmet-async",
+  "repository": "https://github.com/staylor/react-helmet-async",
   "author": "Scott Taylor <scott.c.taylor@mac.com>",
   "license": "Apache-2.0",
   "files": [
