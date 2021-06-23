@@ -126,6 +126,54 @@ import { HelmetProvider } from 'react-helmet-async';
 HelmetProvider.canUseDOM = false;
 ```
 
+## Prioritizing tags for SEO
+
+It is understood that in some cases for SEO, certain tags should appear earlier in the HEAD. Using the `prioritizeSeoTags` flag on any `<Helmet>` component allows the server render of react-helmet-async to expose a method for prioritizing relevant SEO tags.
+
+In the component:
+```
+<Helmet prioritizeSeoTags>
+  <title>A fancy webpage</title>
+  <link rel="notImportant" href="https://www.chipotle.com" />
+  <meta name="whatever" value="notImportant" />
+  <link rel="canonical" href="https://www.tacobell.com" />
+  <meta property="og:title" content="A very important title"/>
+</Helmet>
+```
+
+In your server template:
+
+```
+<html>
+  <head>
+    ${helmet.title.toString()}
+    ${helmet.priority.toString()}
+    ${helmet.meta.toString()}
+    ${helmet.link.toString()}
+    ${helmet.script.toString()}
+  </head>
+  ...
+</html>
+```
+
+Will result in:
+
+```
+<html>
+  <head>
+    <title>A fancy webpage</title>
+    <meta property="og:title" content="A very important title"/>
+    <link rel="canonical" href="https://www.tacobell.com" />
+    <meta name="whatever" value="notImportant" />
+    <link rel="notImportant" href="https://www.chipotle.com" />
+  </head>
+  ...
+</html>
+```
+
+A list of prioritized tags and attributes can be found in [constants.js](./blob/master/src/constants.js).
+
+
 ## License
 
 Licensed under the Apache 2.0 License, Copyright © 2018 Scott Taylor
