@@ -6,6 +6,7 @@ const HELMET_PROPS = {
   ENCODE_SPECIAL_CHARACTERS: 'encodeSpecialCharacters',
   ON_CHANGE_CLIENT_STATE: 'onChangeClientState',
   TITLE_TEMPLATE: 'titleTemplate',
+  PRIORITIZE_SEO_TAGS: 'prioritizeSeoTags',
 };
 
 const getInnermostProperty = (propsList, property) => {
@@ -19,6 +20,11 @@ const getInnermostProperty = (propsList, property) => {
 
   return null;
 };
+
+const getAnyTrueFromPropsList = (propsList, checkedTag) =>
+  propsList.reduce((accumulator, currentPropList) =>
+    currentPropList[checkedTag] ? true : accumulator
+  );
 
 const getTitleFromPropsList = propsList => {
   let innermostTitle = getInnermostProperty(propsList, TAG_NAMES.TITLE);
@@ -170,39 +176,76 @@ const getTagsFromPropsList = (tagName, primaryAttributes, propsList) => {
     .reverse();
 };
 
-const reducePropsToState = propsList => ({
-  baseTag: getBaseTagFromPropsList([TAG_PROPERTIES.HREF], propsList),
-  bodyAttributes: getAttributesFromPropsList(ATTRIBUTE_NAMES.BODY, propsList),
-  defer: getInnermostProperty(propsList, HELMET_PROPS.DEFER),
-  encode: getInnermostProperty(propsList, HELMET_PROPS.ENCODE_SPECIAL_CHARACTERS),
-  htmlAttributes: getAttributesFromPropsList(ATTRIBUTE_NAMES.HTML, propsList),
-  linkTags: getTagsFromPropsList(
-    TAG_NAMES.LINK,
-    [TAG_PROPERTIES.REL, TAG_PROPERTIES.HREF],
-    propsList
-  ),
-  metaTags: getTagsFromPropsList(
-    TAG_NAMES.META,
-    [
-      TAG_PROPERTIES.NAME,
-      TAG_PROPERTIES.CHARSET,
-      TAG_PROPERTIES.HTTPEQUIV,
-      TAG_PROPERTIES.PROPERTY,
-      TAG_PROPERTIES.ITEM_PROP,
-    ],
-    propsList
-  ),
-  noscriptTags: getTagsFromPropsList(TAG_NAMES.NOSCRIPT, [TAG_PROPERTIES.INNER_HTML], propsList),
-  onChangeClientState: getOnChangeClientState(propsList),
-  scriptTags: getTagsFromPropsList(
-    TAG_NAMES.SCRIPT,
-    [TAG_PROPERTIES.SRC, TAG_PROPERTIES.INNER_HTML],
-    propsList
-  ),
-  styleTags: getTagsFromPropsList(TAG_NAMES.STYLE, [TAG_PROPERTIES.CSS_TEXT], propsList),
-  title: getTitleFromPropsList(propsList),
-  titleAttributes: getAttributesFromPropsList(ATTRIBUTE_NAMES.TITLE, propsList),
-});
+// helper to inspect for matching props on components
+export const checkIfPropsMatch = (props, toMatch) => {
+  const pairs = Object.entries(props);
+  for (let i = 0; i < pairs.length; i += 1) {
+    const [propName, propVal] = pairs[i];
+    if (toMatch[propName]) {
+      // e.g. if rel exists in the list of allowed props
+      const propWeAreCheckingOut = toMatch[propName]; // e.g. [amphtml, alternate, etc]
+      if (propWeAreCheckingOut.includes(propVal)) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
+// re-usable fn to prioritize tags by matching props
+export const prioritizer = (elementsList, propsToMatch) => {
+  if (Array.isArray(elementsList)) {
+    return elementsList.reduce(
+      (acc, elementAttrs) => {
+        if (checkIfPropsMatch(elementAttrs, propsToMatch)) {
+          acc.priority.push(elementAttrs);
+        } else {
+          acc.default.push(elementAttrs);
+        }
+        return acc;
+      },
+      { priority: [], default: [] }
+    );
+  }
+  return { default: elementsList };
+};
+
+const reducePropsToState = propsList => {
+  return {
+    baseTag: getBaseTagFromPropsList([TAG_PROPERTIES.HREF], propsList),
+    bodyAttributes: getAttributesFromPropsList(ATTRIBUTE_NAMES.BODY, propsList),
+    defer: getInnermostProperty(propsList, HELMET_PROPS.DEFER),
+    encode: getInnermostProperty(propsList, HELMET_PROPS.ENCODE_SPECIAL_CHARACTERS),
+    htmlAttributes: getAttributesFromPropsList(ATTRIBUTE_NAMES.HTML, propsList),
+    linkTags: getTagsFromPropsList(
+      TAG_NAMES.LINK,
+      [TAG_PROPERTIES.REL, TAG_PROPERTIES.HREF],
+      propsList
+    ),
+    metaTags: getTagsFromPropsList(
+      TAG_NAMES.META,
+      [
+        TAG_PROPERTIES.NAME,
+        TAG_PROPERTIES.CHARSET,
+        TAG_PROPERTIES.HTTPEQUIV,
+        TAG_PROPERTIES.PROPERTY,
+        TAG_PROPERTIES.ITEM_PROP,
+      ],
+      propsList
+    ),
+    noscriptTags: getTagsFromPropsList(TAG_NAMES.NOSCRIPT, [TAG_PROPERTIES.INNER_HTML], propsList),
+    onChangeClientState: getOnChangeClientState(propsList),
+    scriptTags: getTagsFromPropsList(
+      TAG_NAMES.SCRIPT,
+      [TAG_PROPERTIES.SRC, TAG_PROPERTIES.INNER_HTML],
+      propsList
+    ),
+    styleTags: getTagsFromPropsList(TAG_NAMES.STYLE, [TAG_PROPERTIES.CSS_TEXT], propsList),
+    title: getTitleFromPropsList(propsList),
+    titleAttributes: getAttributesFromPropsList(ATTRIBUTE_NAMES.TITLE, propsList),
+    prioritizeSeoTags: getAnyTrueFromPropsList(propsList, HELMET_PROPS.PRIORITIZE_SEO_TAGS),
+  };
+};
 
 export const flattenArray = possibleArray =>
   Array.isArray(possibleArray) ? possibleArray.join('') : possibleArray;
