@@ -31,6 +31,30 @@ export const TAG_NAMES = {
   FRAGMENT: 'Symbol(react.fragment)',
 };
 
+export const SEO_PRIORITY_TAGS = {
+  link: { rel: ['amphtml', 'canonical', 'alternate'] },
+  script: { type: ['application/ld+json'] },
+  meta: {
+    charset: '',
+    name: ['robots', 'description'],
+    property: [
+      'og:type',
+      'og:title',
+      'og:url',
+      'og:image',
+      'og:image:alt',
+      'og:description',
+      'twitter:url',
+      'twitter:title',
+      'twitter:description',
+      'twitter:image',
+      'twitter:image:alt',
+      'twitter:card',
+      'twitter:site',
+    ],
+  },
+};
+
 export const VALID_TAG_NAMES = Object.keys(TAG_NAMES).map(name => TAG_NAMES[name]);
 
 export const REACT_TAG_MAP = {

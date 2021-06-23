@@ -27,6 +27,7 @@ export class Helmet extends Component {
    * @param {String} title: "Title"
    * @param {Object} titleAttributes: {"itemprop": "name"}
    * @param {String} titleTemplate: "MySite.com - %s"
+   * @param {Boolean} prioritizeSeoTags: false
    */
   /* eslint-disable react/forbid-prop-types, react/require-default-props */
   static propTypes = {
@@ -46,12 +47,14 @@ export class Helmet extends Component {
     title: PropTypes.string,
     titleAttributes: PropTypes.object,
     titleTemplate: PropTypes.string,
+    prioritizeSeoTags: PropTypes.bool,
   };
   /* eslint-enable react/prop-types, react/forbid-prop-types, react/require-default-props */
 
   static defaultProps = {
     defer: true,
     encodeSpecialCharacters: true,
+    prioritizeSeoTags: false,
   };
 
   static displayName = 'Helmet';
