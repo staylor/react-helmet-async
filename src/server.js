@@ -131,62 +131,55 @@ const getMethodsForTag = (type, tags, encode) => {
   }
 };
 
-const mapStateOnServer = ({
-  baseTag,
-  bodyAttributes,
-  encode,
-  htmlAttributes,
-  linkTags,
-  metaTags,
-  noscriptTags,
-  scriptTags,
-  styleTags,
-  title = '',
-  titleAttributes,
-  prioritizeSeoTags,
-}) => {
-  // these methods will be noops if prioritizeSeoTags is not true
+const getPriorityMethods = ({ metaTags, linkTags, scriptTags, encode }) => {
+  const meta = prioritizer(metaTags, SEO_PRIORITY_TAGS.meta);
+  const link = prioritizer(linkTags, SEO_PRIORITY_TAGS.link);
+  const script = prioritizer(scriptTags, SEO_PRIORITY_TAGS.script);
+
+  // need to have toComponent() and toString()
+  const priorityMethods = {
+    toComponent: () => [
+      ...generateTagsAsReactComponent(TAG_NAMES.META, meta.priority),
+      ...generateTagsAsReactComponent(TAG_NAMES.LINK, link.priority),
+      ...generateTagsAsReactComponent(TAG_NAMES.SCRIPT, script.priority),
+    ],
+    toString: () =>
+      // generate all the tags as strings and concatenate them
+      `${getMethodsForTag(TAG_NAMES.META, meta.priority, encode)} ${getMethodsForTag(
+        TAG_NAMES.LINK,
+        link.priority,
+        encode
+      )} ${getMethodsForTag(TAG_NAMES.SCRIPT, script.priority, encode)}`,
+  };
+
+  return {
+    priorityMethods,
+    metaTags: meta.default,
+    linkTags: link.default,
+    scriptTags: script.default,
+  };
+};
+
+const mapStateOnServer = props => {
+  const {
+    baseTag,
+    bodyAttributes,
+    encode,
+    htmlAttributes,
+    noscriptTags,
+    styleTags,
+    title = '',
+    titleAttributes,
+    prioritizeSeoTags,
+  } = props;
+  let { linkTags, metaTags, scriptTags } = props;
   let priorityMethods = {
     toComponent: () => {},
     toString: () => {},
   };
   if (prioritizeSeoTags) {
-    const meta = prioritizer(metaTags, SEO_PRIORITY_TAGS.meta);
-    const link = prioritizer(linkTags, SEO_PRIORITY_TAGS.link);
-    const script = prioritizer(scriptTags, SEO_PRIORITY_TAGS.script);
-
-    // need to have toComponent() and toString()
-    priorityMethods = {
-      toComponent: () => {
-        const components = [];
-        Array.prototype.push.apply(
-          components,
-          generateTagsAsReactComponent(TAG_NAMES.META, meta.priority)
-        );
-        Array.prototype.push.apply(
-          components,
-          generateTagsAsReactComponent(TAG_NAMES.LINK, link.priority)
-        );
-        Array.prototype.push.apply(
-          components,
-          generateTagsAsReactComponent(TAG_NAMES.SCRIPT, script.priority)
-        );
-        return components;
-      },
-      toString: () =>
-        // generate all the tags as strings and concatenate them
-        `${getMethodsForTag(TAG_NAMES.META, meta.priority, encode)} ${getMethodsForTag(
-          TAG_NAMES.LINK,
-          link.priority,
-          encode
-        )} ${getMethodsForTag(TAG_NAMES.SCRIPT, script.priority, encode)}`,
-    };
-
-    metaTags = meta.default;
-    linkTags = link.default;
-    scriptTags = script.default;
+    ({ priorityMethods, linkTags, metaTags, scriptTags } = getPriorityMethods(props));
   }
-
   return {
     priority: priorityMethods,
     base: getMethodsForTag(TAG_NAMES.BASE, baseTag, encode),
