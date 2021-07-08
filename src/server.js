@@ -177,7 +177,6 @@ const mapStateOnServer = props => {
     toComponent: () => {},
     toString: () => '',
   };
-  console.log('prioritizeSeoTags', prioritizeSeoTags);
   if (prioritizeSeoTags) {
     ({ priorityMethods, linkTags, metaTags, scriptTags } = getPriorityMethods(props));
   }
