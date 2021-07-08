@@ -100,6 +100,11 @@ describe('server', () => {
 
       expect(styleComponent).toEqual(isArray);
       expect(styleComponent).toHaveLength(0);
+
+      expect(head.priority).toBeDefined();
+      expect(head.priority.toString).toBeDefined();
+      expect(head.priority.toString()).toEqual('');
+      expect(head.priority.toComponent).toBeDefined();
     });
 
     it('does not render undefined attribute values', () => {
@@ -214,6 +219,11 @@ describe('server', () => {
 
       expect(styleComponent).toEqual(isArray);
       expect(styleComponent).toHaveLength(0);
+
+      expect(head.priority).toBeDefined();
+      expect(head.priority.toString).toBeDefined();
+      expect(head.priority.toString()).toEqual('');
+      expect(head.priority.toComponent).toBeDefined();
     });
 
     it('does not render undefined attribute values', () => {
@@ -228,6 +238,58 @@ describe('server', () => {
       const { script } = context.helmet;
 
       expect(script.toString()).toMatchSnapshot();
+    });
+
+    it('prioritizes SEO tags when asked to', () => {
+      const context = {};
+      render(
+        <Helmet prioritizeSeoTags>
+          <link rel="notImportant" href="https://www.chipotle.com" />
+          <link rel="canonical" href="https://www.tacobell.com" />
+          <meta property="og:title" content="A very important title" />
+        </Helmet>,
+        context
+      );
+
+      expect(context.helmet.priority.toString()).toContain(
+        'rel="canonical" href="https://www.tacobell.com"'
+      );
+      expect(context.helmet.link.toString()).not.toContain(
+        'rel="canonical" href="https://www.tacobell.com"'
+      );
+
+      expect(context.helmet.priority.toString()).toContain(
+        'property="og:title" content="A very important title"'
+      );
+      expect(context.helmet.meta.toString()).not.toContain(
+        'property="og:title" content="A very important title"'
+      );
+    });
+
+    it('does not prioritize SEO unless asked to', () => {
+      const context = {};
+      render(
+        <Helmet>
+          <link rel="notImportant" href="https://www.chipotle.com" />
+          <link rel="canonical" href="https://www.tacobell.com" />
+          <meta property="og:title" content="A very important title" />
+        </Helmet>,
+        context
+      );
+
+      expect(context.helmet.priority.toString()).not.toContain(
+        'rel="canonical" href="https://www.tacobell.com"'
+      );
+      expect(context.helmet.link.toString()).toContain(
+        'rel="canonical" href="https://www.tacobell.com"'
+      );
+
+      expect(context.helmet.priority.toString()).not.toContain(
+        'property="og:title" content="A very important title"'
+      );
+      expect(context.helmet.meta.toString()).toContain(
+        'property="og:title" content="A very important title"'
+      );
     });
   });
 });

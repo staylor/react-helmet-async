@@ -171,10 +171,17 @@ const getTagsFromPropsList = (tagName, primaryAttributes, propsList) => {
     .reverse();
 };
 
-const getAnyTrueFromPropsList = (propsList, checkedTag) =>
-  propsList.reduce((accumulator, currentPropList) =>
-    currentPropList[checkedTag] ? true : accumulator
-  );
+const getAnyTrueFromPropsList = (propsList, checkedTag) => {
+  if (Array.isArray(propsList) && propsList.length) {
+    for (let index = 0; index < propsList.length; index += 1) {
+      const prop = propsList[index];
+      if (prop[checkedTag]) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
 
 const reducePropsToState = propsList => ({
   baseTag: getBaseTagFromPropsList([TAG_PROPERTIES.HREF], propsList),
@@ -208,9 +215,7 @@ const reducePropsToState = propsList => ({
   styleTags: getTagsFromPropsList(TAG_NAMES.STYLE, [TAG_PROPERTIES.CSS_TEXT], propsList),
   title: getTitleFromPropsList(propsList),
   titleAttributes: getAttributesFromPropsList(ATTRIBUTE_NAMES.TITLE, propsList),
-  prioritizeSeoTags:
-    propsList.prioritizeSeoTags &&
-    getAnyTrueFromPropsList(propsList, HELMET_PROPS.PRIORITIZE_SEO_TAGS),
+  prioritizeSeoTags: getAnyTrueFromPropsList(propsList, HELMET_PROPS.PRIORITIZE_SEO_TAGS),
 });
 
 export const flattenArray = possibleArray =>
