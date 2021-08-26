@@ -66,7 +66,7 @@
     "test": "NODE_ENV=test BABEL_ENV=test jest",
     "test-watch": "yarn test --watch",
     "test-update": "yarn test -u",
-    "compile": "yarn run clean && KYT_ENV_TYPE=client NODE_ENV=production microbundle --jsx React.createElement",
-    "_prepare": "yarn compile && husky install"
+    "compile": "yarn run clean && KYT_ENV_TYPE=client NODE_ENV=production microbundle --generateTypes=false --jsx React.createElement",
+    "prepare": "yarn compile && husky install"
   }
 }
