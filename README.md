@@ -173,6 +173,31 @@ Will result in:
 
 A list of prioritized tags and attributes can be found in [constants.js](./src/constants.js).
 
+## Usage without Context
+You can optionally use `<Helmet>` outside a context by manually creating a stateful `HelmetData` instance, and passing that stateful object to each `<Helmet>` instance:
+
+
+```js
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import { Helmet, HelmetProvider, HelmetData } from 'react-helmet-async';
+
+const helmetData = new HelmetData({});
+
+const app = (
+    <App>
+      <Helmet helmetData={helmetData}>
+        <title>Hello World</title>
+        <link rel="canonical" href="https://www.tacobell.com/" />
+      </Helmet>
+      <h1>Hello World</h1>
+    </App>
+);
+
+const html = renderToString(app);
+
+const { helmet } = helmetData.context;
+```
 
 ## License
 

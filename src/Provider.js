@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import mapStateOnServer from './server';
+import HelmetData from './HelmetData';
 
 const defaultValue = {};
 
@@ -33,45 +33,13 @@ export default class Provider extends Component {
 
   static displayName = 'HelmetProvider';
 
-  instances = [];
-
-  value = {
-    setHelmet: serverState => {
-      this.props.context.helmet = serverState;
-    },
-    helmetInstances: {
-      get: () => this.instances,
-      add: instance => {
-        this.instances.push(instance);
-      },
-      remove: instance => {
-        const index = this.instances.indexOf(instance);
-        this.instances.splice(index, 1);
-      },
-    },
-  };
-
   constructor(props) {
     super(props);
 
-    if (!Provider.canUseDOM) {
-      props.context.helmet = mapStateOnServer({
-        baseTag: [],
-        bodyAttributes: {},
-        encodeSpecialCharacters: true,
-        htmlAttributes: {},
-        linkTags: [],
-        metaTags: [],
-        noscriptTags: [],
-        scriptTags: [],
-        styleTags: [],
-        title: '',
-        titleAttributes: {},
-      });
-    }
+    this.helmetData = new HelmetData(this.props.context);
   }
 
   render() {
-    return <Context.Provider value={this.value}>{this.props.children}</Context.Provider>;
+    return <Context.Provider value={this.helmetData.value}>{this.props.children}</Context.Provider>;
   }
 }
