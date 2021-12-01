@@ -6,6 +6,7 @@ import { Context } from './Provider';
 import Dispatcher from './Dispatcher';
 import { TAG_NAMES, VALID_TAG_NAMES, HTML_TAG_MAP } from './constants';
 
+export { default as HelmetData } from './HelmetData';
 export { default as HelmetProvider } from './Provider';
 
 /* eslint-disable class-methods-use-this */
@@ -48,6 +49,7 @@ export class Helmet extends Component {
     titleAttributes: PropTypes.object,
     titleTemplate: PropTypes.string,
     prioritizeSeoTags: PropTypes.bool,
+    helmetData: PropTypes.object,
   };
   /* eslint-enable react/prop-types, react/forbid-prop-types, react/require-default-props */
 
@@ -218,14 +220,17 @@ export class Helmet extends Component {
   }
 
   render() {
-    const { children, ...props } = this.props;
+    const { children, helmetData, ...props } = this.props;
     let newProps = { ...props };
 
     if (children) {
       newProps = this.mapChildrenToProps(children, newProps);
     }
 
-    return (
+    return helmetData ? (
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      <Dispatcher {...newProps} context={helmetData.value} />
+    ) : (
       <Context.Consumer>
         {(
           context // eslint-disable-next-line react/jsx-props-no-spreading
