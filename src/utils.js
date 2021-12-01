@@ -6,6 +6,7 @@ const HELMET_PROPS = {
   ENCODE_SPECIAL_CHARACTERS: 'encodeSpecialCharacters',
   ON_CHANGE_CLIENT_STATE: 'onChangeClientState',
   TITLE_TEMPLATE: 'titleTemplate',
+  PRIORITIZE_SEO_TAGS: 'prioritizeSeoTags',
 };
 
 const getInnermostProperty = (propsList, property) => {
@@ -170,6 +171,18 @@ const getTagsFromPropsList = (tagName, primaryAttributes, propsList) => {
     .reverse();
 };
 
+const getAnyTrueFromPropsList = (propsList, checkedTag) => {
+  if (Array.isArray(propsList) && propsList.length) {
+    for (let index = 0; index < propsList.length; index += 1) {
+      const prop = propsList[index];
+      if (prop[checkedTag]) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
 const reducePropsToState = propsList => ({
   baseTag: getBaseTagFromPropsList([TAG_PROPERTIES.HREF], propsList),
   bodyAttributes: getAttributesFromPropsList(ATTRIBUTE_NAMES.BODY, propsList),
@@ -202,9 +215,38 @@ const reducePropsToState = propsList => ({
   styleTags: getTagsFromPropsList(TAG_NAMES.STYLE, [TAG_PROPERTIES.CSS_TEXT], propsList),
   title: getTitleFromPropsList(propsList),
   titleAttributes: getAttributesFromPropsList(ATTRIBUTE_NAMES.TITLE, propsList),
+  prioritizeSeoTags: getAnyTrueFromPropsList(propsList, HELMET_PROPS.PRIORITIZE_SEO_TAGS),
 });
 
 export const flattenArray = possibleArray =>
   Array.isArray(possibleArray) ? possibleArray.join('') : possibleArray;
 
 export { reducePropsToState };
+
+const checkIfPropsMatch = (props, toMatch) => {
+  const keys = Object.keys(props);
+  for (let i = 0; i < keys.length; i += 1) {
+    // e.g. if rel exists in the list of allowed props [amphtml, alternate, etc]
+    if (toMatch[keys[i]] && toMatch[keys[i]].includes(props[keys[i]])) {
+      return true;
+    }
+  }
+  return false;
+};
+
+export const prioritizer = (elementsList, propsToMatch) => {
+  if (Array.isArray(elementsList)) {
+    return elementsList.reduce(
+      (acc, elementAttrs) => {
+        if (checkIfPropsMatch(elementAttrs, propsToMatch)) {
+          acc.priority.push(elementAttrs);
+        } else {
+          acc.default.push(elementAttrs);
+        }
+        return acc;
+      },
+      { priority: [], default: [] }
+    );
+  }
+  return { default: elementsList };
+};

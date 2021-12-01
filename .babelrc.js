@@ -7,4 +7,9 @@ module.exports = {
       },
     ],
   ],
+  env: {
+    test: {
+      plugins: [['@babel/plugin-proposal-private-property-in-object', { loose: true }]],
+    },
+  },
 };

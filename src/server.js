@@ -5,8 +5,9 @@ import {
   REACT_TAG_MAP,
   TAG_PROPERTIES,
   ATTRIBUTE_NAMES,
+  SEO_PRIORITY_TAGS,
 } from './constants';
-import { flattenArray } from './utils';
+import { flattenArray, prioritizer } from './utils';
 
 const SELF_CLOSING_TAGS = [TAG_NAMES.NOSCRIPT, TAG_NAMES.SCRIPT, TAG_NAMES.STYLE];
 
@@ -130,28 +131,67 @@ const getMethodsForTag = (type, tags, encode) => {
   }
 };
 
-const mapStateOnServer = ({
-  baseTag,
-  bodyAttributes,
-  encode,
-  htmlAttributes,
-  linkTags,
-  metaTags,
-  noscriptTags,
-  scriptTags,
-  styleTags,
-  title = '',
-  titleAttributes,
-}) => ({
-  base: getMethodsForTag(TAG_NAMES.BASE, baseTag, encode),
-  bodyAttributes: getMethodsForTag(ATTRIBUTE_NAMES.BODY, bodyAttributes, encode),
-  htmlAttributes: getMethodsForTag(ATTRIBUTE_NAMES.HTML, htmlAttributes, encode),
-  link: getMethodsForTag(TAG_NAMES.LINK, linkTags, encode),
-  meta: getMethodsForTag(TAG_NAMES.META, metaTags, encode),
-  noscript: getMethodsForTag(TAG_NAMES.NOSCRIPT, noscriptTags, encode),
-  script: getMethodsForTag(TAG_NAMES.SCRIPT, scriptTags, encode),
-  style: getMethodsForTag(TAG_NAMES.STYLE, styleTags, encode),
-  title: getMethodsForTag(TAG_NAMES.TITLE, { title, titleAttributes }, encode),
-});
+const getPriorityMethods = ({ metaTags, linkTags, scriptTags, encode }) => {
+  const meta = prioritizer(metaTags, SEO_PRIORITY_TAGS.meta);
+  const link = prioritizer(linkTags, SEO_PRIORITY_TAGS.link);
+  const script = prioritizer(scriptTags, SEO_PRIORITY_TAGS.script);
+
+  // need to have toComponent() and toString()
+  const priorityMethods = {
+    toComponent: () => [
+      ...generateTagsAsReactComponent(TAG_NAMES.META, meta.priority),
+      ...generateTagsAsReactComponent(TAG_NAMES.LINK, link.priority),
+      ...generateTagsAsReactComponent(TAG_NAMES.SCRIPT, script.priority),
+    ],
+    toString: () =>
+      // generate all the tags as strings and concatenate them
+      `${getMethodsForTag(TAG_NAMES.META, meta.priority, encode)} ${getMethodsForTag(
+        TAG_NAMES.LINK,
+        link.priority,
+        encode
+      )} ${getMethodsForTag(TAG_NAMES.SCRIPT, script.priority, encode)}`,
+  };
+
+  return {
+    priorityMethods,
+    metaTags: meta.default,
+    linkTags: link.default,
+    scriptTags: script.default,
+  };
+};
+
+const mapStateOnServer = props => {
+  const {
+    baseTag,
+    bodyAttributes,
+    encode,
+    htmlAttributes,
+    noscriptTags,
+    styleTags,
+    title = '',
+    titleAttributes,
+    prioritizeSeoTags,
+  } = props;
+  let { linkTags, metaTags, scriptTags } = props;
+  let priorityMethods = {
+    toComponent: () => {},
+    toString: () => '',
+  };
+  if (prioritizeSeoTags) {
+    ({ priorityMethods, linkTags, metaTags, scriptTags } = getPriorityMethods(props));
+  }
+  return {
+    priority: priorityMethods,
+    base: getMethodsForTag(TAG_NAMES.BASE, baseTag, encode),
+    bodyAttributes: getMethodsForTag(ATTRIBUTE_NAMES.BODY, bodyAttributes, encode),
+    htmlAttributes: getMethodsForTag(ATTRIBUTE_NAMES.HTML, htmlAttributes, encode),
+    link: getMethodsForTag(TAG_NAMES.LINK, linkTags, encode),
+    meta: getMethodsForTag(TAG_NAMES.META, metaTags, encode),
+    noscript: getMethodsForTag(TAG_NAMES.NOSCRIPT, noscriptTags, encode),
+    script: getMethodsForTag(TAG_NAMES.SCRIPT, scriptTags, encode),
+    style: getMethodsForTag(TAG_NAMES.STYLE, styleTags, encode),
+    title: getMethodsForTag(TAG_NAMES.TITLE, { title, titleAttributes }, encode),
+  };
+};
 
 export default mapStateOnServer;
