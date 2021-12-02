@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import fastCompare from 'react-fast-compare';
 import invariant from 'invariant';
 import { Context } from './Provider';
+import HelmetData from './HelmetData';
 import Dispatcher from './Dispatcher';
 import { TAG_NAMES, VALID_TAG_NAMES, HTML_TAG_MAP } from './constants';
 
@@ -220,11 +221,16 @@ export class Helmet extends Component {
   }
 
   render() {
-    const { children, helmetData, ...props } = this.props;
+    const { children, ...props } = this.props;
     let newProps = { ...props };
+    let { helmetData } = props;
 
     if (children) {
       newProps = this.mapChildrenToProps(children, newProps);
+    }
+
+    if (helmetData && !(helmetData instanceof HelmetData)) {
+      helmetData = new HelmetData(helmetData.context, helmetData.instances);
     }
 
     return helmetData ? (

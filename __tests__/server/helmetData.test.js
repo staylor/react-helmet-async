@@ -73,6 +73,28 @@ describe('Helmet Data', () => {
       expect(head.base.toString).toBeDefined();
       expect(head.base.toString()).toMatchSnapshot();
     });
+
+    it('works with the same context object but separate HelmetData instances', () => {
+      const context = {};
+      const instances = [];
+
+      render(
+        <div>
+          <Helmet helmetData={new HelmetData(context, instances)}>
+            <base href="http://mysite.com" />
+          </Helmet>
+          <Helmet helmetData={new HelmetData(context, instances)}>
+            <base href="http://mysite.com/public" />
+          </Helmet>
+        </div>
+      );
+
+      const head = context.helmet;
+
+      expect(head.base).toBeDefined();
+      expect(head.base.toString).toBeDefined();
+      expect(head.base.toString()).toMatchSnapshot();
+    });
   });
 
   describe('browser', () => {

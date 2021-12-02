@@ -11,3 +11,5 @@ exports[`Helmet Data server renders declarative without context 1`] = `"<base da
 exports[`Helmet Data server renders without context 1`] = `"<base data-rh=\\"true\\" target=\\"_blank\\" href=\\"http://localhost/\\"/>"`;
 
 exports[`Helmet Data server sets base tag based on deepest nested component 1`] = `"<base data-rh=\\"true\\" href=\\"http://mysite.com/public\\"/>"`;
+
+exports[`Helmet Data server works with the same context object but separate HelmetData instances 1`] = `"<base data-rh=\\"true\\" href=\\"http://mysite.com/public\\"/>"`;
