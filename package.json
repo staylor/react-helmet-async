@@ -1,6 +1,6 @@
 {
   "name": "react-helmet-async",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Thread-safe Helmet for React 16+ and friends",
   "main": "lib/index.js",
   "umd:main": "lib/index.umd.js",
