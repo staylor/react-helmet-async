@@ -19,8 +19,12 @@ export default class HelmetData {
     },
   };
 
-  constructor(context) {
+  constructor(context, instances) {
     this.context = context;
+
+    if (instances) {
+      this.instances = instances;
+    }
 
     if (!HelmetData.canUseDOM) {
       context.helmet = mapStateOnServer({

@@ -80,6 +80,10 @@ declare module 'react-helmet-async' {
     context?: {};
   }
 
+  export class HelmetData {
+    constructor(context: any, instances?: Array<any>)
+  }
+
   export class HelmetProvider extends React.Component<ProviderProps> {
     static canUseDOM: boolean;
   }
