@@ -76,14 +76,13 @@ describe('Helmet Data', () => {
 
     it('works with the same context object but separate HelmetData instances', () => {
       const context = {};
-      const instances = [];
 
       render(
         <div>
-          <Helmet helmetData={new HelmetData(context, instances)}>
+          <Helmet helmetData={new HelmetData(context)}>
             <base href="http://mysite.com" />
           </Helmet>
-          <Helmet helmetData={new HelmetData(context, instances)}>
+          <Helmet helmetData={new HelmetData(context)}>
             <base href="http://mysite.com/public" />
           </Helmet>
         </div>

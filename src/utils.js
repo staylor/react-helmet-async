@@ -250,3 +250,10 @@ export const prioritizer = (elementsList, propsToMatch) => {
   }
   return { default: elementsList };
 };
+
+export const without = (obj, key) => {
+  return {
+    ...obj,
+    [key]: undefined,
+  };
+};

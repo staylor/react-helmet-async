@@ -5,13 +5,13 @@ import invariant from 'invariant';
 import { Context } from './Provider';
 import HelmetData from './HelmetData';
 import Dispatcher from './Dispatcher';
+import { without } from './utils';
 import { TAG_NAMES, VALID_TAG_NAMES, HTML_TAG_MAP } from './constants';
 
 export { default as HelmetData } from './HelmetData';
 export { default as HelmetProvider } from './Provider';
 
 /* eslint-disable class-methods-use-this */
-
 export class Helmet extends Component {
   /**
    * @param {Object} base: {"target": "_blank", "href": "http://mysite.com/"}
@@ -63,7 +63,7 @@ export class Helmet extends Component {
   static displayName = 'Helmet';
 
   shouldComponentUpdate(nextProps) {
-    return !fastCompare(this.props, nextProps);
+    return !fastCompare(without(this.props, 'helmetData'), without(nextProps, 'helmetData'));
   }
 
   mapNestedChildrenToProps(child, nestedChildren) {
@@ -235,7 +235,7 @@ export class Helmet extends Component {
 
     return helmetData ? (
       // eslint-disable-next-line react/jsx-props-no-spreading
-      <Dispatcher {...newProps} context={helmetData.value} />
+      <Dispatcher {...newProps} context={helmetData.value} helmetData={undefined} />
     ) : (
       <Context.Consumer>
         {(
