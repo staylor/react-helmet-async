@@ -36,7 +36,7 @@ export default class Provider extends Component {
   constructor(props) {
     super(props);
 
-    this.helmetData = new HelmetData(this.props.context);
+    this.helmetData = new HelmetData(this.props.context, Provider.canUseDOM);
   }
 
   render() {
