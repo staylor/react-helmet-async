@@ -81,7 +81,7 @@ declare module 'react-helmet-async' {
   }
 
   export class HelmetData {
-    constructor(context: any, instances?: Array<any>)
+    constructor(context: any)
   }
 
   export class HelmetProvider extends React.Component<ProviderProps> {
