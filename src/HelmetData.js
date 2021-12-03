@@ -1,30 +1,30 @@
 import mapStateOnServer from './server';
 
-export default class HelmetData {
-  instances = [];
+const instances = [];
 
+export function clearInstances() {
+  instances.length = 0;
+}
+
+export default class HelmetData {
   value = {
     setHelmet: serverState => {
       this.context.helmet = serverState;
     },
     helmetInstances: {
-      get: () => this.instances,
+      get: () => instances,
       add: instance => {
-        this.instances.push(instance);
+        instances.push(instance);
       },
       remove: instance => {
-        const index = this.instances.indexOf(instance);
-        this.instances.splice(index, 1);
+        const index = instances.indexOf(instance);
+        instances.splice(index, 1);
       },
     },
   };
 
-  constructor(context, instances) {
+  constructor(context) {
     this.context = context;
-
-    if (instances) {
-      this.instances = instances;
-    }
 
     if (!HelmetData.canUseDOM) {
       context.helmet = mapStateOnServer({
