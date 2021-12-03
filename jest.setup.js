@@ -2,6 +2,7 @@ import 'raf/polyfill';
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import ReactDOM from 'react-dom';
+import { clearInstances } from './src/HelmetData';
 
 configure({ adapter: new Adapter() });
 
@@ -40,4 +41,5 @@ beforeEach(() => {
 
 afterEach(() => {
   ReactDOM.unmountComponentAtNode(mount);
+  clearInstances();
 });
