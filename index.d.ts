@@ -23,6 +23,7 @@ declare module 'react-helmet-async' {
   }
 
   export interface HelmetProps {
+    helmetData?: HelmetData;
     async?: boolean;
     base?: any;
     bodyAttributes?: BodyProps;
