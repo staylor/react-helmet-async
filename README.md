@@ -180,7 +180,7 @@ You can optionally use `<Helmet>` outside a context by manually creating a state
 ```js
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { Helmet, HelmetProvider, HelmetData } from 'react-helmet-async';
+import { Helmet, HelmetData } from 'react-helmet-async';
 
 const helmetData = new HelmetData({});
 
