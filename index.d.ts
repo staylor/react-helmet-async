@@ -39,6 +39,7 @@ declare module 'react-helmet-async' {
     title?: string;
     titleAttributes?: Object;
     titleTemplate?: string;
+    prioritizeSeoTags?: boolean;
   }
 
   export class Helmet extends React.Component<HelmetProps> {
@@ -55,6 +56,7 @@ declare module 'react-helmet-async' {
     style: HelmetDatum;
     title: HelmetDatum;
     titleAttributes: HelmetDatum;
+    priority: HelmetDatum;
   }
 
   export interface HelmetDatum {
