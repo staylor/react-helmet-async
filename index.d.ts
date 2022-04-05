@@ -45,7 +45,7 @@ declare module 'react-helmet-async' {
   export class Helmet extends React.Component<HelmetProps> {
   }
   
-  export interface HelmetData {
+  export interface HelmetServerState {
     base: HelmetDatum;
     bodyAttributes: HelmetHTMLBodyDatum;
     htmlAttributes: HelmetHTMLElementDatum;
@@ -74,7 +74,7 @@ declare module 'react-helmet-async' {
   }
 
   export interface FilledContext {
-    helmet: HelmetData;
+    helmet: HelmetServerState;
   }
 
   interface ProviderProps {
@@ -83,6 +83,9 @@ declare module 'react-helmet-async' {
 
   export class HelmetData {
     constructor(context: any)
+    context: {
+      helmet: HelmetServerState
+    }
   }
 
   export class HelmetProvider extends React.Component<ProviderProps> {
