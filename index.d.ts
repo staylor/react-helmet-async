@@ -83,10 +83,10 @@ declare module 'react-helmet-async' {
   }
 
   export class HelmetData {
-    constructor(context: any);
+    constructor(context: any)
     context: {
-      helmet: HelmetServerState;
-    };
+      helmet: HelmetServerState
+    }
   }
 
   export class HelmetProvider extends React.Component<React.PropsWithChildren<ProviderProps>> {
