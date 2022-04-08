@@ -41,7 +41,7 @@ declare module 'react-helmet-async' {
     titleTemplate?: string;
   }
 
-  export class Helmet extends React.Component<HelmetProps> {
+  export class Helmet extends React.Component<React.PropsWithChildren<HelmetProps>> {
   }
   
   export interface HelmetServerState {
@@ -87,7 +87,7 @@ declare module 'react-helmet-async' {
     }
   }
 
-  export class HelmetProvider extends React.Component<ProviderProps> {
+  export class HelmetProvider extends React.Component<React.PropsWithChildren<ProviderProps>> {
     static canUseDOM: boolean;
   }
 }
