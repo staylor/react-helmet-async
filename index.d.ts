@@ -43,7 +43,7 @@ declare module 'react-helmet-async' {
     prioritizeSeoTags?: boolean;
   }
 
-  export class Helmet extends React.Component<HelmetProps> {}
+  export class Helmet extends React.Component<React.PropsWithChildren<HelmetProps>> {}
 
   export interface HelmetServerState {
     base: HelmetDatum;
