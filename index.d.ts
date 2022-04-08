@@ -89,7 +89,7 @@ declare module 'react-helmet-async' {
     };
   }
 
-  export class HelmetProvider extends React.Component<ProviderProps> {
+  export class HelmetProvider extends React.Component<React.PropsWithChildren<ProviderProps>> {
     static canUseDOM: boolean;
   }
 }
