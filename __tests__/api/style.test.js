@@ -41,7 +41,7 @@ describe('style tags', () => {
 
     expect(firstTag).toBeInstanceOf(Element);
     expect(firstTag.getAttribute).toBeDefined();
-    expect(firstTag.getAttribute('type')).toEqual('text/css');
+    expect(firstTag.getAttribute('type')).toBe('text/css');
     expect(firstTag.innerHTML).toEqual(cssText1);
     expect(firstTag.outerHTML).toMatchSnapshot();
 
@@ -132,7 +132,7 @@ describe('Declarative API', () => {
 
     expect(firstTag).toBeInstanceOf(Element);
     expect(firstTag.getAttribute).toBeDefined();
-    expect(firstTag.getAttribute('type')).toEqual('text/css');
+    expect(firstTag.getAttribute('type')).toBe('text/css');
     expect(firstTag.innerHTML).toEqual(cssText1);
     expect(firstTag.outerHTML).toMatchSnapshot();
 

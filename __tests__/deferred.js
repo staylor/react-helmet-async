@@ -53,11 +53,11 @@ describe('deferred tags', () => {
         container
       );
 
-      expect(window.__spy__.callCount).toEqual(1);
+      expect(window.__spy__.callCount).toBe(1);
 
       return new Promise(resolve => {
         requestAnimationFrame(() => {
-          expect(window.__spy__.callCount).toEqual(2);
+          expect(window.__spy__.callCount).toBe(2);
           expect(window.__spy__.args).toDeepEqual([[1], [2]]);
 
           resolve();
@@ -80,11 +80,11 @@ describe('deferred tags', () => {
         container
       );
 
-      expect(window.__spy__.callCount).toEqual(1);
+      expect(window.__spy__.callCount).toBe(1);
 
       return new Promise(resolve => {
         requestAnimationFrame(() => {
-          expect(window.__spy__.callCount).toEqual(2);
+          expect(window.__spy__.callCount).toBe(2);
           expect(window.__spy__.args).toDeepEqual([[1], [2]]);
 
           resolve();

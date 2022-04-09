@@ -28,7 +28,7 @@ describe('server', () => {
 
       expect(head.htmlAttributes).toBeDefined();
       expect(head.htmlAttributes.toString).toBeDefined();
-      expect(head.htmlAttributes.toString()).toEqual('');
+      expect(head.htmlAttributes.toString()).toBe('');
       expect(head.htmlAttributes.toComponent).toBeDefined();
       expect(head.htmlAttributes.toComponent()).toEqual({});
 
@@ -43,7 +43,7 @@ describe('server', () => {
 
       expect(head.base).toBeDefined();
       expect(head.base.toString).toBeDefined();
-      expect(head.base.toString()).toEqual('');
+      expect(head.base.toString()).toBe('');
       expect(head.base.toComponent).toBeDefined();
 
       const baseComponent = head.base.toComponent();
@@ -53,7 +53,7 @@ describe('server', () => {
 
       expect(head.meta).toBeDefined();
       expect(head.meta.toString).toBeDefined();
-      expect(head.meta.toString()).toEqual('');
+      expect(head.meta.toString()).toBe('');
       expect(head.meta.toComponent).toBeDefined();
 
       const metaComponent = head.meta.toComponent();
@@ -63,7 +63,7 @@ describe('server', () => {
 
       expect(head.link).toBeDefined();
       expect(head.link.toString).toBeDefined();
-      expect(head.link.toString()).toEqual('');
+      expect(head.link.toString()).toBe('');
       expect(head.link.toComponent).toBeDefined();
 
       const linkComponent = head.link.toComponent();
@@ -73,7 +73,7 @@ describe('server', () => {
 
       expect(head.script).toBeDefined();
       expect(head.script.toString).toBeDefined();
-      expect(head.script.toString()).toEqual('');
+      expect(head.script.toString()).toBe('');
       expect(head.script.toComponent).toBeDefined();
 
       const scriptComponent = head.script.toComponent();
@@ -83,7 +83,7 @@ describe('server', () => {
 
       expect(head.noscript).toBeDefined();
       expect(head.noscript.toString).toBeDefined();
-      expect(head.noscript.toString()).toEqual('');
+      expect(head.noscript.toString()).toBe('');
       expect(head.noscript.toComponent).toBeDefined();
 
       const noscriptComponent = head.noscript.toComponent();
@@ -93,7 +93,7 @@ describe('server', () => {
 
       expect(head.style).toBeDefined();
       expect(head.style.toString).toBeDefined();
-      expect(head.style.toString()).toEqual('');
+      expect(head.style.toString()).toBe('');
       expect(head.style.toComponent).toBeDefined();
 
       const styleComponent = head.style.toComponent();
@@ -103,7 +103,7 @@ describe('server', () => {
 
       expect(head.priority).toBeDefined();
       expect(head.priority.toString).toBeDefined();
-      expect(head.priority.toString()).toEqual('');
+      expect(head.priority.toString()).toBe('');
       expect(head.priority.toComponent).toBeDefined();
     });
 
@@ -136,7 +136,7 @@ describe('server', () => {
       expect(head.meta).toBeDefined();
       expect(head.meta.toString).toBeDefined();
 
-      expect(head.meta.toString()).toEqual('');
+      expect(head.meta.toString()).toBe('');
     });
 
     it('rewind() provides a fallback object for empty Helmet state', () => {
@@ -147,7 +147,7 @@ describe('server', () => {
 
       expect(head.htmlAttributes).toBeDefined();
       expect(head.htmlAttributes.toString).toBeDefined();
-      expect(head.htmlAttributes.toString()).toEqual('');
+      expect(head.htmlAttributes.toString()).toBe('');
       expect(head.htmlAttributes.toComponent).toBeDefined();
       expect(head.htmlAttributes.toComponent()).toEqual({});
 
@@ -162,7 +162,7 @@ describe('server', () => {
 
       expect(head.base).toBeDefined();
       expect(head.base.toString).toBeDefined();
-      expect(head.base.toString()).toEqual('');
+      expect(head.base.toString()).toBe('');
       expect(head.base.toComponent).toBeDefined();
 
       const baseComponent = head.base.toComponent();
@@ -172,7 +172,7 @@ describe('server', () => {
 
       expect(head.meta).toBeDefined();
       expect(head.meta.toString).toBeDefined();
-      expect(head.meta.toString()).toEqual('');
+      expect(head.meta.toString()).toBe('');
       expect(head.meta.toComponent).toBeDefined();
 
       const metaComponent = head.meta.toComponent();
@@ -182,7 +182,7 @@ describe('server', () => {
 
       expect(head.link).toBeDefined();
       expect(head.link.toString).toBeDefined();
-      expect(head.link.toString()).toEqual('');
+      expect(head.link.toString()).toBe('');
       expect(head.link.toComponent).toBeDefined();
 
       const linkComponent = head.link.toComponent();
@@ -192,7 +192,7 @@ describe('server', () => {
 
       expect(head.script).toBeDefined();
       expect(head.script.toString).toBeDefined();
-      expect(head.script.toString()).toEqual('');
+      expect(head.script.toString()).toBe('');
       expect(head.script.toComponent).toBeDefined();
 
       const scriptComponent = head.script.toComponent();
@@ -202,7 +202,7 @@ describe('server', () => {
 
       expect(head.noscript).toBeDefined();
       expect(head.noscript.toString).toBeDefined();
-      expect(head.noscript.toString()).toEqual('');
+      expect(head.noscript.toString()).toBe('');
       expect(head.noscript.toComponent).toBeDefined();
 
       const noscriptComponent = head.noscript.toComponent();
@@ -212,7 +212,7 @@ describe('server', () => {
 
       expect(head.style).toBeDefined();
       expect(head.style.toString).toBeDefined();
-      expect(head.style.toString()).toEqual('');
+      expect(head.style.toString()).toBe('');
       expect(head.style.toComponent).toBeDefined();
 
       const styleComponent = head.style.toComponent();
@@ -222,7 +222,7 @@ describe('server', () => {
 
       expect(head.priority).toBeDefined();
       expect(head.priority.toString).toBeDefined();
-      expect(head.priority.toString()).toEqual('');
+      expect(head.priority.toString()).toBe('');
       expect(head.priority.toComponent).toBeDefined();
     });
 

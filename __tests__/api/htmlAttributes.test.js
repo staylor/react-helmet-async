@@ -22,9 +22,9 @@ describe('html attributes', () => {
 
       const htmlTag = document.documentElement;
 
-      expect(htmlTag.getAttribute('class')).toEqual('myClassName');
-      expect(htmlTag.getAttribute('lang')).toEqual('en');
-      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('class,lang');
+      expect(htmlTag.getAttribute('class')).toBe('myClassName');
+      expect(htmlTag.getAttribute('lang')).toBe('en');
+      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toBe('class,lang');
     });
 
     it('sets attributes based on the deepest nested component', () => {
@@ -45,8 +45,8 @@ describe('html attributes', () => {
 
       const htmlTag = document.documentElement;
 
-      expect(htmlTag.getAttribute('lang')).toEqual('ja');
-      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('lang');
+      expect(htmlTag.getAttribute('lang')).toBe('ja');
+      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toBe('lang');
     });
 
     it('handles valueless attributes', () => {
@@ -60,8 +60,8 @@ describe('html attributes', () => {
 
       const htmlTag = document.documentElement;
 
-      expect(htmlTag.getAttribute('amp')).toEqual('');
-      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('amp');
+      expect(htmlTag.getAttribute('amp')).toBe('');
+      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toBe('amp');
     });
 
     it('clears html attributes that are handled within helmet', () => {
@@ -106,10 +106,10 @@ describe('html attributes', () => {
       const htmlTag = document.documentElement;
 
       expect(htmlTag.getAttribute('amp')).toBeNull();
-      expect(htmlTag.getAttribute('lang')).toEqual('ja');
-      expect(htmlTag.getAttribute('id')).toEqual('html-tag');
-      expect(htmlTag.getAttribute('title')).toEqual('html tag');
-      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('lang,id,title');
+      expect(htmlTag.getAttribute('lang')).toBe('ja');
+      expect(htmlTag.getAttribute('id')).toBe('html-tag');
+      expect(htmlTag.getAttribute('title')).toBe('html tag');
+      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toBe('lang,id,title');
     });
 
     it('updates with multiple additions and removals - all new', () => {
@@ -135,9 +135,9 @@ describe('html attributes', () => {
 
       expect(htmlTag.getAttribute('amp')).toBeNull();
       expect(htmlTag.getAttribute('lang')).toBeNull();
-      expect(htmlTag.getAttribute('id')).toEqual('html-tag');
-      expect(htmlTag.getAttribute('title')).toEqual('html tag');
-      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('id,title');
+      expect(htmlTag.getAttribute('id')).toBe('html-tag');
+      expect(htmlTag.getAttribute('title')).toBe('html tag');
+      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toBe('id,title');
     });
 
     describe('initialized outside of helmet', () => {
@@ -151,7 +151,7 @@ describe('html attributes', () => {
 
         const htmlTag = document.documentElement;
 
-        expect(htmlTag.getAttribute('test')).toEqual('test');
+        expect(htmlTag.getAttribute('test')).toBe('test');
         expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toBeNull();
       });
 
@@ -166,8 +166,8 @@ describe('html attributes', () => {
 
         const htmlTag = document.documentElement;
 
-        expect(htmlTag.getAttribute('test')).toEqual('helmet-attr');
-        expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('test');
+        expect(htmlTag.getAttribute('test')).toBe('helmet-attr');
+        expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toBe('test');
       });
 
       it('attributes are cleared once managed in helmet', () => {
@@ -199,9 +199,9 @@ describe('html attributes', () => {
 
       const htmlTag = document.documentElement;
 
-      expect(htmlTag.getAttribute('class')).toEqual('myClassName');
-      expect(htmlTag.getAttribute('lang')).toEqual('en');
-      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('class,lang');
+      expect(htmlTag.getAttribute('class')).toBe('myClassName');
+      expect(htmlTag.getAttribute('lang')).toBe('en');
+      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toBe('class,lang');
     });
 
     it('sets attributes based on the deepest nested component', () => {
@@ -218,8 +218,8 @@ describe('html attributes', () => {
 
       const htmlTag = document.documentElement;
 
-      expect(htmlTag.getAttribute('lang')).toEqual('ja');
-      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('lang');
+      expect(htmlTag.getAttribute('lang')).toBe('ja');
+      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toBe('lang');
     });
 
     it('handles valueless attributes', () => {
@@ -231,8 +231,8 @@ describe('html attributes', () => {
 
       const htmlTag = document.documentElement;
 
-      expect(htmlTag.getAttribute('amp')).toEqual('true');
-      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('amp');
+      expect(htmlTag.getAttribute('amp')).toBe('true');
+      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toBe('amp');
     });
 
     it('clears html attributes that are handled within helmet', () => {
@@ -267,10 +267,10 @@ describe('html attributes', () => {
       const htmlTag = document.documentElement;
 
       expect(htmlTag.getAttribute('amp')).toBeNull();
-      expect(htmlTag.getAttribute('lang')).toEqual('ja');
-      expect(htmlTag.getAttribute('id')).toEqual('html-tag');
-      expect(htmlTag.getAttribute('title')).toEqual('html tag');
-      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('lang,id,title');
+      expect(htmlTag.getAttribute('lang')).toBe('ja');
+      expect(htmlTag.getAttribute('id')).toBe('html-tag');
+      expect(htmlTag.getAttribute('title')).toBe('html tag');
+      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toBe('lang,id,title');
     });
 
     it('updates with multiple additions and removals - all new', () => {
@@ -290,9 +290,9 @@ describe('html attributes', () => {
 
       expect(htmlTag.getAttribute('amp')).toBeNull();
       expect(htmlTag.getAttribute('lang')).toBeNull();
-      expect(htmlTag.getAttribute('id')).toEqual('html-tag');
-      expect(htmlTag.getAttribute('title')).toEqual('html tag');
-      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('id,title');
+      expect(htmlTag.getAttribute('id')).toBe('html-tag');
+      expect(htmlTag.getAttribute('title')).toBe('html tag');
+      expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toBe('id,title');
     });
 
     describe('initialized outside of helmet', () => {
@@ -306,7 +306,7 @@ describe('html attributes', () => {
 
         const htmlTag = document.documentElement;
 
-        expect(htmlTag.getAttribute('test')).toEqual('test');
+        expect(htmlTag.getAttribute('test')).toBe('test');
         expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toBeNull();
       });
 
@@ -319,8 +319,8 @@ describe('html attributes', () => {
 
         const htmlTag = document.documentElement;
 
-        expect(htmlTag.getAttribute('test')).toEqual('helmet-attr');
-        expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('test');
+        expect(htmlTag.getAttribute('test')).toBe('helmet-attr');
+        expect(htmlTag.getAttribute(HELMET_ATTRIBUTE)).toBe('test');
       });
 
       it('cleared once it is managed in helmet', () => {

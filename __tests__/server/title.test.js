@@ -28,7 +28,7 @@ describe('server', () => {
 
       expect(head.meta).toBeDefined();
       expect(head.meta.toString).toBeDefined();
-      expect(head.meta.toString()).toEqual('');
+      expect(head.meta.toString()).toBe('');
     });
 
     it('encodes special characters in title', () => {

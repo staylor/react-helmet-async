@@ -135,7 +135,7 @@ describe('title', () => {
       const titleTag = document.getElementsByTagName('title')[0];
 
       expect(document.title).toMatchSnapshot();
-      expect(titleTag.getAttribute('itemprop')).toEqual('name');
+      expect(titleTag.getAttribute('itemprop')).toBe('name');
     });
   });
 
@@ -302,7 +302,7 @@ describe('title', () => {
       const titleTag = document.getElementsByTagName('title')[0];
 
       expect(document.title).toMatchSnapshot();
-      expect(titleTag.getAttribute('itemprop')).toEqual('name');
+      expect(titleTag.getAttribute('itemprop')).toBe('name');
     });
 
     it('retains existing title tag when no title tag is defined', () => {
@@ -334,7 +334,7 @@ describe('title', () => {
         </Helmet>
       );
 
-      expect(document.title).toEqual('');
+      expect(document.title).toBe('');
     });
   });
 });

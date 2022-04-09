@@ -112,7 +112,7 @@ describe('Helmet Data', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('href')).toEqual('http://localhost/');
+      expect(firstTag.getAttribute('href')).toBe('http://localhost/');
       expect(firstTag.outerHTML).toMatchSnapshot();
     });
 
@@ -133,7 +133,7 @@ describe('Helmet Data', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('href')).toEqual('http://localhost/');
+      expect(firstTag.getAttribute('href')).toBe('http://localhost/');
       expect(firstTag.outerHTML).toMatchSnapshot();
     });
 
@@ -159,7 +159,7 @@ describe('Helmet Data', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('href')).toEqual('http://mysite.com/public');
+      expect(firstTag.getAttribute('href')).toBe('http://mysite.com/public');
       expect(firstTag.outerHTML).toMatchSnapshot();
     });
   });

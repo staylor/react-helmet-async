@@ -113,8 +113,8 @@ describe('link tags', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('rel')).toEqual('canonical');
-      expect(firstTag.getAttribute('href')).toEqual('http://localhost/helmet/newest');
+      expect(firstTag.getAttribute('rel')).toBe('canonical');
+      expect(firstTag.getAttribute('href')).toBe('http://localhost/helmet/newest');
       expect(firstTag.outerHTML).toMatchSnapshot();
     });
 
@@ -154,18 +154,18 @@ describe('link tags', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('href')).toEqual('http://localhost/style.css');
-      expect(firstTag.getAttribute('rel')).toEqual('stylesheet');
-      expect(firstTag.getAttribute('type')).toEqual('text/css');
-      expect(firstTag.getAttribute('media')).toEqual('all');
+      expect(firstTag.getAttribute('href')).toBe('http://localhost/style.css');
+      expect(firstTag.getAttribute('rel')).toBe('stylesheet');
+      expect(firstTag.getAttribute('type')).toBe('text/css');
+      expect(firstTag.getAttribute('media')).toBe('all');
       expect(firstTag.outerHTML).toMatchSnapshot();
 
       expect(secondTag).toBeInstanceOf(Element);
       expect(secondTag.getAttribute).toBeDefined();
-      expect(secondTag.getAttribute('rel')).toEqual('stylesheet');
-      expect(secondTag.getAttribute('href')).toEqual('http://localhost/inner.css');
-      expect(secondTag.getAttribute('type')).toEqual('text/css');
-      expect(secondTag.getAttribute('media')).toEqual('all');
+      expect(secondTag.getAttribute('rel')).toBe('stylesheet');
+      expect(secondTag.getAttribute('href')).toBe('http://localhost/inner.css');
+      expect(secondTag.getAttribute('type')).toBe('text/css');
+      expect(secondTag.getAttribute('media')).toBe('all');
       expect(secondTag.outerHTML).toMatchSnapshot();
     });
 
@@ -214,24 +214,24 @@ describe('link tags', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('href')).toEqual('http://localhost/style.css');
-      expect(firstTag.getAttribute('rel')).toEqual('stylesheet');
-      expect(firstTag.getAttribute('type')).toEqual('text/css');
-      expect(firstTag.getAttribute('media')).toEqual('all');
+      expect(firstTag.getAttribute('href')).toBe('http://localhost/style.css');
+      expect(firstTag.getAttribute('rel')).toBe('stylesheet');
+      expect(firstTag.getAttribute('type')).toBe('text/css');
+      expect(firstTag.getAttribute('media')).toBe('all');
       expect(firstTag.outerHTML).toMatchSnapshot();
 
       expect(secondTag).toBeInstanceOf(Element);
       expect(secondTag.getAttribute).toBeDefined();
-      expect(secondTag.getAttribute('href')).toEqual('http://localhost/helmet/innercomponent');
-      expect(secondTag.getAttribute('rel')).toEqual('canonical');
+      expect(secondTag.getAttribute('href')).toBe('http://localhost/helmet/innercomponent');
+      expect(secondTag.getAttribute('rel')).toBe('canonical');
       expect(secondTag.outerHTML).toMatchSnapshot();
 
       expect(thirdTag).toBeInstanceOf(Element);
       expect(thirdTag.getAttribute).toBeDefined();
-      expect(thirdTag.getAttribute('href')).toEqual('http://localhost/inner.css');
-      expect(thirdTag.getAttribute('rel')).toEqual('stylesheet');
-      expect(thirdTag.getAttribute('type')).toEqual('text/css');
-      expect(thirdTag.getAttribute('media')).toEqual('all');
+      expect(thirdTag.getAttribute('href')).toBe('http://localhost/inner.css');
+      expect(thirdTag.getAttribute('rel')).toBe('stylesheet');
+      expect(thirdTag.getAttribute('type')).toBe('text/css');
+      expect(thirdTag.getAttribute('media')).toBe('all');
       expect(thirdTag.outerHTML).toMatchSnapshot();
     });
 
@@ -261,14 +261,14 @@ describe('link tags', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('rel')).toEqual('canonical');
-      expect(firstTag.getAttribute('href')).toEqual('http://localhost/helmet');
+      expect(firstTag.getAttribute('rel')).toBe('canonical');
+      expect(firstTag.getAttribute('href')).toBe('http://localhost/helmet');
       expect(firstTag.outerHTML).toMatchSnapshot();
 
       expect(secondTag).toBeInstanceOf(Element);
       expect(secondTag.getAttribute).toBeDefined();
-      expect(secondTag.getAttribute('rel')).toEqual('canonical');
-      expect(secondTag.getAttribute('href')).toEqual('http://localhost/helmet/component');
+      expect(secondTag.getAttribute('rel')).toBe('canonical');
+      expect(secondTag.getAttribute('href')).toBe('http://localhost/helmet/component');
       expect(secondTag.outerHTML).toMatchSnapshot();
     });
 
@@ -307,8 +307,8 @@ describe('link tags', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('rel')).toEqual('canonical');
-      expect(firstTag.getAttribute('href')).toEqual('http://localhost/helmet/innercomponent');
+      expect(firstTag.getAttribute('rel')).toBe('canonical');
+      expect(firstTag.getAttribute('href')).toBe('http://localhost/helmet/innercomponent');
       expect(firstTag.outerHTML).toMatchSnapshot();
     });
 
@@ -348,14 +348,14 @@ describe('link tags', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('rel')).toEqual('canonical');
-      expect(firstTag.getAttribute('href')).toEqual('http://localhost/helmet/component');
+      expect(firstTag.getAttribute('rel')).toBe('canonical');
+      expect(firstTag.getAttribute('href')).toBe('http://localhost/helmet/component');
       expect(firstTag.outerHTML).toMatchSnapshot();
 
       expect(secondTag).toBeInstanceOf(Element);
       expect(secondTag.getAttribute).toBeDefined();
-      expect(secondTag.getAttribute('rel')).toEqual('canonical');
-      expect(secondTag.getAttribute('href')).toEqual('http://localhost/helmet/innercomponent');
+      expect(secondTag.getAttribute('rel')).toBe('canonical');
+      expect(secondTag.getAttribute('href')).toBe('http://localhost/helmet/innercomponent');
       expect(secondTag.outerHTML).toMatchSnapshot();
     });
 
@@ -381,8 +381,8 @@ describe('link tags', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('rel')).toEqual('canonical');
-      expect(firstTag.getAttribute('href')).toEqual('http://localhost/helmet/component');
+      expect(firstTag.getAttribute('rel')).toBe('canonical');
+      expect(firstTag.getAttribute('href')).toBe('http://localhost/helmet/component');
       expect(firstTag.outerHTML).toMatchSnapshot();
     });
   });
@@ -469,8 +469,8 @@ describe('link tags', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('rel')).toEqual('canonical');
-      expect(firstTag.getAttribute('href')).toEqual('http://localhost/helmet/newest');
+      expect(firstTag.getAttribute('rel')).toBe('canonical');
+      expect(firstTag.getAttribute('href')).toBe('http://localhost/helmet/newest');
       expect(firstTag.outerHTML).toMatchSnapshot();
     });
 
@@ -496,18 +496,18 @@ describe('link tags', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('href')).toEqual('http://localhost/style.css');
-      expect(firstTag.getAttribute('rel')).toEqual('stylesheet');
-      expect(firstTag.getAttribute('type')).toEqual('text/css');
-      expect(firstTag.getAttribute('media')).toEqual('all');
+      expect(firstTag.getAttribute('href')).toBe('http://localhost/style.css');
+      expect(firstTag.getAttribute('rel')).toBe('stylesheet');
+      expect(firstTag.getAttribute('type')).toBe('text/css');
+      expect(firstTag.getAttribute('media')).toBe('all');
       expect(firstTag.outerHTML).toMatchSnapshot();
 
       expect(secondTag).toBeInstanceOf(Element);
       expect(secondTag.getAttribute).toBeDefined();
-      expect(secondTag.getAttribute('rel')).toEqual('stylesheet');
-      expect(secondTag.getAttribute('href')).toEqual('http://localhost/inner.css');
-      expect(secondTag.getAttribute('type')).toEqual('text/css');
-      expect(secondTag.getAttribute('media')).toEqual('all');
+      expect(secondTag.getAttribute('rel')).toBe('stylesheet');
+      expect(secondTag.getAttribute('href')).toBe('http://localhost/inner.css');
+      expect(secondTag.getAttribute('type')).toBe('text/css');
+      expect(secondTag.getAttribute('media')).toBe('all');
       expect(secondTag.outerHTML).toMatchSnapshot();
     });
 
@@ -536,24 +536,24 @@ describe('link tags', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('href')).toEqual('http://localhost/style.css');
-      expect(firstTag.getAttribute('rel')).toEqual('stylesheet');
-      expect(firstTag.getAttribute('type')).toEqual('text/css');
-      expect(firstTag.getAttribute('media')).toEqual('all');
+      expect(firstTag.getAttribute('href')).toBe('http://localhost/style.css');
+      expect(firstTag.getAttribute('rel')).toBe('stylesheet');
+      expect(firstTag.getAttribute('type')).toBe('text/css');
+      expect(firstTag.getAttribute('media')).toBe('all');
       expect(firstTag.outerHTML).toMatchSnapshot();
 
       expect(secondTag).toBeInstanceOf(Element);
       expect(secondTag.getAttribute).toBeDefined();
-      expect(secondTag.getAttribute('href')).toEqual('http://localhost/helmet/innercomponent');
-      expect(secondTag.getAttribute('rel')).toEqual('canonical');
+      expect(secondTag.getAttribute('href')).toBe('http://localhost/helmet/innercomponent');
+      expect(secondTag.getAttribute('rel')).toBe('canonical');
       expect(secondTag.outerHTML).toMatchSnapshot();
 
       expect(thirdTag).toBeInstanceOf(Element);
       expect(thirdTag.getAttribute).toBeDefined();
-      expect(thirdTag.getAttribute('href')).toEqual('http://localhost/inner.css');
-      expect(thirdTag.getAttribute('rel')).toEqual('stylesheet');
-      expect(thirdTag.getAttribute('type')).toEqual('text/css');
-      expect(thirdTag.getAttribute('media')).toEqual('all');
+      expect(thirdTag.getAttribute('href')).toBe('http://localhost/inner.css');
+      expect(thirdTag.getAttribute('rel')).toBe('stylesheet');
+      expect(thirdTag.getAttribute('type')).toBe('text/css');
+      expect(thirdTag.getAttribute('media')).toBe('all');
       expect(thirdTag.outerHTML).toMatchSnapshot();
     });
 
@@ -575,14 +575,14 @@ describe('link tags', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('rel')).toEqual('canonical');
-      expect(firstTag.getAttribute('href')).toEqual('http://localhost/helmet');
+      expect(firstTag.getAttribute('rel')).toBe('canonical');
+      expect(firstTag.getAttribute('href')).toBe('http://localhost/helmet');
       expect(firstTag.outerHTML).toMatchSnapshot();
 
       expect(secondTag).toBeInstanceOf(Element);
       expect(secondTag.getAttribute).toBeDefined();
-      expect(secondTag.getAttribute('rel')).toEqual('canonical');
-      expect(secondTag.getAttribute('href')).toEqual('http://localhost/helmet/component');
+      expect(secondTag.getAttribute('rel')).toBe('canonical');
+      expect(secondTag.getAttribute('href')).toBe('http://localhost/helmet/component');
       expect(secondTag.outerHTML).toMatchSnapshot();
     });
 
@@ -608,8 +608,8 @@ describe('link tags', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('rel')).toEqual('canonical');
-      expect(firstTag.getAttribute('href')).toEqual('http://localhost/helmet/innercomponent');
+      expect(firstTag.getAttribute('rel')).toBe('canonical');
+      expect(firstTag.getAttribute('href')).toBe('http://localhost/helmet/innercomponent');
       expect(firstTag.outerHTML).toMatchSnapshot();
     });
 
@@ -636,14 +636,14 @@ describe('link tags', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('rel')).toEqual('canonical');
-      expect(firstTag.getAttribute('href')).toEqual('http://localhost/helmet/component');
+      expect(firstTag.getAttribute('rel')).toBe('canonical');
+      expect(firstTag.getAttribute('href')).toBe('http://localhost/helmet/component');
       expect(firstTag.outerHTML).toMatchSnapshot();
 
       expect(secondTag).toBeInstanceOf(Element);
       expect(secondTag.getAttribute).toBeDefined();
-      expect(secondTag.getAttribute('rel')).toEqual('canonical');
-      expect(secondTag.getAttribute('href')).toEqual('http://localhost/helmet/innercomponent');
+      expect(secondTag.getAttribute('rel')).toBe('canonical');
+      expect(secondTag.getAttribute('href')).toBe('http://localhost/helmet/innercomponent');
       expect(secondTag.outerHTML).toMatchSnapshot();
     });
 
@@ -664,8 +664,8 @@ describe('link tags', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('rel')).toEqual('canonical');
-      expect(firstTag.getAttribute('href')).toEqual('http://localhost/helmet/component');
+      expect(firstTag.getAttribute('rel')).toBe('canonical');
+      expect(firstTag.getAttribute('href')).toBe('http://localhost/helmet/component');
       expect(firstTag.outerHTML).toMatchSnapshot();
     });
   });

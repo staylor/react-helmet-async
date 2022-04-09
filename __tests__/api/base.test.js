@@ -55,7 +55,7 @@ describe('base tag', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('href')).toEqual('http://mysite.com/public');
+      expect(firstTag.getAttribute('href')).toBe('http://mysite.com/public');
       expect(firstTag.outerHTML).toMatchSnapshot();
     });
 
@@ -131,7 +131,7 @@ describe('base tag', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('href')).toEqual('http://mysite.com/public');
+      expect(firstTag.getAttribute('href')).toBe('http://mysite.com/public');
       expect(firstTag.outerHTML).toMatchSnapshot();
     });
 

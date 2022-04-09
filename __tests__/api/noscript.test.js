@@ -23,7 +23,7 @@ describe('noscript tags', () => {
 
       expect(existingTags).toBeDefined();
       expect(existingTags).toHaveLength(1);
-      expect(existingTags[0].id).toEqual('bar');
+      expect(existingTags[0].id).toBe('bar');
       expect(existingTags[0].outerHTML).toMatchSnapshot();
     });
 
@@ -77,7 +77,7 @@ describe('noscript tags', () => {
 
       expect(existingTags).toBeDefined();
       expect(existingTags).toHaveLength(1);
-      expect(existingTags[0].id).toEqual('bar');
+      expect(existingTags[0].id).toBe('bar');
       expect(existingTags[0].outerHTML).toMatchSnapshot();
     });
 

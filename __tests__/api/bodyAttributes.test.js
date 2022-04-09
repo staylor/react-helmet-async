@@ -59,9 +59,9 @@ describe('body attributes', () => {
 
     const bodyTag = document.body;
 
-    expect(bodyTag.getAttribute('class')).toEqual('myClassName');
-    expect(bodyTag.getAttribute('tabindex')).toEqual('-1');
-    expect(bodyTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('class,tabindex');
+    expect(bodyTag.getAttribute('class')).toBe('myClassName');
+    expect(bodyTag.getAttribute('tabindex')).toBe('-1');
+    expect(bodyTag.getAttribute(HELMET_ATTRIBUTE)).toBe('class,tabindex');
   });
 
   it('sets attributes based on the deepest nested component', () => {
@@ -78,8 +78,8 @@ describe('body attributes', () => {
 
     const bodyTag = document.body;
 
-    expect(bodyTag.getAttribute('lang')).toEqual('ja');
-    expect(bodyTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('lang');
+    expect(bodyTag.getAttribute('lang')).toBe('ja');
+    expect(bodyTag.getAttribute(HELMET_ATTRIBUTE)).toBe('lang');
   });
 
   it('handles valueless attributes', () => {
@@ -91,8 +91,8 @@ describe('body attributes', () => {
 
     const bodyTag = document.body;
 
-    expect(bodyTag.getAttribute('hidden')).toEqual('true');
-    expect(bodyTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('hidden');
+    expect(bodyTag.getAttribute('hidden')).toBe('true');
+    expect(bodyTag.getAttribute(HELMET_ATTRIBUTE)).toBe('hidden');
   });
 
   it('clears body attributes that are handled within helmet', () => {
@@ -127,10 +127,10 @@ describe('body attributes', () => {
     const bodyTag = document.body;
 
     expect(bodyTag.getAttribute('hidden')).toBeNull();
-    expect(bodyTag.getAttribute('lang')).toEqual('ja');
-    expect(bodyTag.getAttribute('id')).toEqual('body-tag');
-    expect(bodyTag.getAttribute('title')).toEqual('body tag');
-    expect(bodyTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('lang,id,title');
+    expect(bodyTag.getAttribute('lang')).toBe('ja');
+    expect(bodyTag.getAttribute('id')).toBe('body-tag');
+    expect(bodyTag.getAttribute('title')).toBe('body tag');
+    expect(bodyTag.getAttribute(HELMET_ATTRIBUTE)).toBe('lang,id,title');
   });
 
   it('updates with multiple additions and removals - all new', () => {
@@ -150,9 +150,9 @@ describe('body attributes', () => {
 
     expect(bodyTag.getAttribute('hidden')).toBeNull();
     expect(bodyTag.getAttribute('lang')).toBeNull();
-    expect(bodyTag.getAttribute('id')).toEqual('body-tag');
-    expect(bodyTag.getAttribute('title')).toEqual('body tag');
-    expect(bodyTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('id,title');
+    expect(bodyTag.getAttribute('id')).toBe('body-tag');
+    expect(bodyTag.getAttribute('title')).toBe('body tag');
+    expect(bodyTag.getAttribute(HELMET_ATTRIBUTE)).toBe('id,title');
   });
 
   describe('initialized outside of helmet', () => {
@@ -166,7 +166,7 @@ describe('body attributes', () => {
 
       const bodyTag = document.body;
 
-      expect(bodyTag.getAttribute('test')).toEqual('test');
+      expect(bodyTag.getAttribute('test')).toBe('test');
       expect(bodyTag.getAttribute(HELMET_ATTRIBUTE)).toBeNull();
     });
 
@@ -179,8 +179,8 @@ describe('body attributes', () => {
 
       const bodyTag = document.body;
 
-      expect(bodyTag.getAttribute('test')).toEqual('helmet-attr');
-      expect(bodyTag.getAttribute(HELMET_ATTRIBUTE)).toEqual('test');
+      expect(bodyTag.getAttribute('test')).toBe('helmet-attr');
+      expect(bodyTag.getAttribute(HELMET_ATTRIBUTE)).toBe('test');
     });
 
     it('attributes are cleared once managed in helmet', () => {

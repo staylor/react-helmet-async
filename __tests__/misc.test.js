@@ -34,8 +34,8 @@ describe('misc', () => {
 
       expect(existingTag).toBeInstanceOf(Element);
       expect(existingTag.getAttribute).toBeDefined();
-      expect(existingTag.getAttribute('name')).toEqual('description');
-      expect(existingTag.getAttribute('content')).toEqual('This is "quoted" text and & and \'.');
+      expect(existingTag.getAttribute('name')).toBe('description');
+      expect(existingTag.getAttribute('content')).toBe('This is "quoted" text and & and \'.');
       expect(existingTag.outerHTML).toMatchSnapshot();
     });
 
@@ -188,8 +188,8 @@ describe('misc', () => {
 
       expect(existingTag).toBeInstanceOf(Element);
       expect(existingTag.getAttribute).toBeDefined();
-      expect(existingTag.getAttribute('name')).toEqual('description');
-      expect(existingTag.getAttribute('content')).toEqual('Test Description');
+      expect(existingTag.getAttribute('name')).toBe('description');
+      expect(existingTag.getAttribute('content')).toBe('Test Description');
       expect(existingTag.outerHTML).toMatchSnapshot();
     });
 
@@ -221,8 +221,8 @@ describe('misc', () => {
 
       expect(existingTag).toBeInstanceOf(Element);
       expect(existingTag.getAttribute).toBeDefined();
-      expect(existingTag.getAttribute('name')).toEqual('description');
-      expect(existingTag.getAttribute('content')).toEqual('This is "quoted" text and & and \'.');
+      expect(existingTag.getAttribute('name')).toBe('description');
+      expect(existingTag.getAttribute('content')).toBe('This is "quoted" text and & and \'.');
       expect(existingTag.outerHTML).toMatchSnapshot();
     });
 
@@ -443,7 +443,7 @@ describe('misc', () => {
         </Helmet>
       );
 
-      expect(document.title).toEqual('Test Title');
+      expect(document.title).toBe('Test Title');
     });
 
     it('recognizes valid tags regardless of attribute ordering', () => {
@@ -461,8 +461,8 @@ describe('misc', () => {
 
       expect(existingTag).toBeInstanceOf(Element);
       expect(existingTag.getAttribute).toBeDefined();
-      expect(existingTag.getAttribute('name')).toEqual('description');
-      expect(existingTag.getAttribute('content')).toEqual('Test Description');
+      expect(existingTag.getAttribute('name')).toBe('description');
+      expect(existingTag.getAttribute('content')).toBe('Test Description');
       expect(existingTag.outerHTML).toMatchSnapshot();
     });
 

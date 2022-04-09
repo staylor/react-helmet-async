@@ -114,14 +114,14 @@ describe('script tags', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('src')).toEqual('http://localhost/test.js');
-      expect(firstTag.getAttribute('type')).toEqual('text/javascript');
+      expect(firstTag.getAttribute('src')).toBe('http://localhost/test.js');
+      expect(firstTag.getAttribute('type')).toBe('text/javascript');
       expect(firstTag.outerHTML).toMatchSnapshot();
 
       expect(secondTag).toBeInstanceOf(Element);
       expect(secondTag.getAttribute).toBeDefined();
-      expect(secondTag.getAttribute('src')).toEqual('http://localhost/test2.js');
-      expect(secondTag.getAttribute('type')).toEqual('text/javascript');
+      expect(secondTag.getAttribute('src')).toBe('http://localhost/test2.js');
+      expect(secondTag.getAttribute('type')).toBe('text/javascript');
       expect(secondTag.outerHTML).toMatchSnapshot();
     });
 
@@ -263,14 +263,14 @@ describe('script tags', () => {
 
       expect(firstTag).toBeInstanceOf(Element);
       expect(firstTag.getAttribute).toBeDefined();
-      expect(firstTag.getAttribute('src')).toEqual('http://localhost/test.js');
-      expect(firstTag.getAttribute('type')).toEqual('text/javascript');
+      expect(firstTag.getAttribute('src')).toBe('http://localhost/test.js');
+      expect(firstTag.getAttribute('type')).toBe('text/javascript');
       expect(firstTag.outerHTML).toMatchSnapshot();
 
       expect(secondTag).toBeInstanceOf(Element);
       expect(secondTag.getAttribute).toBeDefined();
-      expect(secondTag.getAttribute('src')).toEqual('http://localhost/test2.js');
-      expect(secondTag.getAttribute('type')).toEqual('text/javascript');
+      expect(secondTag.getAttribute('src')).toBe('http://localhost/test2.js');
+      expect(secondTag.getAttribute('type')).toBe('text/javascript');
       expect(secondTag.outerHTML).toMatchSnapshot();
     });
 
