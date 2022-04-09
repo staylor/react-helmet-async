@@ -23,13 +23,13 @@ declare module 'react-helmet-async' {
   }
 
   export interface HelmetProps {
-    helmetData?: HelmetData;
     async?: boolean;
     base?: any;
     bodyAttributes?: BodyProps;
     defaultTitle?: string;
     defer?: boolean;
     encodeSpecialCharacters?: boolean;
+    helmetData?: HelmetData;
     htmlAttributes?: HtmlProps;
     onChangeClientState?: (newState: any, addedTags: HelmetTags, removedTags: HelmetTags) => void;
     link?: LinkProps[];
@@ -43,9 +43,8 @@ declare module 'react-helmet-async' {
     prioritizeSeoTags?: boolean;
   }
 
-  export class Helmet extends React.Component<HelmetProps> {
-  }
-  
+  export class Helmet extends React.Component<HelmetProps> {}
+
   export interface HelmetServerState {
     base: HelmetDatum;
     bodyAttributes: HelmetHTMLBodyDatum;
@@ -84,10 +83,10 @@ declare module 'react-helmet-async' {
   }
 
   export class HelmetData {
-    constructor(context: any)
+    constructor(context: any);
     context: {
-      helmet: HelmetServerState
-    }
+      helmet: HelmetServerState;
+    };
   }
 
   export class HelmetProvider extends React.Component<ProviderProps> {
