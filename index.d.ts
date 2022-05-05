@@ -41,6 +41,7 @@ declare module 'react-helmet-async' {
     titleAttributes?: Object;
     titleTemplate?: string;
     prioritizeSeoTags?: boolean;
+    children: React.ReactNode;
   }
 
   export class Helmet extends React.Component<React.PropsWithChildren<HelmetProps>> {}
@@ -79,6 +80,7 @@ declare module 'react-helmet-async' {
   }
 
   interface ProviderProps {
+    children: React.ReactNode;
     context?: {};
   }
 
