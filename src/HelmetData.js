@@ -16,6 +16,14 @@ export default class HelmetData {
     helmetInstances: {
       get: () => (this.canUseDOM ? instances : this.instances),
       add: instance => {
+        const alreadyHasSameInstance = (this.canUseDOM ? instances : this.instances).filter(instance => {
+          const a = Object.entries({...instance.props, context: undefined}).sort();
+          const b = Object.entries({...this.props, context: undefined}).sort();
+          return JSON.stringify(a) === JSON.stringify(b);
+        }).length > 0;
+        if  (alreadyHasSameInstance) {
+          return;
+        }
         (this.canUseDOM ? instances : this.instances).push(instance);
       },
       remove: instance => {

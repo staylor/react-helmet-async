@@ -22,12 +22,6 @@ export default class Dispatcher extends Component {
     this.emitChange();
   }
 
-  componentWillUnmount() {
-    const { helmetInstances } = this.props.context;
-    helmetInstances.remove(this);
-    this.emitChange();
-  }
-
   emitChange() {
     const { helmetInstances, setHelmet } = this.props.context;
     let serverState = null;
