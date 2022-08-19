@@ -36,7 +36,7 @@ export const SEO_PRIORITY_TAGS = {
   script: { type: ['application/ld+json'] },
   meta: {
     charset: '',
-    name: ['robots', 'description'],
+    name: ['generator', 'robots', 'description'],
     property: [
       'og:type',
       'og:title',
