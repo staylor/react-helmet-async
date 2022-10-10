@@ -57,7 +57,7 @@ export class Helmet extends Component {
   static defaultProps = {
     defer: true,
     encodeSpecialCharacters: true,
-    prioritizeSeoTags: false,
+    prioritizeSeoTags: true,
   };
 
   static displayName = 'Helmet';
