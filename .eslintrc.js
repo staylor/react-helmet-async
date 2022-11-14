@@ -10,6 +10,7 @@ module.exports = {
       files: ['*.test.js'],
       rules: {
         'react/jsx-props-no-spreading': 0,
+        'react/no-unknown-property': 0,
       },
     },
   ],
