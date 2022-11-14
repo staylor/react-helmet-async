@@ -47,7 +47,7 @@
     "eslint-plugin-react-hooks": "4.6.0",
     "husky": "7.0.4",
     "jest": "27.5.1",
-    "jsdom": "16.4.0",
+    "jsdom": "16.5.0",
     "microbundle": "0.15.1",
     "prettier": "2.7.1",
     "raf": "3.4.1",
