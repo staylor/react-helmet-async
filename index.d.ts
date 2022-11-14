@@ -79,7 +79,7 @@ declare module 'react-helmet-async' {
   }
 
   interface ProviderProps {
-    context?: {};
+    context?: Partial<FilledContext>;
   }
 
   export class HelmetData {
