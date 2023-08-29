@@ -19,11 +19,27 @@ export default class Dispatcher extends Component {
   }
 
   componentDidUpdate() {
+    if (!this.props.context.helmetInstances) {
+      // eslint-disable-next-line no-console
+      console.trace(
+        'No helmet context was found, make sure to wrap your app in a HelmetProvider'
+      );
+      return;
+    }
+
     this.emitChange();
   }
 
   componentWillUnmount() {
     const { helmetInstances } = this.props.context;
+    if (!helmetInstances) {
+      // eslint-disable-next-line no-console
+      console.trace(
+        'No helmet context was found, make sure to wrap your app in a HelmetProvider'
+      );
+      return;
+    }
+
     helmetInstances.remove(this);
     this.emitChange();
   }
@@ -57,6 +73,14 @@ export default class Dispatcher extends Component {
     this.rendered = true;
 
     const { helmetInstances } = this.props.context;
+    if (!helmetInstances) {
+      // eslint-disable-next-line no-console
+      console.trace(
+        'No helmet context was found, make sure to wrap your app in a HelmetProvider'
+      );
+      return;
+    }
+
     helmetInstances.add(this);
     this.emitChange();
   }
