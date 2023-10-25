@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`noscript tags API updates noscript tags 1`] = `"<noscript id=\\"bar\\" data-rh=\\"true\\"><link rel=\\"stylesheet\\" type=\\"text/css\\" href=\\"foo.css\\" /></noscript>"`;
-
-exports[`noscript tags Declarative API updates noscript tags 1`] = `"<noscript id=\\"bar\\" data-rh=\\"true\\"><link rel=\\"stylesheet\\" type=\\"text/css\\" href=\\"foo.css\\" /></noscript>"`;

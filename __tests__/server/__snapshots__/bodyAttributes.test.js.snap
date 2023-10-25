@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`server Declarative API renders body attributes as component 1`] = `"<body lang=\\"ga\\" class=\\"myClassName\\"></body>"`;
-
-exports[`server Declarative API renders body attributes as string 1`] = `"lang=\\"ga\\" class=\\"myClassName\\""`;

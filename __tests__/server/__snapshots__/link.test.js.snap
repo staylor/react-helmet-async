@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`server API renders link tags as React components 1`] = `"<link data-rh=\\"true\\" href=\\"http://localhost/helmet\\" rel=\\"canonical\\"/><link data-rh=\\"true\\" href=\\"http://localhost/style.css\\" rel=\\"stylesheet\\" type=\\"text/css\\"/>"`;
-
-exports[`server API renders link tags as string 1`] = `"<link data-rh=\\"true\\" href=\\"http://localhost/helmet\\" rel=\\"canonical\\"/><link data-rh=\\"true\\" href=\\"http://localhost/style.css\\" rel=\\"stylesheet\\" type=\\"text/css\\"/>"`;
-
-exports[`server Declarative API renders link tags as React components 1`] = `"<link data-rh=\\"true\\" href=\\"http://localhost/helmet\\" rel=\\"canonical\\"/><link data-rh=\\"true\\" href=\\"http://localhost/style.css\\" rel=\\"stylesheet\\" type=\\"text/css\\"/>"`;
-
-exports[`server Declarative API renders link tags as string 1`] = `"<link data-rh=\\"true\\" href=\\"http://localhost/helmet\\" rel=\\"canonical\\"/><link data-rh=\\"true\\" href=\\"http://localhost/style.css\\" rel=\\"stylesheet\\" type=\\"text/css\\"/>"`;
