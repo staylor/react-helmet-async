@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`server API renders html attributes as component 1`] = `"<html lang=\\"ga\\" class=\\"myClassName\\"></html>"`;
-
-exports[`server API renders html attributes as string 1`] = `"lang=\\"ga\\" class=\\"myClassName\\""`;
-
-exports[`server Declarative API renders html attributes as component 1`] = `"<html lang=\\"ga\\" class=\\"myClassName\\"></html>"`;
-
-exports[`server Declarative API renders html attributes as string 1`] = `"lang=\\"ga\\" class=\\"myClassName\\""`;
