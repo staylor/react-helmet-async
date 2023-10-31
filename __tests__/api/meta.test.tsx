@@ -266,7 +266,6 @@ describe('meta tags', () => {
     it('fails gracefully when meta is wrong shape', () => {
       const originalConsole = global.console;
       global.console.warn = vi.fn();
-      global.console.error = vi.fn();
 
       render(
         <Helmet
@@ -282,7 +281,6 @@ describe('meta tags', () => {
 
       expect(existingTags).toHaveLength(0);
 
-      expect(console.error).toHaveBeenCalled();
       expect(console.warn).toHaveBeenCalled();
 
       expect((console.warn as MockedFunction<any>).mock.calls[0][0]).toMatchSnapshot();

@@ -1,7 +1,11 @@
 import '@testing-library/jest-dom';
-import ReactDOM from 'react-dom';
 
 import { clearInstances } from '../src/HelmetData';
+
+import { unmount } from './utils';
+
+// @ts-ignore
+globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 
 let headElement: HTMLHeadElement;
 
@@ -13,10 +17,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  const mount = document.getElementById('mount');
-  if (mount) {
-    ReactDOM.unmountComponentAtNode(mount);
-  }
+  unmount();
 
   clearInstances();
 });
