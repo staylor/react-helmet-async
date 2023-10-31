@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Helmet } from '../../src';
 import Provider from '../../src/Provider';
 import HelmetData from '../../src/HelmetData';

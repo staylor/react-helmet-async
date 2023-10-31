@@ -1,5 +1,6 @@
 import React from 'react';
 import type { MockedFunction } from 'vitest';
+
 import { Helmet } from '../../src';
 import { HELMET_ATTRIBUTE } from '../../src/constants';
 import { render } from '../utils';

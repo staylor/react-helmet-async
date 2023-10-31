@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
+
 import Provider from '../src/Provider';
 
 export const render = (node: ReactNode, context = {} as any) => {

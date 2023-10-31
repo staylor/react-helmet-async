@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import shallowEqual from 'shallowequal';
+
 import handleStateChangeOnClient from './client';
 import mapStateOnServer from './server';
 import { reducePropsToState } from './utils';

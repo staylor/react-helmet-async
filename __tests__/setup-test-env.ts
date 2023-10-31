@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import ReactDOM from 'react-dom';
+
 import { clearInstances } from '../src/HelmetData';
 
 let headElement: HTMLHeadElement;

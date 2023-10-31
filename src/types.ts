@@ -1,4 +1,5 @@
 import type { HTMLAttributes, JSX } from 'react';
+
 import type HelmetData from './HelmetData';
 
 export type Attributes = { [key: string]: string };
