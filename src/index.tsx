@@ -142,7 +142,7 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
 
       const { children: nestedChildren, ...childProps } = child.props;
       // convert React props to HTML attributes
-      const newChildProps = Object.keys(childProps).reduce((obj: any, key: string) => {
+      const newChildProps = Object.keys(childProps).reduce((obj: any, key) => {
         obj[HTML_TAG_MAP[key] || key] = childProps[key];
         return obj;
       }, {});

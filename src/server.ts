@@ -52,9 +52,9 @@ const generateTitleAsString = (
       )}</${type}>`;
 };
 
-const generateTagsAsString = (type: string, tags: HTMLElement[], encode: boolean) =>
-  tags.reduce((str: string, t: any) => {
-    const tag = t as Attributes;
+const generateTagsAsString = (type: string, tags: HTMLElement[], encode = true) =>
+  tags.reduce((str, t) => {
+    const tag = t as unknown as Attributes;
     const attributeHtml = Object.keys(tag)
       .filter(
         attribute =>
@@ -120,7 +120,7 @@ const generateTagsAsReactComponent = (type: string, tags: any[]) =>
     return React.createElement(type, mappedTag);
   });
 
-const getMethodsForTag = (type: string, tags: any, encode: boolean) => {
+const getMethodsForTag = (type: string, tags: any, encode = true) => {
   switch (type) {
     case TAG_NAMES.TITLE:
       return {
@@ -141,7 +141,7 @@ const getMethodsForTag = (type: string, tags: any, encode: boolean) => {
   }
 };
 
-const getPriorityMethods = ({ metaTags, linkTags, scriptTags, encode }: any) => {
+const getPriorityMethods = ({ metaTags, linkTags, scriptTags, encode }: MappedServerState) => {
   const meta = prioritizer(metaTags, SEO_PRIORITY_TAGS.meta);
   const link = prioritizer(linkTags, SEO_PRIORITY_TAGS.link);
   const script = prioritizer(scriptTags, SEO_PRIORITY_TAGS.script);
