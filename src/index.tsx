@@ -2,6 +2,7 @@ import type { PropsWithChildren, ReactElement, ReactNode } from 'react';
 import React, { Component } from 'react';
 import fastCompare from 'react-fast-compare';
 import invariant from 'invariant';
+
 import { Context } from './Provider';
 import type { HelmetDataType } from './HelmetData';
 import HelmetData from './HelmetData';

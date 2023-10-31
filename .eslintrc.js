@@ -10,7 +10,12 @@ module.exports = {
   ],
   plugins: ['prettier'],
   rules: {
-    'import/order': 'error',
+    'import/order': [
+      'error',
+      {
+        'newlines-between': 'always',
+      },
+    ],
     'prettier/prettier': [
       'error',
       {

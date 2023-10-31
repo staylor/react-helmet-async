@@ -1,5 +1,6 @@
 import type { PropsWithChildren } from 'react';
 import React, { Component } from 'react';
+
 import HelmetData from './HelmetData';
 import type { HelmetServerState } from './types';
 

@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { Helmet } from '../src';
 import { HELMET_ATTRIBUTE } from '../src/constants';
+
 import { render } from './utils';
 
 // TODO: This is confusing
