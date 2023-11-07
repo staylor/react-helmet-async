@@ -1,12 +1,14 @@
 import { JSDOM } from 'jsdom';
+import type { DOMWindow } from 'jsdom';
 
 const jsdom = new JSDOM('<!doctype html><html><body><div id="mount"></div></body></html>', {
   url: 'https://nytimes.com',
 });
 const { window } = jsdom;
 
-function copyProps(src: any, target: any) {
+function copyProps(src: DOMWindow, target: typeof globalThis) {
   const props = Object.getOwnPropertyNames(src)
+    // @ts-ignore
     .filter(prop => typeof target[prop] === 'undefined')
     .reduce(
       (result, prop) => ({
