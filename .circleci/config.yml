@@ -19,13 +19,13 @@ jobs:
           key: deps-{{ checksum "package.json" }}
 
       - run: 
-        name: Tests
-        command: yarn test
+          name: Tests
+          command: yarn test
 
       - run:
-        name: Type checks
-        command: yarn tsc
+          name: Type checks
+          command: yarn tsc
       
       - run:
-        name: ESLint
-        command: yarn lint
+          name: ESLint
+          command: yarn lint
