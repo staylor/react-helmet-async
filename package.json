@@ -1,6 +1,6 @@
 {
   "name": "react-helmet-async",
-  "version": "1.3.0",
+  "version": "2.0.0-alpha",
   "description": "Thread-safe Helmet for React 16+ and friends",
   "sideEffects": false,
   "main": "./lib/index.js",
@@ -10,9 +10,7 @@
   "author": "Scott Taylor <scott.c.taylor@mac.com>",
   "license": "Apache-2.0",
   "files": [
-    "lib/",
-    "src/",
-    "index.d.ts"
+    "lib/"
   ],
   "dependencies": {
     "invariant": "^2.2.4",
