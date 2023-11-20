@@ -19,7 +19,7 @@ interface HelmetDataContext {
 
 export default class HelmetData implements HelmetDataType {
   instances = [];
-  canUseDOM = typeof document !== 'undefined';
+  canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
   context: HelmetDataContext;
 
   value = {
