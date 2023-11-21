@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react';
 import React, { Component } from 'react';
 
-import HelmetData from './HelmetData';
+import HelmetData, { isDocument } from './HelmetData';
 import type { HelmetServerState } from './types';
 
 const defaultValue = {};
@@ -9,15 +9,13 @@ const defaultValue = {};
 export const Context = React.createContext(defaultValue);
 
 interface ProviderProps {
-  context: {
+  context?: {
     helmet: HelmetServerState;
   };
 }
 
-const canUseDOM = typeof document !== 'undefined';
-
 export default class HelmetProvider extends Component<PropsWithChildren<ProviderProps>> {
-  static canUseDOM = canUseDOM;
+  static canUseDOM = isDocument;
 
   helmetData: HelmetData;
 
