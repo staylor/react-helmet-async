@@ -17,9 +17,15 @@ interface HelmetDataContext {
   helmet: HelmetServerState;
 }
 
+export const isDocument = !!(
+  typeof window !== 'undefined' &&
+  window.document &&
+  window.document.createElement
+);
+
 export default class HelmetData implements HelmetDataType {
   instances = [];
-  canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+  canUseDOM = isDocument;
   context: HelmetDataContext;
 
   value = {
