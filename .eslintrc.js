@@ -1,17 +1,36 @@
+/**
+ * @type {import('@types/eslint').Linter.BaseConfig}
+ */
 module.exports = {
-  extends: ['kyt'],
-
-  rules: {
-    'react/static-property-placement': 0,
-  },
-
-  overrides: [
-    {
-      files: ['*.test.js'],
-      rules: {
-        'react/jsx-props-no-spreading': 0,
-        'react/no-unknown-property': 0,
-      },
-    },
+  extends: [
+    '@remix-run/eslint-config',
+    '@remix-run/eslint-config/node',
+    '@remix-run/eslint-config/jest-testing-library',
+    'prettier',
   ],
+  plugins: ['prettier'],
+  rules: {
+    'import/order': [
+      'error',
+      {
+        'newlines-between': 'always',
+      },
+    ],
+    'prettier/prettier': [
+      'error',
+      {
+        singleQuote: true,
+        trailingComma: 'es5',
+        useTabs: false,
+        tabWidth: 2,
+        printWidth: 100,
+      },
+    ],
+    'testing-library/render-result-naming-convention': 'off',
+  },
+  settings: {
+    jest: {
+      version: 27,
+    },
+  },
 };

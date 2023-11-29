@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:16
+      - image: cimg/node:18.17.1
 
     steps:
       - checkout
@@ -18,4 +18,14 @@ jobs:
             - node_modules
           key: deps-{{ checksum "package.json" }}
 
-      - run: yarn test
+      - run: 
+          name: Tests
+          command: yarn test
+
+      - run:
+          name: Type checks
+          command: yarn tsc
+      
+      - run:
+          name: ESLint
+          command: yarn lint
