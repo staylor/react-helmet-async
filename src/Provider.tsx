@@ -23,7 +23,8 @@ export default class HelmetProvider extends Component<PropsWithChildren<Provider
   constructor(props: PropsWithChildren<ProviderProps>) {
     super(props);
 
-    this.helmetData = this.props.helmetData || new HelmetData(this.props.context || {}, HelmetProvider.canUseDOM);
+    this.helmetData =
+      this.props.helmetData || new HelmetData(this.props.context || {}, HelmetProvider.canUseDOM);
   }
 
   render() {
