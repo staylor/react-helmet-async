@@ -1,4 +1,4 @@
-import { HELMET_ATTRIBUTE, TAG_NAMES, TAG_PROPERTIES } from './constants';
+import { HELMET_ATTRIBUTE, TAG_EVENTS, TAG_NAMES, TAG_PROPERTIES } from './constants';
 import type { Attributes, StateUpdate, TagList } from './types';
 import { flattenArray } from './utils';
 
@@ -36,6 +36,14 @@ const updateTags = (type: string, tags: HTMLElement[]) => {
               // @ts-ignore
               newElement.appendChild(document.createTextNode(tag.cssText));
             }
+          } else if (
+            (TAG_EVENTS.ON_LOAD === attribute || TAG_EVENTS.ON_ERROR === attribute) &&
+            typeof tag[attribute] === 'function' &&
+            newElement instanceof HTMLScriptElement
+          ) {
+            const attr = attribute as keyof HTMLElement;
+            const value = typeof tag[attr] === 'undefined' ? '' : tag[attr];
+            newElement[attribute] = value as any;
           } else {
             const attr = attribute as keyof HTMLElement;
             const value = typeof tag[attr] === 'undefined' ? '' : tag[attr];

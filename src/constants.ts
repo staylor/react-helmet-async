@@ -17,6 +17,11 @@ export enum ATTRIBUTE_NAMES {
   TITLE = 'titleAttributes',
 }
 
+export enum TAG_EVENTS {
+  ON_LOAD = 'onload',
+  ON_ERROR = 'onerror',
+}
+
 export enum TAG_NAMES {
   BASE = 'base',
   BODY = 'body',
