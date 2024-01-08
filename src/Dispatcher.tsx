@@ -27,6 +27,10 @@ export default class HelmetDispatcher extends Component<DispatcherProps> {
     return !shallowEqual(nextProps, this.props);
   }
 
+  componentDidUpdate() {
+    this.emitChange();
+  }
+
   emitChange() {
     const { helmetInstances, setHelmet } = this.props.context;
     let serverState = null;
