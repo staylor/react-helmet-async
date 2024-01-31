@@ -28,11 +28,21 @@ export default class HelmetDispatcher extends Component<DispatcherProps> {
   }
 
   componentDidUpdate() {
+    if (!this.props.context.helmetInstances) {
+      console.trace('No helmet context was found, make sure to wrap your app in a HelmetProvider');
+      return;
+    }
+
     this.emitChange();
   }
 
   componentWillUnmount() {
     const { helmetInstances } = this.props.context;
+    if (!helmetInstances) {
+      console.trace('No helmet context was found, make sure to wrap your app in a HelmetProvider');
+      return;
+    }
+
     helmetInstances.remove(this);
     this.emitChange();
   }
@@ -68,6 +78,11 @@ export default class HelmetDispatcher extends Component<DispatcherProps> {
     this.rendered = true;
 
     const { helmetInstances } = this.props.context;
+    if (!helmetInstances) {
+      console.trace('No helmet context was found, make sure to wrap your app in a HelmetProvider');
+      return;
+    }
+
     helmetInstances.add(this);
     this.emitChange();
   }
