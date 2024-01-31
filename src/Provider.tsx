@@ -10,7 +10,7 @@ export const Context = React.createContext(defaultValue);
 
 interface ProviderProps {
   context?: {
-    helmet: HelmetServerState;
+    helmet?: HelmetServerState;
   };
 }
 
@@ -19,7 +19,7 @@ export default class HelmetProvider extends Component<PropsWithChildren<Provider
 
   helmetData: HelmetData;
 
-  constructor(props: ProviderProps) {
+  constructor(props: PropsWithChildren<ProviderProps>) {
     super(props);
 
     this.helmetData = new HelmetData(this.props.context || {}, HelmetProvider.canUseDOM);
