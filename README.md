@@ -171,7 +171,7 @@ Will result in:
 </html>
 ```
 
-A list of prioritized tags and attributes can be found in [constants.js](./src/constants.js).
+A list of prioritized tags and attributes can be found in [constants.ts](./src/constants.ts).
 
 ## Usage without Context
 You can optionally use `<Helmet>` outside a context by manually creating a stateful `HelmetData` instance, and passing that stateful object to each `<Helmet>` instance:
