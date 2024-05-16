@@ -161,6 +161,51 @@ describe('onChangeClientState', () => {
     });
   });
 
+  describe('Callbacks', () => {
+    it('Verify that callback onload is triggered', async () => {
+      const onChange = vi.fn();
+      let obj = { nested: { loaded: false, error: false } };
+
+      let onLoad = () => {
+        obj.nested.loaded = true;
+      };
+
+      const onError = () => {
+        obj.nested.error = true;
+      };
+
+      render(
+        <div>
+          <Helmet onChangeClientState={onChange}>
+            <title>Main Title</title>
+            <script
+              src="http://localhost/test.js"
+              type="text/javascript"
+              onload={onLoad} // eslint-disable-line
+              onError={onError}
+            />
+          </Helmet>
+        </div>
+      );
+
+      const newState = onChange.mock.calls[0][0];
+      expect(onChange).toHaveBeenCalled();
+      expect(onChange.mock.calls).toHaveLength(1);
+      expect(newState).toEqual(expect.objectContaining({ title: 'Main Title' }));
+      expect(typeof newState.scriptTags[0].onload).toEqual('function');
+      await new Promise(resolve =>
+        setInterval(() => {
+          // Simulate script load
+          newState.scriptTags[0].onload();
+          if (obj.nested.loaded) {
+            resolve(true);
+          }
+        }, 100)
+      );
+      expect(obj.nested).toEqual({ loaded: true, error: false });
+    });
+  });
+
   // it('calls the deepest defined callback with the deepest state', () => {
   //   const onChange = vi.fn();
   //   render(
