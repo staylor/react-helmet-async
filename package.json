@@ -1,10 +1,10 @@
 {
   "name": "react-helmet-async",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Thread-safe Helmet for React 16+ and friends",
   "sideEffects": false,
-  "main": "./lib/index.js",
-  "module": "./lib/index.esm.js",
+  "main": "./lib/index.esm.js",
+  "type": "module",
   "typings": "./lib/index.d.ts",
   "repository": "http://github.com/staylor/react-helmet-async",
   "author": "Scott Taylor <scott.c.taylor@mac.com>",
