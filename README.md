@@ -70,7 +70,7 @@ const { helmet } = helmetContext;
 
 ## Streams
 
-This package only works with streaming if your `<head>` data is output outside of `renderToNodeStream()`.
+This package only works with streaming if your `<head>` data is output outside of `renderToPipeableStream()`.
 This is possible if your data hydration method already parses your React tree. Example:
 
 ```javascript
@@ -100,22 +100,39 @@ const [header, footer] = template({
   helmet: helmetContext.helmet,
 });
 
-res.status(200);
-res.write(header);
-renderToNodeStream(app)
-  .pipe(
-    through(
-      function write(data) {
-        this.queue(data);
-      },
-      function end() {
-        this.queue(footer);
-        this.queue(null);
+const { pipe } = renderToPipeableStream(appElement, {
+  onShellError() {
+    console.error("Shell rendering error");
+  },
+  onAllReady() {
+    const transformStream = new Transform({
+      transform(chunk, encoding, callback) {
+          res.write(chunk, encoding);
+          callback();
+        },
+      });
+      if (helmetContext) {
+        res.write(helmetContext.title.toString());
+        res.write(helmetContext.priority.toString());
+        res.write(helmetContext.meta.toString());
+        res.write(helmetContext.link.toString());
+        res.write(helmetContext.script.toString());
       }
-    )
-  )
-  .pipe(res);
+
+    pipe(transformStream);
+
+    transformStream.on("finish", () => {
+      res.write(`</body></html>`);
+    });
+  },
+  onError(error) {
+    didError = true;
+    console.error("Rendering error:", error);
+  },
+});
 ```
+
+You can find a complete exemple project here: https://github.com/aqora-io/relay-vite-ssr-example
 
 ## Usage in Jest
 While testing in using jest, if there is a need to emulate SSR, the following string is required to have the test behave the way they are expected to.
