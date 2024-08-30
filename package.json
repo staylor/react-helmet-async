@@ -3,9 +3,9 @@
   "version": "2.0.4",
   "description": "Thread-safe Helmet for React 16+ and friends",
   "sideEffects": false,
-  "main": "./lib/index.js",
-  "module": "./lib/index.esm.js",
-  "typings": "./lib/index.d.ts",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "typings": "./lib/esm/index.d.ts",
   "repository": "http://github.com/staylor/react-helmet-async",
   "author": "Scott Taylor <scott.c.taylor@mac.com>",
   "license": "Apache-2.0",
@@ -29,7 +29,6 @@
     "@types/react": "18.2.39",
     "@types/shallowequal": "1.1.5",
     "@vitejs/plugin-react": "4.2.0",
-    "esbuild": "0.19.8",
     "eslint": "8.54.0",
     "eslint-config-prettier": "9.0.0",
     "eslint-plugin-prettier": "5.0.1",
@@ -40,7 +39,6 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "rimraf": "5.0.5",
-    "tsx": "4.6.1",
     "typescript": "5.2.2",
     "vite": "4.5.0",
     "vitest": "0.34.6"
@@ -55,8 +53,9 @@
     "test": "vitest run",
     "test-watch": "yarn test --watch",
     "test-update": "yarn test -u",
-    "compile": "yarn run clean && NODE_ENV=production tsx build.ts && yarn types",
-    "prepare": "yarn compile && husky install",
-    "types": "tsc src/index.tsx --jsx react --declaration --esModuleInterop --allowJs --emitDeclarationOnly --outDir lib"
+    "compile": "yarn run clean && yarn run compile:cjs && yarn run compile:esm",
+    "compile:cjs": "tsc -p ./tsconfig.cjs.json",
+    "compile:esm": "tsc -p ./tsconfig.esm.json",
+    "prepare": "yarn compile && husky install"
   }
 }
