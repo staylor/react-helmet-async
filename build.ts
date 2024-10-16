@@ -16,6 +16,6 @@ build({
 
 build({
   ...shared,
-  outfile: 'lib/index.esm.js',
+  outfile: 'lib/index.mjs',
   format: 'esm',
 });
