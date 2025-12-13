@@ -148,7 +148,9 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
         return;
       }
 
-      const { children: nestedChildren, ...childProps } = child.props;
+      // React 19 changed how props are accessed - need to handle both old and new behavior
+      const props = child.props as any;
+      const { children: nestedChildren, ...childProps } = props;
       // convert React props to HTML attributes
       const newChildProps = Object.keys(childProps).reduce((obj: Props, key) => {
         obj[HTML_TAG_MAP[key] || key] = childProps[key];
