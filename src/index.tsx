@@ -1,5 +1,5 @@
 import type { PropsWithChildren, ReactElement, ReactNode } from 'react';
-import React, { Component } from 'react';
+import { Component, Children } from 'react';
 import fastCompare from 'react-fast-compare';
 import invariant from 'invariant';
 
@@ -143,7 +143,7 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
   mapChildrenToProps(children: ReactNode, newProps: Props) {
     let arrayTypeChildren = {};
 
-    React.Children.forEach(children as JSX.Element, (child: ReactElement) => {
+    Children.forEach(children as JSX.Element, (child: ReactElement) => {
       if (!child || !child.props) {
         return;
       }
