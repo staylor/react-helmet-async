@@ -26,7 +26,7 @@
     "@types/eslint": "8.44.8",
     "@types/invariant": "2.2.37",
     "@types/jsdom": "21.1.6",
-    "@types/react": "18.2.39",
+    "@types/react": "^19.0.1",
     "@types/shallowequal": "1.1.5",
     "@vitejs/plugin-react": "4.2.0",
     "esbuild": "0.19.8",
@@ -37,8 +37,8 @@
     "jsdom": "22.1.0",
     "prettier": "3.1.0",
     "raf": "3.4.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "rimraf": "5.0.5",
     "tsx": "4.6.1",
     "typescript": "5.2.2",
@@ -46,7 +46,7 @@
     "vitest": "0.34.6"
   },
   "peerDependencies": {
-    "react": "^16.6.0 || ^17.0.0 || ^18.0.0"
+    "react": "^16.6.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
   },
   "scripts": {
     "clean": "rimraf lib",
@@ -57,6 +57,7 @@
     "test-update": "yarn test -u",
     "compile": "yarn run clean && NODE_ENV=production tsx build.ts && yarn types",
     "prepare": "yarn compile && husky install",
-    "types": "tsc src/index.tsx --jsx react --declaration --esModuleInterop --allowJs --emitDeclarationOnly --outDir lib"
-  }
+    "types": "tsc src/index.tsx --jsx react-jsx --declaration --esModuleInterop --allowJs --emitDeclarationOnly --outDir lib"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

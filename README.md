@@ -9,6 +9,8 @@ This package is a fork of [React Helmet](https://github.com/nfl/react-helmet).
 
 `react-helmet` relies on `react-side-effect`, which is not thread-safe. If you are doing anything asynchronous on the server, you need Helmet to encapsulate data on a per-request basis, this package does just that.
 
+Supports React 16.6+, including React 17, 18, and 19.
+
 ## Usage
 
 **New is 1.0.0:** No more default export! `import { Helmet } from 'react-helmet-async'`

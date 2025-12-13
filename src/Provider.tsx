@@ -1,12 +1,12 @@
 import type { PropsWithChildren } from 'react';
-import React, { Component } from 'react';
+import { Component, createContext } from 'react';
 
 import HelmetData, { isDocument } from './HelmetData';
 import type { HelmetServerState } from './types';
 
 const defaultValue = {};
 
-export const Context = React.createContext(defaultValue);
+export const Context = createContext(defaultValue);
 
 interface ProviderProps {
   context?: {

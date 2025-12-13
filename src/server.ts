@@ -1,4 +1,4 @@
-import React from 'react';
+import { createElement } from 'react';
 
 import {
   HELMET_ATTRIBUTE,
@@ -93,7 +93,7 @@ const generateTitleAsReactComponent = (_type: string, title: string, attributes:
   };
   const props = convertElementAttributesToReactProps(attributes, initProps);
 
-  return [React.createElement(TAG_NAMES.TITLE, props, title)];
+  return [createElement(TAG_NAMES.TITLE, props, title)];
 };
 
 const generateTagsAsReactComponent = (type: string, tags: any[]) =>
@@ -118,7 +118,7 @@ const generateTagsAsReactComponent = (type: string, tags: any[]) =>
       }
     });
 
-    return React.createElement(type, mappedTag);
+    return createElement(type, mappedTag);
   });
 
 const getMethodsForTag = (type: string, tags: any, encode = true) => {
