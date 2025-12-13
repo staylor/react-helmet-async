@@ -10,7 +10,9 @@ interface VitestConfigExport extends UserConfig {
 }
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react({
+    jsxRuntime: 'automatic',
+  })],
   test: {
     globals: true,
     environment: 'jsdom',

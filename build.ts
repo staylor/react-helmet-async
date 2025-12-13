@@ -6,6 +6,7 @@ const shared = {
   entryPoints: ['src/index.tsx'],
   bundle: true,
   external: Object.keys(dependencies).concat(Object.keys(peerDependencies)),
+  jsx: 'automatic' as const,
 };
 
 build({
