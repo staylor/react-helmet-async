@@ -5,10 +5,10 @@ import handleStateChangeOnClient from './client';
 import mapStateOnServer from './server';
 import { reducePropsToState } from './utils';
 import Provider from './Provider';
-import type { HelmetServerState } from './types';
+import type { HelmetServerState, MappedServerState } from './types';
 
 export interface DispatcherContextProp {
-  setHelmet: (newState: HelmetServerState) => void;
+  setHelmet: (newState: HelmetServerState | null) => void;
   helmetInstances: {
     get: () => HelmetDispatcher[];
     add: (helmet: HelmetDispatcher) => void;
@@ -39,21 +39,19 @@ export default class HelmetDispatcher extends Component<DispatcherProps> {
 
   emitChange() {
     const { helmetInstances, setHelmet } = this.props.context;
-    let serverState = null;
+    let serverState: HelmetServerState | null = null;
     const state = reducePropsToState(
       helmetInstances.get().map(instance => {
-        const props = { ...instance.props };
-        // @ts-ignore
-        delete props.context;
+        const { context: _context, ...props } = instance.props as DispatcherProps &
+          Record<string, unknown>;
         return props;
       })
     );
     if (Provider.canUseDOM) {
       handleStateChangeOnClient(state);
     } else if (mapStateOnServer) {
-      serverState = mapStateOnServer(state);
+      serverState = mapStateOnServer(state as MappedServerState) as unknown as HelmetServerState;
     }
-    // @ts-ignore
     setHelmet(serverState);
   }
 

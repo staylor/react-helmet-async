@@ -8,11 +8,28 @@ import type { HelmetDataType } from './HelmetData';
 import HelmetData from './HelmetData';
 import type { DispatcherContextProp } from './Dispatcher';
 import Dispatcher from './Dispatcher';
+import React19Dispatcher from './React19Dispatcher';
+import { isReact19 } from './reactVersion';
 import { without } from './utils';
 import { TAG_NAMES, VALID_TAG_NAMES, HTML_TAG_MAP } from './constants';
 import type { HelmetProps } from './types';
 
-export * from './types';
+export type {
+  Attributes,
+  BodyProps,
+  HelmetDatum,
+  HelmetHTMLBodyDatum,
+  HelmetHTMLElementDatum,
+  HelmetProps,
+  HelmetServerState,
+  HelmetTags,
+  HtmlProps,
+  LinkProps,
+  MetaProps,
+  StateUpdate,
+  TagList,
+  TitleProps,
+} from './types';
 
 export { default as HelmetData } from './HelmetData';
 export { default as HelmetProvider } from './Provider';
@@ -30,7 +47,7 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
     return !fastCompare(without(this.props, 'helmetData'), without(nextProps, 'helmetData'));
   }
 
-  mapNestedChildrenToProps(child: ReactElement, nestedChildren: ReactNode) {
+  private mapNestedChildrenToProps(child: ReactElement, nestedChildren: ReactNode) {
     if (!nestedChildren) {
       return null;
     }
@@ -53,7 +70,7 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
     }
   }
 
-  flattenArrayTypeChildren(
+  private flattenArrayTypeChildren(
     child: JSX.Element,
     arrayTypeChildren: { [key: string]: JSX.Element[] },
     newChildProps: Props,
@@ -71,7 +88,7 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
     };
   }
 
-  mapObjectTypeChildren(
+  private mapObjectTypeChildren(
     child: JSX.Element,
     newProps: Props,
     newChildProps: Props,
@@ -104,7 +121,10 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
     }
   }
 
-  mapArrayTypeChildrenToProps(arrayTypeChildren: { [key: string]: JSX.Element }, newProps: Props) {
+  private mapArrayTypeChildrenToProps(
+    arrayTypeChildren: { [key: string]: JSX.Element },
+    newProps: Props
+  ) {
     let newFlattenedProps = { ...newProps };
 
     Object.keys(arrayTypeChildren).forEach(arrayChildName => {
@@ -117,7 +137,7 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
     return newFlattenedProps;
   }
 
-  warnOnInvalidChildren(child: JSX.Element, nestedChildren: ReactNode) {
+  private warnOnInvalidChildren(child: JSX.Element, nestedChildren: ReactNode) {
     invariant(
       VALID_TAG_NAMES.some(name => child.type === name),
       typeof child.type === 'function'
@@ -140,7 +160,7 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
     return true;
   }
 
-  mapChildrenToProps(children: ReactNode, newProps: Props) {
+  private mapChildrenToProps(children: ReactNode, newProps: Props) {
     let arrayTypeChildren = {};
 
     React.Children.forEach(children as JSX.Element, (child: ReactElement) => {
@@ -202,6 +222,12 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
       const data = helmetData as HelmetDataType;
       helmetData = new HelmetData(data.context, true);
       delete newProps.helmetData;
+    }
+
+    // React 19+ natively supports hoisting <title>, <meta>, <link>, etc.
+    // to <head>, so we render actual elements instead of doing DOM manipulation.
+    if (isReact19) {
+      return <React19Dispatcher {...newProps} />;
     }
 
     return helmetData ? (

@@ -29,8 +29,8 @@ export default class HelmetData implements HelmetDataType {
   context: HelmetDataContext;
 
   value = {
-    setHelmet: (serverState: HelmetServerState) => {
-      this.context.helmet = serverState;
+    setHelmet: (serverState: HelmetServerState | null) => {
+      this.context.helmet = serverState!;
     },
     helmetInstances: {
       get: () => (this.canUseDOM ? instances : this.instances),

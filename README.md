@@ -9,15 +9,26 @@ This package is a fork of [React Helmet](https://github.com/nfl/react-helmet).
 
 `react-helmet` relies on `react-side-effect`, which is not thread-safe. If you are doing anything asynchronous on the server, you need Helmet to encapsulate data on a per-request basis, this package does just that.
 
+## React 19
+
+React 19 has built-in support for hoisting `<title>`, `<meta>`, `<link>`, `<style>`, and `<script>` elements to `<head>`. Starting with version 2.1.0, this package detects the React version at runtime:
+
+- **React 19+**: `<Helmet>` renders actual DOM elements and lets React handle hoisting them to `<head>`. `<HelmetProvider>` becomes a transparent passthrough. The existing API is fully compatible — you do not need to change any code.
+- **React 16–18**: The existing behavior is preserved. `<Helmet>` collects all instances, deduplicates tags, and applies changes to the DOM via manual manipulation (client) or serializes them for the response (server).
+
+> **Note:** `htmlAttributes` and `bodyAttributes` do not have a React 19 equivalent, so they are still applied via direct DOM manipulation on both code paths.
+
+If you are starting a new React 19 project and do not need `htmlAttributes`/`bodyAttributes`, SSR `context` serialization, `onChangeClientState`, `prioritizeSeoTags`, or `titleTemplate` support, you may not need this package at all — React 19's built-in metadata handling may be sufficient.
+
 ## Usage
 
-**New is 1.0.0:** No more default export! `import { Helmet } from 'react-helmet-async'`
+**New in 1.0.0:** No more default export! `import { Helmet } from 'react-helmet-async'`
 
 The main way that this package differs from `react-helmet` is that it requires using a Provider to encapsulate Helmet state for your React tree. If you use libraries like Redux or Apollo, you are already familiar with this paradigm:
 
 ```javascript
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const app = (
@@ -32,10 +43,7 @@ const app = (
   </HelmetProvider>
 );
 
-ReactDOM.hydrate(
-  app,
-  document.getElementById(‘app’)
-);
+createRoot(document.getElementById('app')).render(app);
 ```
 
 On the server, we will no longer use static methods to extract state. `react-side-effect`
@@ -67,6 +75,8 @@ const { helmet } = helmetContext;
 
 // helmet.title.toString() etc…
 ```
+
+> **React 19 SSR note:** When using React 19, `<title>`, `<meta>`, and `<link>` tags rendered inside `<Helmet>` are included directly in the React render output and hoisted to `<head>` by React itself. The `context` object will not be populated with helmet state on React 19. If you rely on the `context` for server rendering, you can render these tags directly in your component tree instead and let React 19 handle them natively.
 
 ## Streams
 
@@ -117,6 +127,8 @@ renderToNodeStream(app)
   .pipe(res);
 ```
 
+> **React 19:** React 19's `renderToReadableStream` natively handles `<title>`, `<meta>`, and `<link>` hoisting during streaming, so the manual context extraction shown above is not necessary.
+
 ## Usage in Jest
 While testing in using jest, if there is a need to emulate SSR, the following string is required to have the test behave the way they are expected to.
 
@@ -125,6 +137,8 @@ import { HelmetProvider } from 'react-helmet-async';
 
 HelmetProvider.canUseDOM = false;
 ```
+
+> This is only relevant for React 16–18. On React 19, `HelmetProvider` is a passthrough and `canUseDOM` has no effect.
 
 ## Prioritizing tags for SEO
 
@@ -173,6 +187,8 @@ Will result in:
 
 A list of prioritized tags and attributes can be found in [constants.ts](./src/constants.ts).
 
+> **React 19:** The `prioritizeSeoTags` flag has no effect on React 19, since tags are rendered as regular JSX elements and their order in `<head>` is determined by React's rendering order.
+
 ## Usage without Context
 You can optionally use `<Helmet>` outside a context by manually creating a stateful `HelmetData` instance, and passing that stateful object to each `<Helmet>` instance:
 
@@ -180,7 +196,7 @@ You can optionally use `<Helmet>` outside a context by manually creating a state
 ```js
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { Helmet, HelmetProvider, HelmetData } from 'react-helmet-async';
+import { Helmet, HelmetData } from 'react-helmet-async';
 
 const helmetData = new HelmetData({});
 
@@ -198,6 +214,17 @@ const html = renderToString(app);
 
 const { helmet } = helmetData.context;
 ```
+
+> **React 19:** The `helmetData` prop is ignored on React 19, since `<Helmet>` renders elements directly without the need for external state management.
+
+## Compatibility
+
+| React Version | Behavior |
+|---|---|
+| 16.6+ | Full support via `HelmetProvider` context and manual DOM updates |
+| 17.x | Full support via `HelmetProvider` context and manual DOM updates |
+| 18.x | Full support via `HelmetProvider` context and manual DOM updates |
+| 19.x+ | Renders native JSX elements; React handles `<head>` hoisting |
 
 ## License
 

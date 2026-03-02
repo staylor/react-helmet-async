@@ -27,15 +27,8 @@ const updateTags = (type: string, tags: HTMLElement[]) => {
           if (attribute === TAG_PROPERTIES.INNER_HTML) {
             newElement.innerHTML = tag.innerHTML;
           } else if (attribute === TAG_PROPERTIES.CSS_TEXT) {
-            // This seems like a CSSImportRuleDeclaration?
-            // @ts-ignore
-            if (newElement.styleSheet) {
-              // @ts-ignore
-              newElement.styleSheet.cssText = tag.cssText;
-            } else {
-              // @ts-ignore
-              newElement.appendChild(document.createTextNode(tag.cssText));
-            }
+            const cssText = (tag as unknown as Record<string, string>).cssText;
+            newElement.appendChild(document.createTextNode(cssText));
           } else {
             const attr = attribute as keyof HTMLElement;
             const value = typeof tag[attr] === 'undefined' ? '' : tag[attr];
