@@ -1,19 +1,11 @@
 {
+  "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "types": ["vitest/globals"],
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "jsx": "react",
-    "module": "ESNext",
-    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "target": "ESNext",
-    "strict": true,
-    "baseUrl": ".",
-    "skipLibCheck": true,
-    "noEmit": true,
-    "forceConsistentCasingInFileNames": true
+    "declaration": false,
+    "emitDeclarationOnly": false,
+    "noEmit": true
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "__tests__/**/*.ts", "__tests__/**/*.tsx"],
   "exclude": ["node_modules", "lib"]

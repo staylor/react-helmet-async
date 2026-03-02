@@ -10,10 +10,10 @@
     "strict": true,
     "baseUrl": ".",
     "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "declaration": true,
     "emitDeclarationOnly": true,
-    "outDir": "lib",
-    "forceConsistentCasingInFileNames": true
+    "outDir": "lib"
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"]
 }
