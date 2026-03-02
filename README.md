@@ -1,6 +1,6 @@
 # react-helmet-async
 
-[![CircleCI](https://circleci.com/gh/staylor/react-helmet-async.svg?style=svg)](https://circleci.com/gh/staylor/react-helmet-async)
+[![CI](https://github.com/staylor/react-helmet-async/actions/workflows/ci.yml/badge.svg)](https://github.com/staylor/react-helmet-async/actions/workflows/ci.yml)
 
 [Announcement post on Times Open blog](https://open.nytimes.com/the-future-of-meta-tag-management-for-modern-react-development-ec26a7dc9183)
 
