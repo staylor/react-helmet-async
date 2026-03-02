@@ -1,11 +1,23 @@
 {
   "name": "react-helmet-async",
-  "version": "2.0.4",
-  "description": "Thread-safe Helmet for React 16+ and friends",
+  "version": "3.0.0",
+  "description": "Thread-safe Helmet for React 16–18, with native support for React 19+",
   "sideEffects": false,
   "main": "./lib/index.js",
   "module": "./lib/index.esm.js",
-  "typings": "./lib/index.d.ts",
+  "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.esm.js"
+      },
+      "require": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.js"
+      }
+    }
+  },
   "repository": "http://github.com/staylor/react-helmet-async",
   "author": "Scott Taylor <scott.c.taylor@mac.com>",
   "license": "Apache-2.0",
@@ -46,17 +58,17 @@
     "vitest": "0.34.6"
   },
   "peerDependencies": {
-    "react": "^16.6.0 || ^17.0.0 || ^18.0.0"
+    "react": "^16.6.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
   },
   "scripts": {
     "clean": "rimraf lib",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint --report-unused-disable-directives .",
-    "lint-fix": "yarn lint --fix",
+    "lint-fix": "pnpm lint --fix",
     "test": "vitest run",
-    "test-watch": "yarn test --watch",
-    "test-update": "yarn test -u",
-    "compile": "yarn run clean && NODE_ENV=production tsx build.ts && yarn types",
-    "prepare": "yarn compile && husky install",
-    "types": "tsc src/index.tsx --jsx react --declaration --esModuleInterop --allowJs --emitDeclarationOnly --outDir lib"
+    "test-watch": "pnpm test -- --watch",
+    "test-update": "pnpm test -- -u",
+    "compile": "pnpm run clean && NODE_ENV=production tsx build.ts && pnpm run types",
+    "prepare": "pnpm run compile && husky install",
+    "types": "tsc --project tsconfig.build.json"
   }
 }
