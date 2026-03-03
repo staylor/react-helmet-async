@@ -61,6 +61,33 @@ describe('React 19 – body attributes', () => {
       expect(document.body).not.toHaveAttribute('class');
       expect(document.body).not.toHaveAttribute('data-rh-managed');
     });
+
+    it('inner instance overrides outer instance for conflicting body attributes', () => {
+      render(
+        <>
+          <Helmet bodyAttributes={{ className: 'outer' }} />
+          <Helmet bodyAttributes={{ className: 'inner' }} />
+        </>
+      );
+
+      expect(document.body).toHaveAttribute('class', 'inner');
+    });
+
+    it('restores outer instance body attributes when inner instance unmounts', () => {
+      render(
+        <>
+          <Helmet bodyAttributes={{ className: 'outer' }} />
+          <Helmet bodyAttributes={{ className: 'inner' }} />
+        </>
+      );
+
+      expect(document.body).toHaveAttribute('class', 'inner');
+
+      // Simulate unmounting the inner instance by re-rendering with only the outer
+      render(<Helmet bodyAttributes={{ className: 'outer' }} />);
+
+      expect(document.body).toHaveAttribute('class', 'outer');
+    });
   });
 
   describe('Declarative API', () => {
