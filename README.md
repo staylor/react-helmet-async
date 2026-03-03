@@ -11,7 +11,7 @@ This package is a fork of [React Helmet](https://github.com/nfl/react-helmet).
 
 ## React 19
 
-React 19 has built-in support for hoisting `<title>`, `<meta>`, `<link>`, `<style>`, and `<script>` elements to `<head>`. Starting with version 2.1.0, this package detects the React version at runtime:
+React 19 has built-in support for hoisting `<title>`, `<meta>`, `<link>`, `<style>`, and `<script>` elements to `<head>`. Starting with version 3.0.0, this package detects the React version at runtime:
 
 - **React 19+**: `<Helmet>` renders actual DOM elements and lets React handle hoisting them to `<head>`. `<HelmetProvider>` becomes a transparent passthrough. The existing API is fully compatible — you do not need to change any code.
 - **React 16–18**: The existing behavior is preserved. `<Helmet>` collects all instances, deduplicates tags, and applies changes to the DOM via manual manipulation (client) or serializes them for the response (server).
@@ -225,6 +225,15 @@ const { helmet } = helmetData.context;
 | 17.x | Full support via `HelmetProvider` context and manual DOM updates |
 | 18.x | Full support via `HelmetProvider` context and manual DOM updates |
 | 19.x+ | Renders native JSX elements; React handles `<head>` hoisting |
+
+## Development
+
+```bash
+pnpm install
+pnpm test            # unit tests
+pnpm run test:e2e    # server + browser e2e tests
+pnpm run test:all    # everything
+```
 
 ## License
 
