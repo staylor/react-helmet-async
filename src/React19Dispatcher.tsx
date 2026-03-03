@@ -88,6 +88,10 @@ interface React19DispatcherProps extends HelmetProps {
  * manipulation since React 19 doesn't handle those.
  */
 export default class React19Dispatcher extends Component<React19DispatcherProps> {
+  componentDidMount() {
+    this.applyNonHostedAttributes();
+  }
+
   componentDidUpdate() {
     this.applyNonHostedAttributes();
   }
@@ -191,13 +195,7 @@ export default class React19Dispatcher extends Component<React19DispatcherProps>
     });
   }
 
-  init() {
-    this.applyNonHostedAttributes();
-  }
-
   render() {
-    this.init();
-
     return React.createElement(
       React.Fragment,
       null,
