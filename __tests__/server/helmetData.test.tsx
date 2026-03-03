@@ -25,7 +25,7 @@ describe('Helmet Data', () => {
         <Helmet helmetData={helmetData} base={{ target: '_blank', href: 'http://localhost/' }} />
       );
 
-      const head = helmetData.context.helmet;
+      const head = helmetData.context.helmet!;
 
       expect(head.base).toBeDefined();
       expect(head.base.toString).toBeDefined();
@@ -41,7 +41,7 @@ describe('Helmet Data', () => {
         </Helmet>
       );
 
-      const head = helmetData.context.helmet;
+      const head = helmetData.context.helmet!;
 
       expect(head.base).toBeDefined();
       expect(head.base.toString).toBeDefined();
@@ -62,7 +62,7 @@ describe('Helmet Data', () => {
         </div>
       );
 
-      const head = helmetData.context.helmet;
+      const head = helmetData.context.helmet!;
 
       expect(head.base).toBeDefined();
       expect(head.base.toString).toBeDefined();
