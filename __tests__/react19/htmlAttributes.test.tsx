@@ -88,6 +88,46 @@ describe('React 19 – html attributes', () => {
       const htmlTag = document.documentElement;
       expect(htmlTag).not.toHaveAttribute('lang');
     });
+
+    it('inner instance overrides outer instance for conflicting attributes', () => {
+      render(
+        <>
+          <Helmet htmlAttributes={{ lang: 'en' }} />
+          <Helmet htmlAttributes={{ lang: 'ja' }} />
+        </>
+      );
+
+      expect(document.documentElement).toHaveAttribute('lang', 'ja');
+    });
+
+    it('restores outer instance attributes when inner instance unmounts', () => {
+      // Render both outer and inner Helmet instances
+      render(
+        <>
+          <Helmet htmlAttributes={{ lang: 'en' }} />
+          <Helmet htmlAttributes={{ lang: 'ja' }} />
+        </>
+      );
+
+      expect(document.documentElement).toHaveAttribute('lang', 'ja');
+
+      // Simulate unmounting the inner instance by re-rendering with only the outer
+      render(<Helmet htmlAttributes={{ lang: 'en' }} />);
+
+      expect(document.documentElement).toHaveAttribute('lang', 'en');
+    });
+
+    it('merges non-conflicting attributes from multiple instances', () => {
+      render(
+        <>
+          <Helmet htmlAttributes={{ lang: 'en' }} />
+          <Helmet htmlAttributes={{ class: 'inner' }} />
+        </>
+      );
+
+      expect(document.documentElement).toHaveAttribute('lang', 'en');
+      expect(document.documentElement).toHaveAttribute('class', 'inner');
+    });
   });
 
   describe('Declarative API', () => {
