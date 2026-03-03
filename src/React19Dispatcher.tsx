@@ -4,6 +4,11 @@ import { TAG_NAMES, HTML_TAG_MAP, REACT_TAG_MAP } from './constants';
 import { isDocument } from './HelmetData';
 import type { HelmetProps } from './types';
 
+// Module-level registry of all mounted React19Dispatcher instances.
+// This enables instance-aware merging of html/body attributes so that
+// unmounting one instance correctly falls back to the outer instance's attrs.
+const react19Instances: React19Dispatcher[] = [];
+
 /**
  * Converts React-style prop names to HTML attribute names.
  * e.g. { className: 'foo' } → { class: 'foo' }
@@ -71,6 +76,29 @@ const applyAttributes = (tagName: string, attributes: { [key: string]: any }) =>
   }
 };
 
+/**
+ * Merges html/body attributes from all registered instances (earlier instances
+ * are overridden by later ones for conflicting keys, matching the legacy
+ * reducePropsToState behavior) and applies the result to the DOM.
+ */
+const syncAllAttributes = () => {
+  const htmlAttrs: { [key: string]: any } = {};
+  const bodyAttrs: { [key: string]: any } = {};
+
+  for (const instance of react19Instances) {
+    const { htmlAttributes, bodyAttributes } = instance.props;
+    if (htmlAttributes) {
+      Object.assign(htmlAttrs, toHtmlAttributes(htmlAttributes));
+    }
+    if (bodyAttributes) {
+      Object.assign(bodyAttrs, toHtmlAttributes(bodyAttributes));
+    }
+  }
+
+  applyAttributes(TAG_NAMES.HTML, htmlAttrs);
+  applyAttributes(TAG_NAMES.BODY, bodyAttrs);
+};
+
 interface React19DispatcherProps extends HelmetProps {
   /**
    * The processed props including mapped children. These come from Helmet's
@@ -88,24 +116,21 @@ interface React19DispatcherProps extends HelmetProps {
  * manipulation since React 19 doesn't handle those.
  */
 export default class React19Dispatcher extends Component<React19DispatcherProps> {
+  componentDidMount() {
+    react19Instances.push(this);
+    syncAllAttributes();
+  }
+
   componentDidUpdate() {
-    this.applyNonHostedAttributes();
+    syncAllAttributes();
   }
 
   componentWillUnmount() {
-    // Clean up html/body attributes
-    applyAttributes(TAG_NAMES.HTML, {});
-    applyAttributes(TAG_NAMES.BODY, {});
-  }
-
-  applyNonHostedAttributes() {
-    const { htmlAttributes, bodyAttributes } = this.props;
-    if (htmlAttributes) {
-      applyAttributes(TAG_NAMES.HTML, toHtmlAttributes(htmlAttributes));
+    const index = react19Instances.indexOf(this);
+    if (index !== -1) {
+      react19Instances.splice(index, 1);
     }
-    if (bodyAttributes) {
-      applyAttributes(TAG_NAMES.BODY, toHtmlAttributes(bodyAttributes));
-    }
+    syncAllAttributes();
   }
 
   resolveTitle(): string | undefined {
@@ -191,13 +216,7 @@ export default class React19Dispatcher extends Component<React19DispatcherProps>
     });
   }
 
-  init() {
-    this.applyNonHostedAttributes();
-  }
-
   render() {
-    this.init();
-
     return React.createElement(
       React.Fragment,
       null,
