@@ -34,5 +34,31 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      - name: Tests
+      - name: Unit tests
         run: pnpm test
+
+      - name: SSR E2E tests
+        run: pnpm run test:e2e:server
+
+  e2e-browser:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Browser E2E tests
+        run: pnpm run test:e2e:browser

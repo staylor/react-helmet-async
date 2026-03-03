@@ -1,5 +1,3 @@
-/// <reference types="vite/client" />
-
 import { defineConfig } from 'vite';
 import type { UserConfig } from 'vite';
 import type { InlineConfig } from 'vitest';
@@ -13,8 +11,7 @@ export default defineConfig({
   plugins: [react()],
   test: {
     globals: true,
-    environment: 'jsdom',
-    setupFiles: ['./__tests__/setup-test-env.ts'],
-    exclude: ['node_modules', 'lib', 'e2e'],
+    environment: 'node',
+    include: ['e2e/**/*.test.tsx'],
   },
 } as VitestConfigExport);
