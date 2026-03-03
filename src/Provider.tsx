@@ -11,7 +11,7 @@ export const Context = React.createContext(defaultValue);
 
 interface ProviderProps {
   context?: {
-    helmet?: HelmetServerState;
+    helmet?: HelmetServerState | null;
   };
 }
 
