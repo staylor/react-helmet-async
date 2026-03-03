@@ -185,7 +185,7 @@ const mapStateOnServer = (props: MappedServerState) => {
   } = props;
   let { linkTags, metaTags, scriptTags } = props;
   let priorityMethods = {
-    toComponent: () => {},
+    toComponent: (): React.ReactElement[] => [],
     toString: () => '',
   };
   if (prioritizeSeoTags) {
