@@ -14,7 +14,7 @@ export interface HelmetDataType {
 }
 
 interface HelmetDataContext {
-  helmet: HelmetServerState;
+  helmet: HelmetServerState | null;
 }
 
 export const isDocument = !!(
@@ -30,7 +30,7 @@ export default class HelmetData implements HelmetDataType {
 
   value = {
     setHelmet: (serverState: HelmetServerState | null) => {
-      this.context.helmet = serverState!;
+      this.context.helmet = serverState;
     },
     helmetInstances: {
       get: () => (this.canUseDOM ? instances : this.instances),
