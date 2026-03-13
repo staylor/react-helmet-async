@@ -74,7 +74,7 @@ const generateTagsAsString = (type: string, tags: HTMLElement[], encode = true) 
     const isSelfClosing = SELF_CLOSING_TAGS.indexOf(type) === -1;
 
     return `${str}<${type} ${HELMET_ATTRIBUTE}="true" ${attributeHtml}${
-      isSelfClosing ? `/>` : `>${tagContent}</${type}>`
+      isSelfClosing ? `>` : `>${tagContent}</${type}>`
     }`;
   }, '');
 
