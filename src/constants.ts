@@ -9,6 +9,7 @@ export enum TAG_PROPERTIES {
   PROPERTY = 'property',
   REL = 'rel',
   SRC = 'src',
+  TARGET = 'target',
 }
 
 export enum ATTRIBUTE_NAMES {

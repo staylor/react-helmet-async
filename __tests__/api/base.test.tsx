@@ -32,7 +32,20 @@ describe('base tag', () => {
       expect(existingTags).toHaveLength(0);
     });
 
-    it("tags without 'href' are not accepted", () => {
+    it("tags with only 'target' are accepted", () => {
+      render(<Helmet base={{ target: '_blank' }} />);
+      const existingTags = [...document.head.querySelectorAll(`base[${HELMET_ATTRIBUTE}]`)];
+      const [firstTag] = existingTags;
+
+      expect(existingTags).toBeDefined();
+      expect(existingTags).toHaveLength(1);
+      expect(firstTag).toBeInstanceOf(Element);
+      expect(firstTag.getAttribute).toBeDefined();
+      expect(firstTag).toHaveAttribute('target', '_blank');
+      expect(firstTag).not.toHaveAttribute('href');
+    });
+
+    it("tags without 'href' or 'target' are not accepted", () => {
       render(<Helmet base={{ property: "won't work" }} />);
       const existingTags = document.head.querySelectorAll(`base[${HELMET_ATTRIBUTE}]`);
 
@@ -99,7 +112,30 @@ describe('base tag', () => {
       expect(existingTags).toHaveLength(0);
     });
 
-    it("tags without 'href' are not accepted", () => {
+    it("tags with only 'target' are accepted", () => {
+      render(
+        <Helmet>
+          <base target="_blank" />
+        </Helmet>
+      );
+
+      const existingTags = [...document.head.querySelectorAll(`base[${HELMET_ATTRIBUTE}]`)];
+      const [firstTag] = existingTags;
+
+      expect(existingTags).toBeDefined();
+      expect(existingTags).toHaveLength(1);
+      expect(firstTag).toBeInstanceOf(Element);
+      expect(firstTag.getAttribute).toBeDefined();
+      expect(firstTag).toHaveAttribute('target', '_blank');
+      expect(firstTag).not.toHaveAttribute('href');
+    });
+
+    /**
+     * From the spec:
+     * https://html.spec.whatwg.org/multipage/semantics.html#the-base-element
+     * > The `base` element must have either an `href` attribute, a `target` attribute, or both.
+     */
+    it("tags without 'href' or 'target' are not accepted", () => {
       render(
         <Helmet>
           <base property="won't work" />
