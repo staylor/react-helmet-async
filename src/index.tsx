@@ -36,6 +36,20 @@ export { default as HelmetProvider } from './Provider';
 
 type Props = { [key: string]: any };
 
+const ARRAY_TAG_PROPS = [
+  TAG_NAMES.META,
+  TAG_NAMES.LINK,
+  TAG_NAMES.SCRIPT,
+  TAG_NAMES.STYLE,
+  TAG_NAMES.NOSCRIPT,
+];
+
+// True when a tag object uses React attribute names that JSX children are mapped from.
+const hasReactAttributeNames = (tag: Props) =>
+  Boolean(tag) &&
+  typeof tag === 'object' &&
+  Object.keys(tag).some((key) => Object.prototype.hasOwnProperty.call(HTML_TAG_MAP, key));
+
 export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
   static defaultProps = {
     defer: true,
@@ -211,7 +225,24 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
 
   render() {
     const { children, ...props } = this.props;
-    let newProps = { ...props };
+    let newProps: Props = { ...props };
+
+    // Array props get the HTML attribute names that JSX children are mapped to (itemProp
+    // becomes itemprop), so deduplication, SEO prioritizing and output all see one spelling.
+    // Arrays and entries without React names are passed through as they are.
+    for (const name of ARRAY_TAG_PROPS) {
+      const tags = newProps[name];
+      if (Array.isArray(tags) && tags.some(hasReactAttributeNames)) {
+        newProps[name] = tags.map((tag: Props) =>
+          hasReactAttributeNames(tag)
+            ? Object.keys(tag).reduce((obj: Props, key) => {
+                obj[HTML_TAG_MAP[key] || key] = tag[key];
+                return obj;
+              }, {})
+            : tag
+        );
+      }
+    }
     let { helmetData } = props;
 
     if (children) {
