@@ -16,7 +16,7 @@ describe('base tag', () => {
       expect(existingTags).toBeDefined();
 
       const filteredTags = existingTags.filter(
-        tag => tag.getAttribute('href') === 'http://mysite.com/'
+        (tag) => tag.getAttribute('href') === 'http://mysite.com/'
       );
 
       expect(filteredTags).toHaveLength(1);
@@ -61,7 +61,7 @@ describe('base tag', () => {
     });
 
     it('does not render tag when primary attribute is null', () => {
-      // @ts-ignore
+      // @ts-expect-error -- missing href on purpose
       render(<Helmet base={{ href: undefined }} />);
 
       const existingTags = [...document.head.querySelectorAll(`base[${HELMET_ATTRIBUTE}]`)];
@@ -83,7 +83,7 @@ describe('base tag', () => {
       expect(existingTags).toBeDefined();
 
       const filteredTags = existingTags.filter(
-        tag => tag.getAttribute('href') === 'http://mysite.com/'
+        (tag) => tag.getAttribute('href') === 'http://mysite.com/'
       );
 
       expect(filteredTags).toHaveLength(1);

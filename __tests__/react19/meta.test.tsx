@@ -7,11 +7,11 @@ import { render, unmount, getMountElement } from './utils';
 
 vi.mock('../../src/reactVersion', () => ({ isReact19: true }));
 
-afterEach(() => {
-  unmount();
-});
-
 describe('React 19 – meta tags', () => {
+  afterEach(() => {
+    unmount();
+  });
+
   describe('API', () => {
     it('renders meta tags', () => {
       render(
@@ -27,7 +27,7 @@ describe('React 19 – meta tags', () => {
       );
 
       const metas = getMountElement().querySelectorAll('meta');
-      expect(metas.length).toBe(5);
+      expect(metas).toHaveLength(5);
 
       expect(metas[0]).toHaveAttribute('charset', 'utf-8');
       expect(metas[1]).toHaveAttribute('name', 'description');
@@ -44,7 +44,7 @@ describe('React 19 – meta tags', () => {
       render(<Helmet />);
 
       const metas = getMountElement().querySelectorAll('meta');
-      expect(metas.length).toBe(0);
+      expect(metas).toHaveLength(0);
     });
 
     it('updates meta tags on re-render', () => {
@@ -70,7 +70,7 @@ describe('React 19 – meta tags', () => {
       );
 
       const metas = getMountElement().querySelectorAll('meta[name="description"]');
-      expect(metas.length).toBe(2);
+      expect(metas).toHaveLength(2);
       expect(metas[0]).toHaveAttribute('content', 'Desc 1');
       expect(metas[1]).toHaveAttribute('content', 'Desc 2');
     });
@@ -89,7 +89,7 @@ describe('React 19 – meta tags', () => {
       );
 
       const metas = getMountElement().querySelectorAll('meta');
-      expect(metas.length).toBe(5);
+      expect(metas).toHaveLength(5);
 
       expect(metas[0]).toHaveAttribute('charset', 'utf-8');
       expect(metas[1]).toHaveAttribute('name', 'description');
@@ -106,11 +106,11 @@ describe('React 19 – meta tags', () => {
         </Helmet>
       );
 
-      expect(getMountElement().querySelectorAll('meta').length).toBe(1);
+      expect(getMountElement().querySelectorAll('meta')).toHaveLength(1);
 
       render(<Helmet />);
 
-      expect(getMountElement().querySelectorAll('meta').length).toBe(0);
+      expect(getMountElement().querySelectorAll('meta')).toHaveLength(0);
     });
   });
 });

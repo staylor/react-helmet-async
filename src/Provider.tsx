@@ -34,6 +34,7 @@ export default class HelmetProvider extends Component<PropsWithChildren<Provider
 
   render() {
     if (isReact19) {
+      // oxlint-disable-next-line react/jsx-no-useless-fragment -- keeps render() typed as JSX.Element in the published .d.ts
       return <>{this.props.children}</>;
     }
 

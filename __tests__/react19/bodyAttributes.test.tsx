@@ -7,11 +7,11 @@ import { render, unmount } from './utils';
 
 vi.mock('../../src/reactVersion', () => ({ isReact19: true }));
 
-afterEach(() => {
-  unmount();
-});
-
 describe('React 19 – body attributes', () => {
+  afterEach(() => {
+    unmount();
+  });
+
   describe('API', () => {
     it('applies body attributes to <body> via DOM manipulation', () => {
       render(

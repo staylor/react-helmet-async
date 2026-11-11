@@ -68,13 +68,13 @@ describe('SSR E2E — meta page', () => {
 
   it('title toComponent returns React elements', () => {
     const components = helmet!.title.toComponent();
-    expect(Array.isArray(components)).toBe(true);
+    expect(Array.isArray(components)).toBeTruthy();
     expect(components.length).toBeGreaterThan(0);
   });
 
   it('meta toComponent returns React elements', () => {
     const components = helmet!.meta.toComponent();
-    expect(Array.isArray(components)).toBe(true);
+    expect(Array.isArray(components)).toBeTruthy();
     expect(components.length).toBeGreaterThanOrEqual(3);
   });
 });

@@ -1,18 +1,18 @@
+import invariant from 'invariant';
 import type { PropsWithChildren, ReactElement, ReactNode } from 'react';
 import React, { Component } from 'react';
 import fastCompare from 'react-fast-compare';
-import invariant from 'invariant';
 
-import { Context } from './Provider';
-import type { HelmetDataType } from './HelmetData';
-import HelmetData from './HelmetData';
 import type { DispatcherContextProp } from './Dispatcher';
 import Dispatcher from './Dispatcher';
+import type { HelmetDataType } from './HelmetData';
+import HelmetData from './HelmetData';
+import { Context } from './Provider';
 import React19Dispatcher from './React19Dispatcher';
-import { isReact19 } from './reactVersion';
-import { without } from './utils';
 import { TAG_NAMES, VALID_TAG_NAMES, HTML_TAG_MAP } from './constants';
+import { isReact19 } from './reactVersion';
 import type { HelmetProps } from './types';
+import { without } from './utils';
 
 export type {
   Attributes,
@@ -127,7 +127,7 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
   ) {
     let newFlattenedProps = { ...newProps };
 
-    Object.keys(arrayTypeChildren).forEach(arrayChildName => {
+    Object.keys(arrayTypeChildren).forEach((arrayChildName) => {
       newFlattenedProps = {
         ...newFlattenedProps,
         [arrayChildName]: arrayTypeChildren[arrayChildName],
@@ -139,7 +139,7 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
 
   private warnOnInvalidChildren(child: JSX.Element, nestedChildren: ReactNode) {
     invariant(
-      VALID_TAG_NAMES.some(name => child.type === name),
+      VALID_TAG_NAMES.some((name) => child.type === name),
       typeof child.type === 'function'
         ? `You may be attempting to nest <Helmet> components within each other, which is not allowed. Refer to our API for more information.`
         : `Only elements types ${VALID_TAG_NAMES.join(
@@ -153,7 +153,7 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
       !nestedChildren ||
         typeof nestedChildren === 'string' ||
         (Array.isArray(nestedChildren) &&
-          !nestedChildren.some(nestedChild => typeof nestedChild !== 'string')),
+          !nestedChildren.some((nestedChild) => typeof nestedChild !== 'string')),
       `Helmet expects a string as a child of <${child.type}>. Did you forget to wrap your children in braces? ( <${child.type}>{\`\`}</${child.type}> ) Refer to our API for more information.`
     );
 
@@ -234,7 +234,7 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
       <Dispatcher {...newProps} context={helmetData.value} />
     ) : (
       <Context.Consumer>
-        {context => <Dispatcher {...newProps} context={context as DispatcherContextProp} />}
+        {(context) => <Dispatcher {...newProps} context={context as DispatcherContextProp} />}
       </Context.Consumer>
     );
   }

@@ -1,6 +1,0 @@
-.eslintrc.js
-jest.setup.js
-*.config.js
-node_modules
-src
-__tests__

@@ -1,5 +1,4 @@
 import React from 'react';
-import type { MockedFunction } from 'vitest';
 
 import { Helmet } from '../../src';
 import { HELMET_ATTRIBUTE } from '../../src/constants';
@@ -36,7 +35,7 @@ describe('meta tags', () => {
       expect(existingTags).toBeDefined();
 
       const filteredTags = existingTags.filter(
-        tag =>
+        (tag) =>
           tag.getAttribute('charset') === 'utf-8' ||
           (tag.getAttribute('name') === 'description' &&
             tag.getAttribute('content') === 'Test description') ||
@@ -65,7 +64,7 @@ describe('meta tags', () => {
         <Helmet
           meta={[
             {
-              // @ts-ignore
+              // @ts-expect-error -- attribute not valid for <meta> on purpose
               href: "won't work",
             },
           ]}
@@ -264,13 +263,12 @@ describe('meta tags', () => {
     });
 
     it('fails gracefully when meta is wrong shape', () => {
-      const originalConsole = global.console;
-      global.console.warn = vi.fn();
+      const consoleWarn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       render(
         <Helmet
           meta={
-            // @ts-ignore
+            // @ts-expect-error -- object instead of array on purpose
             { name: 'title', content: 'some title' }
           }
         />
@@ -281,11 +279,11 @@ describe('meta tags', () => {
 
       expect(existingTags).toHaveLength(0);
 
-      expect(console.warn).toHaveBeenCalled();
+      expect(consoleWarn).toHaveBeenCalled();
 
-      expect((console.warn as MockedFunction<any>).mock.calls[0][0]).toMatchSnapshot();
+      expect(consoleWarn.mock.calls[0][0]).toMatchSnapshot();
 
-      global.console = originalConsole;
+      consoleWarn.mockRestore();
     });
   });
 
@@ -306,7 +304,7 @@ describe('meta tags', () => {
       expect(existingTags).toBeDefined();
 
       const filteredTags = existingTags.filter(
-        tag =>
+        (tag) =>
           tag.getAttribute('charset') === 'utf-8' ||
           (tag.getAttribute('name') === 'description' &&
             tag.getAttribute('content') === 'Test description') ||
@@ -338,7 +336,7 @@ describe('meta tags', () => {
       render(
         <Helmet>
           <meta
-            // @ts-ignore
+            // @ts-expect-error -- attribute not valid for <meta> on purpose
             href="won't work"
           />
         </Helmet>

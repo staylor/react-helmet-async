@@ -7,11 +7,11 @@ import { render, unmount, getMountElement } from './utils';
 
 vi.mock('../../src/reactVersion', () => ({ isReact19: true }));
 
-afterEach(() => {
-  unmount();
-});
-
 describe('React 19 – noscript tags', () => {
+  afterEach(() => {
+    unmount();
+  });
+
   describe('API', () => {
     it('renders noscript tags with innerHTML', () => {
       render(
@@ -26,7 +26,7 @@ describe('React 19 – noscript tags', () => {
       );
 
       const noscripts = getMountElement().querySelectorAll('noscript');
-      expect(noscripts.length).toBe(1);
+      expect(noscripts).toHaveLength(1);
       expect(noscripts[0]).toHaveAttribute('id', 'bar');
       expect(noscripts[0].innerHTML).toBe(
         '<link rel="stylesheet" type="text/css" href="foo.css" />'
@@ -37,7 +37,7 @@ describe('React 19 – noscript tags', () => {
       render(<Helmet />);
 
       const noscripts = getMountElement().querySelectorAll('noscript');
-      expect(noscripts.length).toBe(0);
+      expect(noscripts).toHaveLength(0);
     });
   });
 

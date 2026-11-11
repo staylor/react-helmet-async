@@ -7,11 +7,11 @@ import { render, unmount, getMountElement } from './utils';
 
 vi.mock('../../src/reactVersion', () => ({ isReact19: true }));
 
-afterEach(() => {
-  unmount();
-});
-
 describe('React 19 – script tags', () => {
+  afterEach(() => {
+    unmount();
+  });
+
   describe('API', () => {
     it('renders script tags with src', () => {
       render(
@@ -24,7 +24,7 @@ describe('React 19 – script tags', () => {
       );
 
       const scripts = getMountElement().querySelectorAll('script');
-      expect(scripts.length).toBe(2);
+      expect(scripts).toHaveLength(2);
 
       expect(scripts[0]).toHaveAttribute('src', 'http://localhost/test.js');
       expect(scripts[0]).toHaveAttribute('type', 'text/javascript');
@@ -44,7 +44,7 @@ describe('React 19 – script tags', () => {
       render(<Helmet />);
 
       const scripts = getMountElement().querySelectorAll('script');
-      expect(scripts.length).toBe(0);
+      expect(scripts).toHaveLength(0);
     });
   });
 
@@ -57,7 +57,7 @@ describe('React 19 – script tags', () => {
       );
 
       const scripts = getMountElement().querySelectorAll('script');
-      expect(scripts.length).toBe(1);
+      expect(scripts).toHaveLength(1);
       expect(scripts[0]).toHaveAttribute('src', 'http://localhost/test.js');
       expect(scripts[0]).toHaveAttribute('type', 'text/javascript');
     });

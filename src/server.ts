@@ -8,8 +8,8 @@ import {
   ATTRIBUTE_NAMES,
   SEO_PRIORITY_TAGS,
 } from './constants';
-import { flattenArray, prioritizer } from './utils';
 import type { MappedServerState } from './types';
+import { flattenArray, prioritizer } from './utils';
 
 const SELF_CLOSING_TAGS: string[] = [TAG_NAMES.NOSCRIPT, TAG_NAMES.SCRIPT, TAG_NAMES.STYLE];
 
@@ -58,7 +58,7 @@ const generateTagsAsString = (type: string, tags: HTMLElement[], encode = true) 
     const tag = t as unknown as Attributes;
     const attributeHtml = Object.keys(tag)
       .filter(
-        attribute =>
+        (attribute) =>
           !(attribute === TAG_PROPERTIES.INNER_HTML || attribute === TAG_PROPERTIES.CSS_TEXT)
       )
       .reduce((string, attribute) => {
@@ -103,7 +103,7 @@ const generateTagsAsReactComponent = (type: string, tags: any[]) =>
       [HELMET_ATTRIBUTE]: true,
     };
 
-    Object.keys(tag).forEach(attribute => {
+    Object.keys(tag).forEach((attribute) => {
       const mapped = (REACT_TAG_MAP as Attributes)[attribute] as string;
       const mappedAttribute = mapped || attribute;
 

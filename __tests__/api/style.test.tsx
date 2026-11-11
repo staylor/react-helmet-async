@@ -88,7 +88,7 @@ describe('style tags', () => {
       <Helmet
         style={[
           {
-            // @ts-ignore
+            // @ts-expect-error -- missing cssText on purpose
             cssText: undefined,
           },
         ]}

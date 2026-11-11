@@ -30,7 +30,7 @@ describe('link tags', () => {
       expect(existingTags).toBeDefined();
 
       const filteredTags = existingTags.filter(
-        tag =>
+        (tag) =>
           (tag.getAttribute('href') === 'http://localhost/style.css' &&
             tag.getAttribute('rel') === 'stylesheet' &&
             tag.getAttribute('type') === 'text/css') ||
@@ -63,7 +63,7 @@ describe('link tags', () => {
     });
 
     it("tags without 'href' or 'rel' are not accepted, even if they are valid for other tags", () => {
-      // @ts-ignore
+      // @ts-expect-error -- attribute not valid for <link> on purpose
       render(<Helmet link={[{ 'http-equiv': "won't work" }]} />);
 
       const tagNodes = document.head.querySelectorAll(`link[${HELMET_ATTRIBUTE}]`);
@@ -351,7 +351,7 @@ describe('link tags', () => {
       render(
         <Helmet
           link={[
-            // @ts-ignore
+            // @ts-expect-error -- null href on purpose
             { rel: 'icon', sizes: '192x192', href: null },
             {
               rel: 'canonical',
@@ -389,7 +389,7 @@ describe('link tags', () => {
       expect(existingTags).toBeDefined();
 
       const filteredTags = existingTags.filter(
-        tag =>
+        (tag) =>
           (tag.getAttribute('href') === 'http://localhost/style.css' &&
             tag.getAttribute('rel') === 'stylesheet' &&
             tag.getAttribute('type') === 'text/css') ||
@@ -420,7 +420,7 @@ describe('link tags', () => {
       render(
         <Helmet>
           <link
-            // @ts-ignore
+            // @ts-expect-error -- attribute not valid for <link> on purpose
             httpEquiv="won't work"
           />
         </Helmet>
@@ -630,7 +630,7 @@ describe('link tags', () => {
           <link
             rel="icon"
             sizes="192x192"
-            // @ts-ignore
+            // @ts-expect-error -- null href on purpose
             href={null}
           />
           <link rel="canonical" href="http://localhost/helmet/component" />

@@ -5,7 +5,8 @@
     "resolveJsonModule": true,
     "declaration": false,
     "emitDeclarationOnly": false,
-    "noEmit": true
+    "noEmit": true,
+    "rootDir": "."
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "__tests__/**/*.ts", "__tests__/**/*.tsx"],
   "exclude": ["node_modules", "lib"]
