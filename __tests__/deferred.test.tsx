@@ -90,3 +90,66 @@ describe.skip('deferred tags', () => {
     });
   });
 });
+
+describe('deferred tags in a hidden tab', () => {
+  // Browsers pause animation frames while a tab is hidden. Frames queued here only run when a
+  // test calls runPausedFrames(), as they would once the tab is shown again.
+  const frames = new Map<number, FrameRequestCallback>();
+  let lastFrame = 0;
+
+  const runPausedFrames = () => {
+    const callbacks = [...frames.values()];
+    frames.clear();
+    callbacks.forEach((callback) => callback(performance.now()));
+  };
+
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    vi.spyOn(document, 'hidden', 'get').mockReturnValue(true);
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      lastFrame += 1;
+      frames.set(lastFrame, callback);
+      return lastFrame;
+    });
+    vi.stubGlobal('cancelAnimationFrame', (frame: number) => frames.delete(frame));
+  });
+
+  afterEach(() => {
+    frames.clear();
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
+
+  it('updates the title while animation frames are paused', () => {
+    render(<Helmet defer title="Inbox (1)" />);
+    vi.advanceTimersByTime(100);
+
+    expect(document.title).toBe('Inbox (1)');
+  });
+
+  it('applies only the latest state, once, even after paused frames run', () => {
+    const onChangeClientState = vi.fn();
+
+    render(<Helmet defer onChangeClientState={onChangeClientState} title="Inbox (1)" />);
+    render(<Helmet defer onChangeClientState={onChangeClientState} title="Inbox (2)" />);
+    vi.advanceTimersByTime(100);
+    runPausedFrames();
+
+    expect(document.title).toBe('Inbox (2)');
+    expect(onChangeClientState).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps applying changes while updates arrive faster than the fallback timeout', () => {
+    // An update every 50 ms. Each commit is due 100 ms after the first update it includes, and
+    // applies the latest one.
+    for (let count = 2; count <= 10; count += 2) {
+      render(<Helmet defer title={`Inbox (${count - 1})`} />);
+      vi.advanceTimersByTime(50);
+      render(<Helmet defer title={`Inbox (${count})`} />);
+      vi.advanceTimersByTime(50);
+
+      expect(document.title).toBe(`Inbox (${count})`);
+    }
+  });
+});

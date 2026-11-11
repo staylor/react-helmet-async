@@ -117,9 +117,7 @@ const updateTitle = (title: string, attributes: Attributes) => {
   updateAttributes(TAG_NAMES.TITLE, attributes);
 };
 
-type Cb = () => number | null | void;
-
-const commitTagChanges = (newState: StateUpdate, cb?: Cb) => {
+const commitTagChanges = (newState: StateUpdate) => {
   const {
     baseTag,
     bodyAttributes,
@@ -161,29 +159,51 @@ const commitTagChanges = (newState: StateUpdate, cb?: Cb) => {
     }
   });
 
-  if (cb) {
-    cb();
-  }
-
   onChangeClientState(newState, addedTags, removedTags);
 };
 
+let _pendingState: StateUpdate | null = null;
 let _helmetCallback: number | null = null;
+let _helmetTimeout: number | null = null;
 
-const handleStateChangeOnClient = (newState: StateUpdate) => {
+const cancelPendingCommit = () => {
   if (_helmetCallback) {
     cancelAnimationFrame(_helmetCallback);
+    _helmetCallback = null;
   }
 
-  if (newState.defer) {
-    _helmetCallback = requestAnimationFrame(() => {
-      commitTagChanges(newState, () => {
-        _helmetCallback = null;
-      });
-    });
-  } else {
+  if (_helmetTimeout) {
+    window.clearTimeout(_helmetTimeout);
+    _helmetTimeout = null;
+  }
+
+  _pendingState = null;
+};
+
+const commitPendingState = () => {
+  const newState = _pendingState;
+  cancelPendingCommit();
+
+  if (newState) {
     commitTagChanges(newState);
-    _helmetCallback = null;
+  }
+};
+
+const handleStateChangeOnClient = (newState: StateUpdate) => {
+  if (newState.defer) {
+    // A commit that's already scheduled keeps its deadline and applies the latest state, so a
+    // steady stream of updates can't postpone it.
+    if (!_pendingState) {
+      _helmetCallback = requestAnimationFrame(commitPendingState);
+      // Browsers pause animation frames in background tabs, so fall back to a timeout there.
+      // 100 ms is long enough for the next frame to win while the tab is visible.
+      _helmetTimeout = window.setTimeout(commitPendingState, 100);
+    }
+
+    _pendingState = newState;
+  } else {
+    cancelPendingCommit();
+    commitTagChanges(newState);
   }
 };
 
