@@ -4,6 +4,7 @@ import {
   HELMET_ATTRIBUTE,
   TAG_NAMES,
   REACT_TAG_MAP,
+  HTML_TAG_MAP,
   TAG_PROPERTIES,
   ATTRIBUTE_NAMES,
   SEO_PRIORITY_TAGS,
@@ -62,10 +63,11 @@ const generateTagsAsString = (type: string, tags: HTMLElement[], encode = true) 
           !(attribute === TAG_PROPERTIES.INNER_HTML || attribute === TAG_PROPERTIES.CSS_TEXT)
       )
       .reduce((string, attribute) => {
+        const name = (HTML_TAG_MAP as Record<string, string>)[attribute] || attribute;
         const attr =
           typeof tag[attribute] === 'undefined'
-            ? attribute
-            : `${attribute}="${encodeSpecialCharacters(tag[attribute] as string, encode)}"`;
+            ? name
+            : `${name}="${encodeSpecialCharacters(tag[attribute] as string, encode)}"`;
         return string ? `${string} ${attr}` : attr;
       }, '');
 
