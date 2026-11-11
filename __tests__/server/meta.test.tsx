@@ -2,6 +2,7 @@ import React from 'react';
 import ReactServer from 'react-dom/server';
 
 import { Helmet } from '../../src';
+import type { HelmetServerState } from '../../src';
 import Provider from '../../src/Provider';
 import { renderContext, isArray } from '../utils';
 
@@ -108,6 +109,37 @@ describe('server', () => {
           '<meta data-rh="true" http-equiv="content-type" content="text/html"/>' +
           '<meta data-rh="true" itemprop="name" content="Test name itemProp"/>'
       );
+    });
+
+    it('renders React attribute names in arrays the same as JSX children', () => {
+      const renderHead = (node: React.ReactNode) => {
+        const context: { helmet?: HelmetServerState } = {};
+        ReactServer.renderToString(<Provider context={context}>{node}</Provider>);
+        return context.helmet!;
+      };
+
+      const fromArray = renderHead(
+        <Helmet
+          prioritizeSeoTags
+          meta={[
+            { property: 'og:title', content: 'Title' },
+            { charSet: 'utf-8' },
+            { httpEquiv: 'content-type', content: 'text/html' },
+            { itemProp: 'name', content: 'Name' },
+          ]}
+        />
+      );
+      const fromChildren = renderHead(
+        <Helmet prioritizeSeoTags>
+          <meta property="og:title" content="Title" />
+          <meta charSet="utf-8" />
+          <meta httpEquiv="content-type" content="text/html" />
+          <meta itemProp="name" content="Name" />
+        </Helmet>
+      );
+
+      expect(fromArray.priority.toString()).toBe(fromChildren.priority.toString());
+      expect(fromArray.meta.toString()).toBe(fromChildren.meta.toString());
     });
   });
 

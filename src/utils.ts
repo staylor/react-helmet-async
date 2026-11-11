@@ -1,4 +1,4 @@
-import { TAG_NAMES, TAG_PROPERTIES, ATTRIBUTE_NAMES, HTML_TAG_MAP } from './constants';
+import { TAG_NAMES, TAG_PROPERTIES, ATTRIBUTE_NAMES } from './constants';
 
 interface PropList {
   [key: string]: any;
@@ -90,13 +90,6 @@ const getBaseTagFromPropsList = (primaryAttributes: AttributeList, propsList: Pr
 
 const warn = (msg: string) => console && typeof console.warn === 'function' && console.warn(msg);
 
-// convert React props (e.g. itemProp) to HTML attributes, as is done for JSX children
-const convertReactPropsToHtmlAttributes = (tag: PropList) =>
-  Object.keys(tag).reduce((obj: PropList, key) => {
-    obj[HTML_TAG_MAP[key] || key] = tag[key];
-    return obj;
-  }, {});
-
 const getTagsFromPropsList = (
   tagName: string,
   primaryAttributes: AttributeList,
@@ -125,9 +118,7 @@ const getTagsFromPropsList = (
       const instanceSeenTags: SeenTags = {};
 
       instanceTags
-        .filter((original: PropList) => {
-          // Match on HTML attribute names (itemProp -> itemprop) but keep the caller's object.
-          const tag = convertReactPropsToHtmlAttributes(original);
+        .filter((tag: PropList) => {
           let primaryAttributeKey;
           const keys = Object.keys(tag);
           for (let i = 0; i < keys.length; i += 1) {
