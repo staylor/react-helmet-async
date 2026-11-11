@@ -246,8 +246,12 @@ export { reducePropsToState };
 const checkIfPropsMatch = (props: PropList, toMatch: MatchProps) => {
   const keys = Object.keys(props);
   for (let i = 0; i < keys.length; i += 1) {
-    // e.g. if rel exists in the list of allowed props [amphtml, alternate, etc]
-    if (toMatch[keys[i]] && toMatch[keys[i]].includes(props[keys[i]])) {
+    // e.g. if rel exists in the list of allowed props [amphtml, alternate, etc],
+    // or any value is allowed, as with charset: ''
+    if (
+      toMatch[keys[i]] === '' ||
+      (toMatch[keys[i]] && toMatch[keys[i]].includes(props[keys[i]]))
+    ) {
       return true;
     }
   }

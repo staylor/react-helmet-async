@@ -248,6 +248,23 @@ describe('server', () => {
       );
     });
 
+    it('prioritizes charset ahead of other SEO tags', () => {
+      const head = renderContext(
+        <Helmet prioritizeSeoTags>
+          <meta property="og:title" content="A very important title" />
+          <link rel="canonical" href="https://www.tacobell.com" />
+          <meta charSet="utf-8" />
+        </Helmet>
+      );
+
+      expect(head.priority.toString()).toMatch(/^<meta data-rh="true" charset="utf-8"\/>/);
+      expect(head.meta.toString()).not.toContain('charset="utf-8"');
+
+      const markup = ReactServer.renderToStaticMarkup(head.priority.toComponent());
+
+      expect(markup).toMatch(/^<meta data-rh="true" charSet="utf-8"\/>/);
+    });
+
     it('does not prioritize SEO unless asked to', () => {
       const head = renderContext(
         <Helmet>
