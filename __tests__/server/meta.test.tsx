@@ -70,6 +70,45 @@ describe('server', () => {
       expect(head.meta.toString).toBeDefined();
       expect(head.meta.toString()).toMatchSnapshot();
     });
+
+    it('renders React attribute names as React components', () => {
+      const head = renderContext(
+        <Helmet
+          meta={[
+            { charSet: 'utf-8' },
+            { httpEquiv: 'content-type', content: 'text/html' },
+            { itemProp: 'name', content: 'Test name itemProp' },
+          ]}
+        />
+      );
+
+      const metaComponent = head.meta.toComponent();
+
+      expect(metaComponent).toHaveLength(3);
+      expect(ReactServer.renderToStaticMarkup(metaComponent)).toBe(
+        '<meta data-rh="true" charSet="utf-8"/>' +
+          '<meta data-rh="true" http-equiv="content-type" content="text/html"/>' +
+          '<meta data-rh="true" itemProp="name" content="Test name itemProp"/>'
+      );
+    });
+
+    it('renders React attribute names as string', () => {
+      const head = renderContext(
+        <Helmet
+          meta={[
+            { charSet: 'utf-8' },
+            { httpEquiv: 'content-type', content: 'text/html' },
+            { itemProp: 'name', content: 'Test name itemProp' },
+          ]}
+        />
+      );
+
+      expect(head.meta.toString()).toBe(
+        '<meta data-rh="true" charset="utf-8"/>' +
+          '<meta data-rh="true" http-equiv="content-type" content="text/html"/>' +
+          '<meta data-rh="true" itemprop="name" content="Test name itemProp"/>'
+      );
+    });
   });
 
   describe('Declarative API', () => {
