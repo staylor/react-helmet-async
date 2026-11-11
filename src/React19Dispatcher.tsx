@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 
 import { isDocument } from './HelmetData';
 import { TAG_NAMES, HTML_TAG_MAP, REACT_TAG_MAP } from './constants';
-import type { HelmetProps } from './types';
+import type { Attributes, HelmetProps } from './types';
+import { reducePropsToState } from './utils';
 
-// Module-level registry of all mounted React19Dispatcher instances.
-// This enables instance-aware merging of html/body attributes so that
-// unmounting one instance correctly falls back to the outer instance's attrs.
+// Module-level registry of all mounted React19Dispatcher instances, in mount
+// order, so later instances count as inner ones as on React 16–18. Every
+// instance renders from the merged props of all of them, and unmounting one
+// instance falls back to the outer instances' tags and html/body attributes.
 const react19Instances: React19Dispatcher[] = [];
 
 /**
@@ -99,6 +101,17 @@ const syncAllAttributes = () => {
   applyAttributes(TAG_NAMES.BODY, bodyAttrs);
 };
 
+/**
+ * Re-renders every registered instance against the merged props and applies
+ * the merged html/body attributes.
+ */
+const syncAllInstances = () => {
+  for (const instance of react19Instances) {
+    instance.forceUpdate();
+  }
+  syncAllAttributes();
+};
+
 interface React19DispatcherProps extends HelmetProps {
   /**
    * The processed props including mapped children. These come from Helmet's
@@ -112,17 +125,28 @@ interface React19DispatcherProps extends HelmetProps {
  * renders actual JSX elements. React 19 automatically hoists <title>, <meta>,
  * <link>, <style>, and <script async> to <head>.
  *
+ * Each instance merges the props of all mounted instances with
+ * reducePropsToState, like the React 16–18 path: the innermost instance renders
+ * the title, and every other winning tag is rendered once, by the innermost
+ * instance that was given it. React itself loads an async <script src>, or a
+ * stylesheet with precedence, once per URL and keeps the props it got first,
+ * so for those the outer instance's attributes stay.
+ *
  * For htmlAttributes and bodyAttributes, we still apply via direct DOM
  * manipulation since React 19 doesn't handle those.
  */
 export default class React19Dispatcher extends Component<React19DispatcherProps> {
   componentDidMount() {
     react19Instances.push(this);
-    syncAllAttributes();
+    syncAllInstances();
   }
 
-  componentDidUpdate() {
-    syncAllAttributes();
+  componentDidUpdate(prevProps: React19DispatcherProps) {
+    // Re-renders from syncAllInstances keep their props; only new props change
+    // what the other instances render.
+    if (prevProps !== this.props) {
+      syncAllInstances();
+    }
   }
 
   componentWillUnmount() {
@@ -130,57 +154,52 @@ export default class React19Dispatcher extends Component<React19DispatcherProps>
     if (index !== -1) {
       react19Instances.splice(index, 1);
     }
-    syncAllAttributes();
+    syncAllInstances();
   }
 
-  resolveTitle(): string | undefined {
-    const { title, titleTemplate, defaultTitle } = this.props;
-    if (title && titleTemplate) {
-      return titleTemplate.replace(/%s/g, () => (Array.isArray(title) ? title.join('') : title));
-    }
-    return title || defaultTitle || undefined;
-  }
-
-  renderTitle() {
-    const title = this.resolveTitle();
+  renderTitle(title: string | undefined, titleAttributes: Attributes) {
     if (title === undefined) return null;
 
-    const titleAttributes = this.props.titleAttributes || {};
     return React.createElement(TAG_NAMES.TITLE, toReactProps(titleAttributes), title);
   }
 
-  renderBase() {
+  renderBase(tags: Set<unknown>) {
     const { base } = this.props;
-    if (!base) return null;
+    if (!base || !tags.has(base)) return null;
     return React.createElement(TAG_NAMES.BASE, toReactProps(base));
   }
 
-  renderMeta() {
+  renderMeta(tags: Set<unknown>) {
     const { meta } = this.props;
     if (!meta || !Array.isArray(meta)) return null;
-    return meta.map((attrs, i: number) =>
-      React.createElement(TAG_NAMES.META, {
-        key: i,
-        ...toReactProps(attrs as Record<string, string>),
-      })
+    return meta.map(
+      (attrs, i: number) =>
+        tags.has(attrs) &&
+        React.createElement(TAG_NAMES.META, {
+          key: i,
+          ...toReactProps(attrs as Record<string, string>),
+        })
     );
   }
 
-  renderLink() {
+  renderLink(tags: Set<unknown>) {
     const { link } = this.props;
     if (!link || !Array.isArray(link)) return null;
-    return link.map((attrs, i: number) =>
-      React.createElement(TAG_NAMES.LINK, {
-        key: i,
-        ...toReactProps(attrs as Record<string, string>),
-      })
+    return link.map(
+      (attrs, i: number) =>
+        tags.has(attrs) &&
+        React.createElement(TAG_NAMES.LINK, {
+          key: i,
+          ...toReactProps(attrs as Record<string, string>),
+        })
     );
   }
 
-  renderScript() {
+  renderScript(tags: Set<unknown>) {
     const { script } = this.props;
     if (!script || !Array.isArray(script)) return null;
     return script.map((attrs, i: number) => {
+      if (!tags.has(attrs)) return null;
       const { innerHTML, ...rest } = attrs;
       const props: Record<string, unknown> = toReactProps(rest);
       if (innerHTML) {
@@ -190,10 +209,11 @@ export default class React19Dispatcher extends Component<React19DispatcherProps>
     });
   }
 
-  renderStyle() {
+  renderStyle(tags: Set<unknown>) {
     const { style } = this.props;
     if (!style || !Array.isArray(style)) return null;
     return style.map((attrs, i: number) => {
+      if (!tags.has(attrs)) return null;
       const { cssText, ...rest } = attrs;
       const props: Record<string, unknown> = toReactProps(rest);
       if (cssText) {
@@ -203,10 +223,11 @@ export default class React19Dispatcher extends Component<React19DispatcherProps>
     });
   }
 
-  renderNoscript() {
+  renderNoscript(tags: Set<unknown>) {
     const { noscript } = this.props;
     if (!noscript || !Array.isArray(noscript)) return null;
     return noscript.map((attrs, i: number) => {
+      if (!tags.has(attrs)) return null;
       const { innerHTML, ...rest } = attrs;
       const props: Record<string, unknown> = toReactProps(rest);
       if (innerHTML) {
@@ -217,16 +238,39 @@ export default class React19Dispatcher extends Component<React19DispatcherProps>
   }
 
   render() {
+    // Until it mounts (and always on the server), an instance merges itself in
+    // as the innermost one.
+    const instances = react19Instances.includes(this)
+      ? react19Instances
+      : [...react19Instances, this];
+    const state = reducePropsToState(instances.map((instance) => instance.props));
+    const tags = new Set<unknown>([
+      ...state.baseTag,
+      ...state.linkTags,
+      ...state.metaTags,
+      ...state.noscriptTags,
+      ...state.scriptTags,
+      ...state.styleTags,
+    ]);
+    // A tag object given to several instances is rendered by the innermost one.
+    for (const { props } of instances.slice(instances.indexOf(this) + 1)) {
+      const { base, link, meta, noscript, script, style } = props;
+      for (const tag of [base, link, meta, noscript, script, style].flat()) {
+        tags.delete(tag);
+      }
+    }
+
     return React.createElement(
       React.Fragment,
       null,
-      this.renderTitle(),
-      this.renderBase(),
-      this.renderMeta(),
-      this.renderLink(),
-      this.renderScript(),
-      this.renderStyle(),
-      this.renderNoscript()
+      instances[instances.length - 1] === this &&
+        this.renderTitle(state.title, state.titleAttributes),
+      this.renderBase(tags),
+      this.renderMeta(tags),
+      this.renderLink(tags),
+      this.renderScript(tags),
+      this.renderStyle(tags),
+      this.renderNoscript(tags)
     );
   }
 }
