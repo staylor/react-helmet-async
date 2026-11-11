@@ -1,6 +1,6 @@
 {
   "name": "react-helmet-async",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Thread-safe Helmet for React 16–18, with native support for React 19+",
   "sideEffects": false,
   "main": "./lib/index.js",

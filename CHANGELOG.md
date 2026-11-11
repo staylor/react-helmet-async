@@ -4,6 +4,8 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+## [3.1.0] - 2026-11-11
+
 ### Added
 
 - `react-helmet-async/package.json` resolves again. The `exports` map added in 3.0.0 had left it out.
@@ -124,7 +126,8 @@ The package was rewritten in TypeScript and is built with esbuild instead of Bab
 
 See the [git history up to 1.3.0](https://github.com/staylor/react-helmet-async/commits/b1ee65880e71df9124c4e01d07c086d8ce2fc63a).
 
-[Unreleased]: https://github.com/staylor/react-helmet-async/compare/ba5d5fb820750dcf29c9621e9feafe2b8388d60b...HEAD
+[Unreleased]: https://github.com/staylor/react-helmet-async/compare/v3.1.0...HEAD
+[3.1.0]: https://github.com/staylor/react-helmet-async/compare/ba5d5fb820750dcf29c9621e9feafe2b8388d60b...v3.1.0
 [3.0.0]: https://github.com/staylor/react-helmet-async/compare/5f4da3896c8b70bedcd3c05d406ff5241601933c...ba5d5fb820750dcf29c9621e9feafe2b8388d60b
 [2.0.5]: https://github.com/staylor/react-helmet-async/compare/6a37f732662d7f73d868f7d83ba61465a3905cb2...5f4da3896c8b70bedcd3c05d406ff5241601933c
 [2.0.4]: https://github.com/staylor/react-helmet-async/compare/a35751fc140895f3fccb9ba2d9c549c648160898...6a37f732662d7f73d868f7d83ba61465a3905cb2
