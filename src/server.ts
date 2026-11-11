@@ -147,16 +147,22 @@ const getPriorityMethods = ({ metaTags, linkTags, scriptTags, encode }: MappedSe
   const link = prioritizer(linkTags, SEO_PRIORITY_TAGS.link);
   const script = prioritizer(scriptTags, SEO_PRIORITY_TAGS.script);
 
+  // browsers only honor a charset declared within the first 1024 bytes, so it goes first
+  const metaPriority = [
+    ...meta.priority.filter((tag) => TAG_PROPERTIES.CHARSET in tag),
+    ...meta.priority.filter((tag) => !(TAG_PROPERTIES.CHARSET in tag)),
+  ];
+
   // need to have toComponent() and toString()
   const priorityMethods = {
     toComponent: () => [
-      ...generateTagsAsReactComponent(TAG_NAMES.META, meta.priority),
+      ...generateTagsAsReactComponent(TAG_NAMES.META, metaPriority),
       ...generateTagsAsReactComponent(TAG_NAMES.LINK, link.priority),
       ...generateTagsAsReactComponent(TAG_NAMES.SCRIPT, script.priority),
     ],
     toString: () =>
       // generate all the tags as strings and concatenate them
-      `${getMethodsForTag(TAG_NAMES.META, meta.priority, encode)} ${getMethodsForTag(
+      `${getMethodsForTag(TAG_NAMES.META, metaPriority, encode)} ${getMethodsForTag(
         TAG_NAMES.LINK,
         link.priority,
         encode

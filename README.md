@@ -154,6 +154,7 @@ In the component:
   <meta name="whatever" value="notImportant" />
   <link rel="canonical" href="https://www.tacobell.com" />
   <meta property="og:title" content="A very important title" />
+  <meta charSet="utf-8" />
 </Helmet>
 ```
 
@@ -179,6 +180,7 @@ Will result in:
 <html>
   <head>
     <title>A fancy webpage</title>
+    <meta charset="utf-8" />
     <meta property="og:title" content="A very important title" />
     <link rel="canonical" href="https://www.tacobell.com" />
     <meta name="whatever" value="notImportant" />
@@ -187,6 +189,8 @@ Will result in:
   ...
 </html>
 ```
+
+`<meta charset>` is always the first prioritized tag, because browsers only honor it within the first 1024 bytes of the document.
 
 A list of prioritized tags and attributes can be found in [constants.ts](./src/constants.ts).
 
