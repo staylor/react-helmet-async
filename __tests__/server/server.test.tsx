@@ -116,6 +116,12 @@ describe('server', () => {
 
       expect(head.script.toString()).toMatchSnapshot();
     });
+
+    it('throws when rendered without a HelmetProvider', () => {
+      expect(() => ReactServer.renderToString(<Helmet title="Test Title" />)).toThrow(
+        '<Helmet> must be rendered inside a <HelmetProvider> or be given a helmetData prop. If it is, check that only one copy of react-helmet-async is bundled.'
+      );
+    });
   });
 
   describe('Declarative API', () => {

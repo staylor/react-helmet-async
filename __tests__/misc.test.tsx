@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { act } from 'react';
+import { createRoot } from 'react-dom/client';
 
 import { Helmet } from '../src';
 import { HELMET_ATTRIBUTE } from '../src/constants';
@@ -163,6 +164,23 @@ describe('misc', () => {
 
       expect(renderInvalid).toThrow(
         'You may be attempting to nest <Helmet> components within each other, which is not allowed. Refer to our API for more information.'
+      );
+
+      consoleError.mockRestore();
+    });
+
+    it('throws when rendered without a HelmetProvider', () => {
+      const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const root = createRoot(document.getElementById('mount') as HTMLElement);
+
+      const renderInvalid = () => {
+        act(() => {
+          root.render(<Helmet title="Test Title" />);
+        });
+      };
+
+      expect(renderInvalid).toThrow(
+        '<Helmet> must be rendered inside a <HelmetProvider> or be given a helmetData prop. If it is, check that only one copy of react-helmet-async is bundled.'
       );
 
       consoleError.mockRestore();
