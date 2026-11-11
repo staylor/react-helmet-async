@@ -141,6 +141,20 @@ HelmetProvider.canUseDOM = false;
 
 > This is only relevant for React 16–18. On React 19, `HelmetProvider` is a passthrough and `canUseDOM` has no effect.
 
+## Deferred updates
+
+On the client, `<Helmet>` applies its changes in the next animation frame, so when several `<Helmet>` instances change in one render, the document is updated once with the latest state. Browsers pause animation frames in background tabs, so if no frame comes within 100 ms the changes are applied anyway. A title set while the tab is in the background, such as an unread count, shows up after about a second, since browsers also throttle timers in background tabs.
+
+Set `defer={false}` to apply changes synchronously instead. As with other props, the value on the innermost `<Helmet>` applies:
+
+```javascript
+<Helmet defer={false}>
+  <title>Hello World</title>
+</Helmet>
+```
+
+> **React 19:** `defer` has no effect on React 19. React renders the tags itself, and `htmlAttributes` and `bodyAttributes` are applied as soon as `<Helmet>` mounts or updates.
+
 ## Prioritizing tags for SEO
 
 It is understood that in some cases for SEO, certain tags should appear earlier in the HEAD. Using the `prioritizeSeoTags` flag on any `<Helmet>` component allows the server render of react-helmet-async to expose a method for prioritizing relevant SEO tags.
