@@ -1,16 +1,19 @@
-/// <reference types="vite/client" />
+// @vitest-environment node
 import { parse } from 'acorn';
+import { build } from 'esbuild';
 
-import esm from '../lib/index.esm.js?raw';
-import cjs from '../lib/index.js?raw';
+import { bundles } from '../build.config';
 
-// webpack 4.0–4.11 parse with ecmaVersion 2018. Keep it in step with `target` in build.ts.
+// webpack 4.0–4.11 parse with ecmaVersion 2018. Keep it in step with `target` in build.config.ts.
 describe('bundles', () => {
-  it('lib/index.js parses as ES2018', () => {
-    expect(() => parse(cjs, { ecmaVersion: 2018, sourceType: 'script' })).not.toThrow();
-  });
+  it.each(bundles)('$outfile parses as ES2018', async (options) => {
+    const { outputFiles } = await build({ ...options, write: false });
 
-  it('lib/index.esm.js parses as ES2018', () => {
-    expect(() => parse(esm, { ecmaVersion: 2018, sourceType: 'module' })).not.toThrow();
+    expect(() =>
+      parse(outputFiles[0].text, {
+        ecmaVersion: 2018,
+        sourceType: options.format === 'esm' ? 'module' : 'script',
+      })
+    ).not.toThrow();
   });
 });

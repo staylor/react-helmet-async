@@ -1,0 +1,93 @@
+name: Publish
+
+# Publishes the version in package.json to npm if it isn't there yet, and creates its
+# GitHub release, tag included, with the notes from CHANGELOG.md. `pnpm release` opens the
+# pull request that bumps the version; merging it runs this workflow.
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - package.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    # workflow_dispatch can pick any branch; only main is released.
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write # creates the release and its tag
+      id-token: write # npm trusted publishing, which also adds provenance
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check npm and GitHub for this version
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          version=$(jq -r .version package.json)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+          status=$(curl -s -o /dev/null -w '%{http_code}' "https://registry.npmjs.org/react-helmet-async/$version")
+          case "$status" in
+            200) echo "react-helmet-async@$version is on npm." ;;
+            404) echo "publish=true" >> "$GITHUB_OUTPUT" ;;
+            *) echo "::error::The npm registry answered $status for react-helmet-async@$version."; exit 1 ;;
+          esac
+
+          if gh release view "v$version" > /dev/null 2>&1; then
+            echo "v$version has a GitHub release."
+          else
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - if: steps.check.outputs.publish || steps.check.outputs.release
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+
+      - if: steps.check.outputs.publish || steps.check.outputs.release
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+          # A restored cache could change what gets published.
+          package-manager-cache: false
+
+      - if: steps.check.outputs.publish || steps.check.outputs.release
+        run: pnpm install --frozen-lockfile
+
+      - if: steps.check.outputs.publish
+        name: Type checks
+        run: pnpm tsc
+
+      - if: steps.check.outputs.publish
+        name: Unit tests
+        run: pnpm test
+
+      # Authenticates through the trusted publisher configured for this workflow on npmjs.com.
+      - if: steps.check.outputs.publish
+        name: Publish to npm
+        run: npm publish
+
+      - if: steps.check.outputs.release
+        name: Create the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ steps.check.outputs.version }}
+        run: |
+          pnpm --silent release-notes "$VERSION" > "$RUNNER_TEMP/notes.md"
+          gh release create "v$VERSION" --target "$GITHUB_SHA" --title "v$VERSION" --notes-file "$RUNNER_TEMP/notes.md"

@@ -12,6 +12,11 @@ globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 let headElement: HTMLHeadElement;
 
 beforeEach(() => {
+  // The bundle checks run in Vitest's node environment, which has no DOM to reset.
+  if (typeof document === 'undefined') {
+    return;
+  }
+
   headElement ||= document.head || document.querySelector('head');
 
   headElement.innerHTML = '';

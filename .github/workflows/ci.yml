@@ -1,14 +1,24 @@
 name: CI
 
+# Every push runs CI. Pull requests run it only when they come from a fork, since a
+# branch in this repository already ran it on push.
 on:
   push:
+  pull_request:
 
 permissions:
   contents: read
 
+# A newer push to the same branch or pull request cancels the older run, except on main.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 jobs:
   build:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     strategy:
       matrix:
@@ -41,7 +51,9 @@ jobs:
         run: pnpm run test:e2e:server
 
   e2e-browser:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

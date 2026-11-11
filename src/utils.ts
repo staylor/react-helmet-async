@@ -281,3 +281,10 @@ export const without = (obj: PropList, key: string) => {
     [key]: undefined,
   };
 };
+
+// Replaces the invariant package; the thrown error is a plain Error instead of "Invariant Violation".
+export function invariant(condition: unknown, message: string): asserts condition {
+  if (!condition) {
+    throw new Error(message);
+  }
+}

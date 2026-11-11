@@ -1,13 +1,23 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "types": ["vitest/globals"],
+    "types": ["vitest/globals", "node"],
     "resolveJsonModule": true,
     "declaration": false,
     "emitDeclarationOnly": false,
     "noEmit": true,
     "rootDir": "."
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "__tests__/**/*.ts", "__tests__/**/*.tsx"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "__tests__/**/*.ts",
+    "__tests__/**/*.tsx",
+    "e2e/**/*.ts",
+    "e2e/**/*.tsx",
+    "scripts/**/*.ts",
+    "build.ts",
+    "build.config.ts"
+  ],
   "exclude": ["node_modules", "lib"]
 }

@@ -16,18 +16,32 @@
         "types": "./lib/index.d.ts",
         "default": "./lib/index.js"
       }
-    }
+    },
+    "./package.json": "./package.json"
   },
-  "repository": "http://github.com/staylor/react-helmet-async",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/staylor/react-helmet-async.git"
+  },
+  "homepage": "https://github.com/staylor/react-helmet-async#readme",
+  "bugs": "https://github.com/staylor/react-helmet-async/issues",
+  "keywords": [
+    "react",
+    "helmet",
+    "head",
+    "meta",
+    "title",
+    "seo",
+    "ssr",
+    "react-19"
+  ],
   "author": "Scott Taylor <scott.c.taylor@mac.com>",
   "license": "Apache-2.0",
   "files": [
     "lib/"
   ],
   "dependencies": {
-    "invariant": "^2.2.4",
-    "react-fast-compare": "^3.2.2",
-    "shallowequal": "^1.1.0"
+    "react-fast-compare": "^3.2.2"
   },
   "devDependencies": {
     "@commitlint/cli": "21.2.4",
@@ -35,10 +49,9 @@
     "@playwright/test": "1.65.0",
     "@testing-library/dom": "10.4.2",
     "@testing-library/jest-dom": "7.0.1",
-    "@types/invariant": "2.2.37",
+    "@types/node": "24.19.2",
     "@types/react": "18.3.31",
     "@types/react-dom": "18.3.7",
-    "@types/shallowequal": "1.1.5",
     "@vitejs/plugin-react": "6.3.0",
     "@wonderboymusic/oxc-config": "2.0.0",
     "acorn": "8.19.0",
@@ -71,9 +84,16 @@
     "test:all": "pnpm test && pnpm run test:e2e",
     "test-watch": "vitest watch",
     "test-update": "vitest run -u",
-    "compile": "pnpm run clean && NODE_ENV=production tsx build.ts && pnpm run types",
+    "compile": "pnpm run clean && tsx build.ts && pnpm run types",
     "prepare": "pnpm run compile && husky",
-    "types": "tsc --project tsconfig.build.json"
+    "types": "tsc --project tsconfig.build.json",
+    "release": "tsx scripts/release.ts",
+    "release-notes": "tsx scripts/release-notes.ts"
   },
-  "packageManager": "pnpm@10.34.5"
+  "packageManager": "pnpm@10.34.5",
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "esbuild"
+    ]
+  }
 }
