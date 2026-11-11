@@ -21,16 +21,20 @@ const updateTags = (type: string, tags: HTMLElement[]) => {
   if (tags && tags.length) {
     tags.forEach((tag) => {
       const newElement = document.createElement(type);
+      const handlers: Record<string, unknown> = {};
 
       for (const attribute in tag) {
         if (Object.prototype.hasOwnProperty.call(tag, attribute)) {
+          const attr = attribute as keyof HTMLElement;
           if (attribute === TAG_PROPERTIES.INNER_HTML) {
             newElement.innerHTML = tag.innerHTML;
           } else if (attribute === TAG_PROPERTIES.CSS_TEXT) {
             const cssText = (tag as unknown as Record<string, string>).cssText;
             newElement.appendChild(document.createTextNode(cssText));
+          } else if (typeof tag[attr] === 'function') {
+            // setAttribute() would stringify a function, so onLoad becomes the onload handler.
+            handlers[attribute.toLowerCase()] = tag[attr];
           } else {
-            const attr = attribute as keyof HTMLElement;
             const value = typeof tag[attr] === 'undefined' ? '' : tag[attr];
             newElement.setAttribute(attribute, value as string);
           }
@@ -46,8 +50,11 @@ const updateTags = (type: string, tags: HTMLElement[]) => {
           return newElement.isEqualNode(existingTag);
         })
       ) {
+        // isEqualNode() doesn't compare handlers, so the kept tag takes the current ones.
+        Object.assign(oldTags[indexToDelete], handlers);
         oldTags.splice(indexToDelete, 1);
       } else {
+        Object.assign(newElement, handlers);
         newTags.push(newElement);
       }
     });

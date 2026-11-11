@@ -59,7 +59,9 @@ const generateTagsAsString = (type: string, tags: HTMLElement[], encode = true) 
     const attributeHtml = Object.keys(tag)
       .filter(
         (attribute) =>
-          !(attribute === TAG_PROPERTIES.INNER_HTML || attribute === TAG_PROPERTIES.CSS_TEXT)
+          !(attribute === TAG_PROPERTIES.INNER_HTML || attribute === TAG_PROPERTIES.CSS_TEXT) &&
+          // Event handlers such as onLoad can't be serialized.
+          typeof tag[attribute] !== 'function'
       )
       .reduce((string, attribute) => {
         const attr =

@@ -110,5 +110,17 @@ describe('server', () => {
       expect(head.script.toString).toBeDefined();
       expect(head.script.toString()).toMatchSnapshot();
     });
+
+    it('leaves function props out of the string', () => {
+      const head = renderContext(
+        <Helmet>
+          <script src="http://localhost/test.js" onLoad={() => {}} />
+        </Helmet>
+      );
+
+      expect(head.script.toString()).toBe(
+        '<script data-rh="true" src="http://localhost/test.js"></script>'
+      );
+    });
   });
 });
