@@ -84,11 +84,11 @@ This package only works with streaming if your `<head>` data is output outside o
 This is possible if your data hydration method already parses your React tree. Example:
 
 ```javascript
-import through from 'through';
-import { renderToNodeStream } from 'react-dom/server';
 import { getDataFromTree } from 'react-apollo';
+import { renderToNodeStream } from 'react-dom/server';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import template from 'server/template';
+import through from 'through';
 
 const helmetContext = {};
 
@@ -130,6 +130,7 @@ renderToNodeStream(app)
 > **React 19:** React 19's `renderToReadableStream` natively handles `<title>`, `<meta>`, and `<link>` hoisting during streaming, so the manual context extraction shown above is not necessary.
 
 ## Usage in Jest
+
 While testing in using jest, if there is a need to emulate SSR, the following string is required to have the test behave the way they are expected to.
 
 ```javascript
@@ -145,18 +146,20 @@ HelmetProvider.canUseDOM = false;
 It is understood that in some cases for SEO, certain tags should appear earlier in the HEAD. Using the `prioritizeSeoTags` flag on any `<Helmet>` component allows the server render of react-helmet-async to expose a method for prioritizing relevant SEO tags.
 
 In the component:
+
 ```javascript
 <Helmet prioritizeSeoTags>
   <title>A fancy webpage</title>
   <link rel="notImportant" href="https://www.chipotle.com" />
   <meta name="whatever" value="notImportant" />
   <link rel="canonical" href="https://www.tacobell.com" />
-  <meta property="og:title" content="A very important title"/>
+  <meta property="og:title" content="A very important title" />
 </Helmet>
 ```
 
 In your server template:
 
+<!-- oxfmt-ignore -->
 ```javascript
 <html>
   <head>
@@ -176,7 +179,7 @@ Will result in:
 <html>
   <head>
     <title>A fancy webpage</title>
-    <meta property="og:title" content="A very important title"/>
+    <meta property="og:title" content="A very important title" />
     <link rel="canonical" href="https://www.tacobell.com" />
     <meta name="whatever" value="notImportant" />
     <link rel="notImportant" href="https://www.chipotle.com" />
@@ -190,8 +193,8 @@ A list of prioritized tags and attributes can be found in [constants.ts](./src/c
 > **React 19:** The `prioritizeSeoTags` flag has no effect on React 19, since tags are rendered as regular JSX elements and their order in `<head>` is determined by React's rendering order.
 
 ## Usage without Context
-You can optionally use `<Helmet>` outside a context by manually creating a stateful `HelmetData` instance, and passing that stateful object to each `<Helmet>` instance:
 
+You can optionally use `<Helmet>` outside a context by manually creating a stateful `HelmetData` instance, and passing that stateful object to each `<Helmet>` instance:
 
 ```js
 import React from 'react';
@@ -201,13 +204,13 @@ import { Helmet, HelmetData } from 'react-helmet-async';
 const helmetData = new HelmetData({});
 
 const app = (
-    <App>
-      <Helmet helmetData={helmetData}>
-        <title>Hello World</title>
-        <link rel="canonical" href="https://www.tacobell.com/" />
-      </Helmet>
-      <h1>Hello World</h1>
-    </App>
+  <App>
+    <Helmet helmetData={helmetData}>
+      <title>Hello World</title>
+      <link rel="canonical" href="https://www.tacobell.com/" />
+    </Helmet>
+    <h1>Hello World</h1>
+  </App>
 );
 
 const html = renderToString(app);
@@ -219,17 +222,21 @@ const { helmet } = helmetData.context;
 
 ## Compatibility
 
-| React Version | Behavior |
-|---|---|
-| 16.6+ | Full support via `HelmetProvider` context and manual DOM updates |
-| 17.x | Full support via `HelmetProvider` context and manual DOM updates |
-| 18.x | Full support via `HelmetProvider` context and manual DOM updates |
-| 19.x+ | Renders native JSX elements; React handles `<head>` hoisting |
+| React Version | Behavior                                                         |
+| ------------- | ---------------------------------------------------------------- |
+| 16.6+         | Full support via `HelmetProvider` context and manual DOM updates |
+| 17.x          | Full support via `HelmetProvider` context and manual DOM updates |
+| 18.x          | Full support via `HelmetProvider` context and manual DOM updates |
+| 19.x+         | Renders native JSX elements; React handles `<head>` hoisting     |
 
 ## Development
 
+Use the Node.js version in `.nvmrc` (CI also runs 22 and 26) and the pnpm version in `packageManager`. Linting and formatting use [oxlint](https://oxc.rs/docs/guide/usage/linter) and [oxfmt](https://oxc.rs/docs/guide/usage/formatter) with [`@wonderboymusic/oxc-config`](https://github.com/staylor/oxc-config).
+
 ```bash
 pnpm install
+pnpm lint            # oxlint + oxfmt --check
+pnpm lint-fix        # apply lint fixes and formatting
 pnpm test            # unit tests
 pnpm run test:e2e    # server + browser e2e tests
 pnpm run test:all    # everything

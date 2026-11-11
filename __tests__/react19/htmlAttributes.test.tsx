@@ -7,11 +7,11 @@ import { render, unmount } from './utils';
 
 vi.mock('../../src/reactVersion', () => ({ isReact19: true }));
 
-afterEach(() => {
-  unmount();
-});
-
 describe('React 19 – html attributes', () => {
+  afterEach(() => {
+    unmount();
+  });
+
   describe('API', () => {
     it('applies html attributes to <html> via DOM manipulation', () => {
       render(
@@ -66,7 +66,6 @@ describe('React 19 – html attributes', () => {
       render(
         <Helmet
           htmlAttributes={{
-            // @ts-ignore
             amp: true,
           }}
         />

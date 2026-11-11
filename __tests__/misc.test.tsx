@@ -55,7 +55,7 @@ describe('misc', () => {
         />
       );
 
-      expect(onChange).toBeCalledTimes(1);
+      expect(onChange).toHaveBeenCalledTimes(1);
     });
 
     it('does not write the DOM if the client and server are identical', () => {
@@ -133,7 +133,7 @@ describe('misc', () => {
         />
       );
 
-      expect(onChange).toBeCalledTimes(2);
+      expect(onChange).toHaveBeenCalledTimes(2);
 
       addedTags = onChange.mock.calls[1][1];
       removedTags = onChange.mock.calls[1][2];
@@ -151,8 +151,7 @@ describe('misc', () => {
     });
 
     it('does not accept nested Helmets', () => {
-      const consoleError = global.console.error;
-      global.console.error = vi.fn();
+      const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
       const renderInvalid = () => {
         render(
@@ -166,7 +165,7 @@ describe('misc', () => {
         'You may be attempting to nest <Helmet> components within each other, which is not allowed. Refer to our API for more information.'
       );
 
-      global.console.error = consoleError;
+      consoleError.mockRestore();
     });
 
     it('recognizes valid tags regardless of attribute ordering', () => {
@@ -186,8 +185,8 @@ describe('misc', () => {
     });
 
     it('requestAnimationFrame works as expected', () => {
-      return new Promise(resolve => {
-        requestAnimationFrame(cb => {
+      return new Promise((resolve) => {
+        requestAnimationFrame((cb) => {
           expect(cb).toBeDefined();
           expect(typeof cb).toBe('number');
 
@@ -234,7 +233,7 @@ describe('misc', () => {
         </Helmet>
       );
 
-      expect(onChange).toBeCalledTimes(1);
+      expect(onChange).toHaveBeenCalledTimes(1);
     });
 
     it('does not write the DOM if the client and server are identical', () => {
@@ -289,7 +288,7 @@ describe('misc', () => {
         </Helmet>
       );
 
-      expect(onChange).toBeCalledTimes(2);
+      expect(onChange).toHaveBeenCalledTimes(2);
 
       addedTags = onChange.mock.calls[1][1];
       removedTags = onChange.mock.calls[1][2];
@@ -307,8 +306,7 @@ describe('misc', () => {
     });
 
     it('does not accept nested Helmets', () => {
-      const consoleError = global.console.error;
-      global.console.error = vi.fn();
+      const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
       const renderInvalid = () => {
         render(
@@ -325,12 +323,11 @@ describe('misc', () => {
         'You may be attempting to nest <Helmet> components within each other, which is not allowed. Refer to our API for more information.'
       );
 
-      global.console.error = consoleError;
+      consoleError.mockRestore();
     });
 
     it('throws on invalid elements', () => {
-      const consoleError = global.console.error;
-      global.console.error = vi.fn();
+      const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
       const renderInvalid = () => {
         render(
@@ -347,19 +344,18 @@ describe('misc', () => {
         'Only elements types base, body, head, html, link, meta, noscript, script, style, title, Symbol(react.fragment) are allowed. Helmet does not support rendering <div> elements. Refer to our API for more information.'
       );
 
-      global.console.error = consoleError;
+      consoleError.mockRestore();
     });
 
     it('throws on invalid self-closing elements', () => {
-      const consoleError = global.console.error;
-      global.console.error = vi.fn();
+      const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
       const renderInvalid = () => {
         render(
           <Helmet>
             <title>Test Title</title>
             <div
-              // @ts-ignore
+              // @ts-expect-error -- unknown attribute on purpose
               customAttribute
             />
           </Helmet>
@@ -370,12 +366,11 @@ describe('misc', () => {
         'Only elements types base, body, head, html, link, meta, noscript, script, style, title, Symbol(react.fragment) are allowed. Helmet does not support rendering <div> elements. Refer to our API for more information.'
       );
 
-      global.console.error = consoleError;
+      consoleError.mockRestore();
     });
 
     it('throws on invalid strings as children', () => {
-      const consoleError = global.console.error;
-      global.console.error = vi.fn();
+      const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
       const renderInvalid = () => {
         render(
@@ -392,12 +387,11 @@ describe('misc', () => {
         '<link /> elements are self-closing and can not contain children. Refer to our API for more information.'
       );
 
-      global.console.error = consoleError;
+      consoleError.mockRestore();
     });
 
     it('throws on invalid children', () => {
-      const consoleError = global.console.error;
-      global.console.error = vi.fn();
+      const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
       const renderInvalid = () => {
         render(
@@ -414,7 +408,7 @@ describe('misc', () => {
         'Helmet expects a string as a child of <script>. Did you forget to wrap your children in braces? ( <script>{``}</script> ) Refer to our API for more information.'
       );
 
-      global.console.error = consoleError;
+      consoleError.mockRestore();
     });
 
     it('handles undefined children', () => {
@@ -450,8 +444,8 @@ describe('misc', () => {
     });
 
     it('requestAnimationFrame works as expected', () => {
-      return new Promise(resolve => {
-        requestAnimationFrame(cb => {
+      return new Promise((resolve) => {
+        requestAnimationFrame((cb) => {
           expect(cb).toBeDefined();
           expect(typeof cb).toBe('number');
           resolve(true);

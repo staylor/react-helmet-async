@@ -7,15 +7,15 @@ import { renderContext } from '../utils';
 
 Helmet.defaultProps.defer = false;
 
-beforeAll(() => {
-  Provider.canUseDOM = false;
-});
-
-afterAll(() => {
-  Provider.canUseDOM = true;
-});
-
 describe('server', () => {
+  beforeAll(() => {
+    Provider.canUseDOM = false;
+  });
+
+  afterAll(() => {
+    Provider.canUseDOM = true;
+  });
+
   describe('API', () => {
     it('renders html attributes as component', () => {
       const head = renderContext(

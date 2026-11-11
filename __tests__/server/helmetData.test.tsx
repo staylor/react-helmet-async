@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { Helmet } from '../../src';
-import Provider from '../../src/Provider';
 import HelmetData from '../../src/HelmetData';
+import Provider from '../../src/Provider';
 import { HELMET_ATTRIBUTE } from '../../src/constants';
 import { render } from '../utils';
 

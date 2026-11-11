@@ -7,15 +7,15 @@ import { renderContext, isArray } from '../utils';
 
 Helmet.defaultProps.defer = false;
 
-beforeAll(() => {
-  Provider.canUseDOM = false;
-});
-
-afterAll(() => {
-  Provider.canUseDOM = true;
-});
-
 describe('server', () => {
+  beforeAll(() => {
+    Provider.canUseDOM = false;
+  });
+
+  afterAll(() => {
+    Provider.canUseDOM = true;
+  });
+
   describe('API', () => {
     it('renders base tag as React component', () => {
       const head = renderContext(<Helmet base={{ target: '_blank', href: 'http://localhost/' }} />);

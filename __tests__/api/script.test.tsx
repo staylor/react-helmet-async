@@ -40,7 +40,7 @@ describe('script tags', () => {
       expect(existingTags).toBeDefined();
 
       const filteredTags = existingTags.filter(
-        tag =>
+        (tag) =>
           (tag.getAttribute('src') === 'http://localhost/test.js' &&
             tag.getAttribute('type') === 'text/javascript') ||
           (tag.getAttribute('src') === 'http://localhost/test2.js' &&
@@ -127,7 +127,7 @@ describe('script tags', () => {
           script={[
             {
               src: 'foo.js',
-              // @ts-ignore
+              // @ts-expect-error -- undefined attribute on purpose
               async: undefined,
             },
           ]}
@@ -145,7 +145,7 @@ describe('script tags', () => {
         <Helmet
           script={[
             {
-              // @ts-ignore
+              // @ts-expect-error -- missing src on purpose
               src: undefined,
               type: 'text/javascript',
             },
@@ -164,7 +164,7 @@ describe('script tags', () => {
         <Helmet
           script={[
             {
-              // @ts-ignore
+              // @ts-expect-error -- missing innerHTML on purpose
               innerHTML: undefined,
             },
           ]}
@@ -200,7 +200,7 @@ describe('script tags', () => {
       expect(existingTags).toBeDefined();
 
       const filteredTags = existingTags.filter(
-        tag =>
+        (tag) =>
           (tag.getAttribute('src') === 'http://localhost/test.js' &&
             tag.getAttribute('type') === 'text/javascript') ||
           (tag.getAttribute('src') === 'http://localhost/test2.js' &&
@@ -298,7 +298,7 @@ describe('script tags', () => {
       render(
         <Helmet>
           <script
-            // @ts-ignore
+            // @ts-expect-error -- missing innerHTML on purpose
             innerHTML={undefined}
           />
         </Helmet>

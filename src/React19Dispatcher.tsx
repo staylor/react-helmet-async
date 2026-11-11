@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import { TAG_NAMES, HTML_TAG_MAP, REACT_TAG_MAP } from './constants';
 import { isDocument } from './HelmetData';
+import { TAG_NAMES, HTML_TAG_MAP, REACT_TAG_MAP } from './constants';
 import type { HelmetProps } from './types';
 
 // Module-level registry of all mounted React19Dispatcher instances.

@@ -33,7 +33,7 @@ describe('title attributes', () => {
           <Helmet
             titleAttributes={{
               lang: 'en',
-              // @ts-ignore
+              // @ts-expect-error -- undefined attribute on purpose
               hidden: undefined,
             }}
           />
@@ -56,7 +56,7 @@ describe('title attributes', () => {
       render(
         <Helmet
           titleAttributes={{
-            // @ts-ignore
+            // @ts-expect-error -- undefined attribute on purpose
             hidden: undefined,
           }}
         />
@@ -73,7 +73,7 @@ describe('title attributes', () => {
         <Helmet
           titleAttributes={{
             lang: 'en',
-            // @ts-ignore
+            // @ts-expect-error -- undefined attribute on purpose
             hidden: undefined,
           }}
         />

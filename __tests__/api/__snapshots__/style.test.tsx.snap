@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Declarative API > updates style tags 1`] = `
-"<style type=\\"text/css\\" data-rh=\\"true\\">
+"<style type="text/css" data-rh="true">
             body {
                 background-color: green;
             }
@@ -9,7 +9,7 @@ exports[`Declarative API > updates style tags 1`] = `
 `;
 
 exports[`Declarative API > updates style tags 2`] = `
-"<style data-rh=\\"true\\">
+"<style data-rh="true">
             p {
                 font-size: 12px;
             }
@@ -17,7 +17,7 @@ exports[`Declarative API > updates style tags 2`] = `
 `;
 
 exports[`style tags > updates style tags 1`] = `
-"<style type=\\"text/css\\" data-rh=\\"true\\">
+"<style type="text/css" data-rh="true">
                   body {
                       background-color: green;
                   }
@@ -25,7 +25,7 @@ exports[`style tags > updates style tags 1`] = `
 `;
 
 exports[`style tags > updates style tags 2`] = `
-"<style data-rh=\\"true\\">
+"<style data-rh="true">
                   p {
                       font-size: 12px;
                   }

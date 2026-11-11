@@ -7,11 +7,11 @@ import { render, unmount, getMountElement } from './utils';
 
 vi.mock('../../src/reactVersion', () => ({ isReact19: true }));
 
-afterEach(() => {
-  unmount();
-});
-
 describe('React 19 – link tags', () => {
+  afterEach(() => {
+    unmount();
+  });
+
   describe('API', () => {
     it('renders link tags', () => {
       render(
@@ -24,7 +24,7 @@ describe('React 19 – link tags', () => {
       );
 
       const links = getMountElement().querySelectorAll('link');
-      expect(links.length).toBe(2);
+      expect(links).toHaveLength(2);
 
       expect(links[0]).toHaveAttribute('href', 'http://localhost/helmet');
       expect(links[0]).toHaveAttribute('rel', 'canonical');
@@ -37,7 +37,7 @@ describe('React 19 – link tags', () => {
       render(<Helmet />);
 
       const links = getMountElement().querySelectorAll('link');
-      expect(links.length).toBe(0);
+      expect(links).toHaveLength(0);
     });
 
     it('updates link tags on re-render', () => {
@@ -63,7 +63,7 @@ describe('React 19 – link tags', () => {
       );
 
       const links = getMountElement().querySelectorAll('link');
-      expect(links.length).toBe(2);
+      expect(links).toHaveLength(2);
 
       expect(links[0]).toHaveAttribute('href', 'http://localhost/helmet');
       expect(links[0]).toHaveAttribute('rel', 'canonical');
@@ -78,11 +78,11 @@ describe('React 19 – link tags', () => {
         </Helmet>
       );
 
-      expect(getMountElement().querySelectorAll('link').length).toBe(1);
+      expect(getMountElement().querySelectorAll('link')).toHaveLength(1);
 
       render(<Helmet />);
 
-      expect(getMountElement().querySelectorAll('link').length).toBe(0);
+      expect(getMountElement().querySelectorAll('link')).toHaveLength(0);
     });
   });
 });

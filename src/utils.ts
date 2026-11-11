@@ -59,14 +59,14 @@ const getOnChangeClientState = (propsList: PropsList) =>
 
 const getAttributesFromPropsList = (tagType: string, propsList: PropsList) =>
   propsList
-    .filter(props => typeof props[tagType] !== 'undefined')
-    .map(props => props[tagType])
+    .filter((props) => typeof props[tagType] !== 'undefined')
+    .map((props) => props[tagType])
     .reduce((tagAttrs, current) => ({ ...tagAttrs, ...current }), {});
 
 const getBaseTagFromPropsList = (primaryAttributes: AttributeList, propsList: PropsList) =>
   propsList
-    .filter(props => typeof props[TAG_NAMES.BASE] !== 'undefined')
-    .map(props => props[TAG_NAMES.BASE])
+    .filter((props) => typeof props[TAG_NAMES.BASE] !== 'undefined')
+    .map((props) => props[TAG_NAMES.BASE])
     .reverse()
     .reduce((innermostBaseTag, tag) => {
       if (!innermostBaseTag.length) {
@@ -99,7 +99,7 @@ const getTagsFromPropsList = (
   const approvedSeenTags: SeenTags = {};
 
   return propsList
-    .filter(props => {
+    .filter((props) => {
       if (Array.isArray(props[tagName])) {
         return true;
       }
@@ -112,7 +112,7 @@ const getTagsFromPropsList = (
       }
       return false;
     })
-    .map(props => props[tagName])
+    .map((props) => props[tagName])
     .reverse()
     .reduce((approvedTags, instanceTags) => {
       const instanceSeenTags: SeenTags = {};

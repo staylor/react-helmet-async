@@ -224,7 +224,7 @@ describe('html attributes', () => {
       render(
         <Helmet>
           <html
-            // @ts-ignore
+            // @ts-expect-error -- unknown attribute on purpose
             amp
           />
         </Helmet>
@@ -241,7 +241,7 @@ describe('html attributes', () => {
         <Helmet>
           <html
             lang="en"
-            // @ts-ignore
+            // @ts-expect-error -- unknown attribute on purpose
             amp
           />
         </Helmet>
@@ -261,7 +261,7 @@ describe('html attributes', () => {
         <Helmet>
           <html
             lang="en"
-            // @ts-ignore
+            // @ts-expect-error -- unknown attribute on purpose
             amp
           />
         </Helmet>
@@ -287,7 +287,7 @@ describe('html attributes', () => {
         <Helmet>
           <html
             lang="en"
-            // @ts-ignore
+            // @ts-expect-error -- unknown attribute on purpose
             amp
           />
         </Helmet>
@@ -327,7 +327,7 @@ describe('html attributes', () => {
         render(
           <Helmet>
             <html
-              // @ts-ignore
+              // @ts-expect-error -- unknown attribute on purpose
               test="helmet-attr"
             />
           </Helmet>
@@ -343,7 +343,7 @@ describe('html attributes', () => {
         render(
           <Helmet>
             <html
-              // @ts-ignore
+              // @ts-expect-error -- unknown attribute on purpose
               test="helmet-attr"
             />
           </Helmet>

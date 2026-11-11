@@ -54,7 +54,7 @@ describe('noscript tags', () => {
         <Helmet
           noscript={[
             {
-              // @ts-ignore
+              // @ts-expect-error -- missing innerHTML on purpose
               innerHTML: undefined,
             },
           ]}

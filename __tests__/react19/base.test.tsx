@@ -7,11 +7,11 @@ import { render, unmount, getMountElement } from './utils';
 
 vi.mock('../../src/reactVersion', () => ({ isReact19: true }));
 
-afterEach(() => {
-  unmount();
-});
-
 describe('React 19 – base tag', () => {
+  afterEach(() => {
+    unmount();
+  });
+
   describe('API', () => {
     it('renders a base tag', () => {
       render(<Helmet base={{ href: 'http://mysite.com/' }} />);

@@ -18,20 +18,20 @@ describe('body attributes', () => {
       dir: 'rtl',
       draggable: 'true',
       dropzone: 'copy',
-      // @ts-ignore
+      // @ts-expect-error -- string value on purpose
       hidden: 'true',
       id: 'test',
       lang: 'fr',
       spellcheck: 'true',
-      // @ts-ignore
+      // @ts-expect-error -- string value on purpose
       style: 'color: green',
-      // @ts-ignore
+      // @ts-expect-error -- string value on purpose
       tabIndex: '-1',
       title: 'test',
       translate: 'no',
     };
 
-    Object.keys(attributeList).forEach(attribute => {
+    Object.keys(attributeList).forEach((attribute) => {
       it(`${attribute}`, () => {
         const attrValue = attributeList[attribute];
 
@@ -179,7 +179,7 @@ describe('body attributes', () => {
       render(
         <Helmet>
           <body
-            // @ts-ignore
+            // @ts-expect-error -- unknown attribute on purpose
             test="helmet-attr"
           />
         </Helmet>
@@ -195,7 +195,7 @@ describe('body attributes', () => {
       render(
         <Helmet>
           <body
-            // @ts-ignore
+            // @ts-expect-error -- unknown attribute on purpose
             test="helmet-attr"
           />
         </Helmet>

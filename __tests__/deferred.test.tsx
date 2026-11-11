@@ -4,7 +4,6 @@ import type { MockedFunction } from 'vitest';
 import { Helmet } from '../src';
 
 import { render } from './utils';
-import './window';
 
 declare global {
   interface Window {
@@ -21,7 +20,6 @@ describe.skip('deferred tags', () => {
   });
 
   afterEach(() => {
-    // @ts-ignore
     delete window.__spy__;
   });
 
@@ -51,11 +49,9 @@ describe.skip('deferred tags', () => {
 
       await vi.waitFor(
         () =>
-          new Promise(resolve => {
+          new Promise((resolve) => {
             requestAnimationFrame(() => {
-              // @ts-ignore
               expect(window.__spy__).toHaveBeenCalledTimes(2);
-              // @ts-ignore
               expect(window.__spy__.mock.calls).toStrictEqual([[1], [2]]);
 
               resolve(true);
@@ -82,7 +78,7 @@ describe.skip('deferred tags', () => {
 
       await vi.waitFor(
         () =>
-          new Promise(resolve => {
+          new Promise((resolve) => {
             requestAnimationFrame(() => {
               expect(window.__spy__).toHaveBeenCalledTimes(2);
               expect(window.__spy__.mock.calls).toStrictEqual([[1], [2]]);

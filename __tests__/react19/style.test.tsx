@@ -7,11 +7,11 @@ import { render, unmount, getMountElement } from './utils';
 
 vi.mock('../../src/reactVersion', () => ({ isReact19: true }));
 
-afterEach(() => {
-  unmount();
-});
-
 describe('React 19 – style tags', () => {
+  afterEach(() => {
+    unmount();
+  });
+
   describe('API', () => {
     it('renders style tags with cssText', () => {
       const css1 = 'body { background-color: green; }';
@@ -19,7 +19,7 @@ describe('React 19 – style tags', () => {
       render(<Helmet style={[{ type: 'text/css', cssText: css1 }, { cssText: css2 }]} />);
 
       const styles = getMountElement().querySelectorAll('style');
-      expect(styles.length).toBe(2);
+      expect(styles).toHaveLength(2);
 
       expect(styles[0]).toHaveAttribute('type', 'text/css');
       expect(styles[0].innerHTML).toBe(css1);
@@ -30,7 +30,7 @@ describe('React 19 – style tags', () => {
       render(<Helmet />);
 
       const styles = getMountElement().querySelectorAll('style');
-      expect(styles.length).toBe(0);
+      expect(styles).toHaveLength(0);
     });
 
     it('updates style tags on re-render', () => {

@@ -7,11 +7,11 @@ import { render, unmount, getMountElement } from './utils';
 
 vi.mock('../../src/reactVersion', () => ({ isReact19: true }));
 
-afterEach(() => {
-  unmount();
-});
-
 describe('React 19 – HelmetProvider', () => {
+  afterEach(() => {
+    unmount();
+  });
+
   it('is a transparent passthrough (renders children directly)', () => {
     render(<div data-testid="child">Hello</div>);
 

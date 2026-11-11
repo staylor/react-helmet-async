@@ -7,15 +7,15 @@ import { renderContext, isArray } from '../utils';
 
 Helmet.defaultProps.defer = false;
 
-beforeAll(() => {
-  Provider.canUseDOM = false;
-});
-
-afterAll(() => {
-  Provider.canUseDOM = true;
-});
-
 describe('server', () => {
+  beforeAll(() => {
+    Provider.canUseDOM = false;
+  });
+
+  afterAll(() => {
+    Provider.canUseDOM = true;
+  });
+
   describe('API', () => {
     it('rewind() provides a fallback object for empty Helmet state', () => {
       const head = renderContext(<div />);
@@ -107,7 +107,7 @@ describe('server', () => {
           script={[
             {
               src: 'foo.js',
-              // @ts-ignore
+              // @ts-expect-error -- undefined attribute on purpose
               async: undefined,
             },
           ]}

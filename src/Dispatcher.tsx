@@ -1,11 +1,11 @@
 import { Component } from 'react';
 import shallowEqual from 'shallowequal';
 
+import Provider from './Provider';
 import handleStateChangeOnClient from './client';
 import mapStateOnServer from './server';
-import { reducePropsToState } from './utils';
-import Provider from './Provider';
 import type { HelmetServerState, MappedServerState } from './types';
+import { reducePropsToState } from './utils';
 
 export interface DispatcherContextProp {
   setHelmet: (newState: HelmetServerState | null) => void;
@@ -41,7 +41,7 @@ export default class HelmetDispatcher extends Component<DispatcherProps> {
     const { helmetInstances, setHelmet } = this.props.context;
     let serverState: HelmetServerState | null = null;
     const state = reducePropsToState(
-      helmetInstances.get().map(instance => {
+      helmetInstances.get().map((instance) => {
         const { context: _context, ...props } = instance.props as DispatcherProps &
           Record<string, unknown>;
         return props;

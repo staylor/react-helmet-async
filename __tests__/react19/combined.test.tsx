@@ -7,11 +7,11 @@ import { render, unmount, getMountElement } from './utils';
 
 vi.mock('../../src/reactVersion', () => ({ isReact19: true }));
 
-afterEach(() => {
-  unmount();
-});
-
 describe('React 19 – combined usage', () => {
+  afterEach(() => {
+    unmount();
+  });
+
   it('renders title, meta, link, and base together via API', () => {
     render(
       <Helmet
@@ -33,7 +33,7 @@ describe('React 19 – combined usage', () => {
     expect(base).toHaveAttribute('href', 'http://mysite.com/');
 
     const metas = mount.querySelectorAll('meta');
-    expect(metas.length).toBe(2);
+    expect(metas).toHaveLength(2);
 
     const link = mount.querySelector('link[rel="canonical"]');
     expect(link).toHaveAttribute('href', 'http://mysite.com/page');
@@ -54,7 +54,7 @@ describe('React 19 – combined usage', () => {
 
     expect(mount.querySelector('title')!).toHaveTextContent('Declarative Full');
     expect(mount.querySelector('base')).toHaveAttribute('href', 'http://mysite.com/');
-    expect(mount.querySelectorAll('meta').length).toBe(2);
+    expect(mount.querySelectorAll('meta')).toHaveLength(2);
     expect(mount.querySelector('link[rel="canonical"]')).toHaveAttribute(
       'href',
       'http://mysite.com/page'

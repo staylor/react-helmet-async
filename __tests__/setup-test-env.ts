@@ -1,10 +1,12 @@
-import '@testing-library/jest-dom';
-
+import '@testing-library/jest-dom/vitest';
 import { clearInstances } from '../src/HelmetData';
 
 import { unmount } from './utils';
 
-// @ts-ignore
+declare global {
+  var IS_REACT_ACT_ENVIRONMENT: boolean | undefined;
+}
+
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 
 let headElement: HTMLHeadElement;

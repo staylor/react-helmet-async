@@ -12,7 +12,7 @@ export default defineConfig({
     headless: true,
   },
   webServer: {
-    command: 'pnpm exec vite --config e2e/fixtures/vite.config.ts',
+    command: 'pnpm exec vite --config e2e/fixtures/vite.config.mts',
     port: 3123,
     cwd: path.resolve(__dirname, '..'),
     reuseExistingServer: !process.env.CI,
