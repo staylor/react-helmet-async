@@ -48,6 +48,31 @@ describe('meta tags', () => {
       expect(filteredTags.length).toBeGreaterThanOrEqual(4);
     });
 
+    it('accepts React attribute names for charSet, httpEquiv and itemProp', () => {
+      render(
+        <Helmet
+          meta={[
+            { charSet: 'utf-8' },
+            { httpEquiv: 'content-type', content: 'text/html' },
+            { itemProp: 'name', content: 'Test name itemProp' },
+          ]}
+        />
+      );
+
+      const existingTags = [...document.head.querySelectorAll(`meta[${HELMET_ATTRIBUTE}]`)];
+      const [firstTag, secondTag, thirdTag] = existingTags;
+
+      expect(existingTags).toHaveLength(3);
+
+      expect(firstTag).toHaveAttribute('charset', 'utf-8');
+
+      expect(secondTag).toHaveAttribute('http-equiv', 'content-type');
+      expect(secondTag).toHaveAttribute('content', 'text/html');
+
+      expect(thirdTag).toHaveAttribute('itemprop', 'name');
+      expect(thirdTag).toHaveAttribute('content', 'Test name itemProp');
+    });
+
     it('clears all meta tags if none are specified', () => {
       render(<Helmet meta={[{ name: 'description', content: 'Test description' }]} />);
 
