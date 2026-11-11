@@ -13,12 +13,18 @@ This package is a fork of [React Helmet](https://github.com/nfl/react-helmet).
 
 React 19 has built-in support for hoisting `<title>`, `<meta>`, `<link>`, `<style>`, and `<script>` elements to `<head>`. Starting with version 3.0.0, this package detects the React version at runtime:
 
-- **React 19+**: `<Helmet>` renders actual DOM elements and lets React handle hoisting them to `<head>`. `<HelmetProvider>` becomes a transparent passthrough. The existing API is fully compatible — you do not need to change any code.
+- **React 19+**: `<Helmet>` renders actual DOM elements and lets React handle hoisting them to `<head>`. Mounted `<Helmet>` instances are merged as on React 16–18: the innermost title wins and uses the nearest `titleTemplate`, and duplicate tags render once, from the innermost instance, with the exceptions noted below. `<HelmetProvider>` becomes a transparent passthrough. The existing API is fully compatible — you do not need to change any code.
 - **React 16–18**: The existing behavior is preserved. `<Helmet>` collects all instances, deduplicates tags, and applies changes to the DOM via manual manipulation (client) or serializes them for the response (server).
 
 > **Note:** `htmlAttributes` and `bodyAttributes` do not have a React 19 equivalent, so they are still applied via direct DOM manipulation on both code paths.
 
-If you are starting a new React 19 project and do not need `htmlAttributes`/`bodyAttributes`, SSR `context` serialization, `onChangeClientState`, `prioritizeSeoTags`, or `titleTemplate` support, you may not need this package at all — React 19's built-in metadata handling may be sufficient.
+> **Note:** On the server, each `<Helmet>` still renders its own tags, because React renders the HTML in a single pass; they are merged after hydration. When hydrating, React reuses only the first `<title>` in the document, so a second server-rendered `<title>` stays in `<head>` after the merged one.
+
+> **Note:** React 19 loads an async `<script src>`, and a `<link rel="stylesheet">` or `<style>` with `precedence`, only once per URL and keeps the attributes it rendered first. When two `<Helmet>`s render one of these for the same URL, the outer one's attributes stay, and a `<Helmet>` that mounts later can't change them.
+
+> **Note:** With `createRoot`, React leaves a `<title>` it did not render, such as a placeholder in `index.html`, where it is. Helmet's `<title>` goes before it, so browsers show Helmet's title and fall back to the placeholder when no `<Helmet>` sets one. Remove the placeholder if you don't want two `<title>` elements.
+
+If you are starting a new React 19 project and do not need `htmlAttributes`/`bodyAttributes`, SSR `context` serialization, `onChangeClientState`, `prioritizeSeoTags`, `titleTemplate` support, or merging of nested `<Helmet>`s, you may not need this package at all — React 19's built-in metadata handling may be sufficient.
 
 ## Usage
 
