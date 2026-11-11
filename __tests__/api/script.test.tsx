@@ -309,5 +309,42 @@ describe('script tags', () => {
 
       expect(existingTags).toHaveLength(0);
     });
+
+    it('attaches function props as event handlers', () => {
+      const onLoad = vi.fn();
+      render(
+        <Helmet>
+          <script src="http://localhost/test.js" onLoad={onLoad} />
+        </Helmet>
+      );
+
+      const existingTag = document.head.querySelector(`script[${HELMET_ATTRIBUTE}]`) as Element;
+      existingTag.dispatchEvent(new Event('load'));
+
+      expect(existingTag).not.toHaveAttribute('onload');
+      expect(onLoad).toHaveBeenCalledTimes(1);
+    });
+
+    it('replaces the handler on a tag it keeps', () => {
+      const firstOnLoad = vi.fn();
+      const secondOnLoad = vi.fn();
+      render(
+        <Helmet>
+          <script src="http://localhost/test.js" onLoad={firstOnLoad} />
+        </Helmet>
+      );
+      const existingTag = document.head.querySelector(`script[${HELMET_ATTRIBUTE}]`) as Element;
+
+      render(
+        <Helmet>
+          <script src="http://localhost/test.js" onLoad={secondOnLoad} />
+        </Helmet>
+      );
+      existingTag.dispatchEvent(new Event('load'));
+
+      expect(document.head.querySelector(`script[${HELMET_ATTRIBUTE}]`)).toBe(existingTag);
+      expect(firstOnLoad).not.toHaveBeenCalled();
+      expect(secondOnLoad).toHaveBeenCalledTimes(1);
+    });
   });
 });
