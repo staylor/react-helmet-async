@@ -9,6 +9,8 @@ This package is a fork of [React Helmet](https://github.com/nfl/react-helmet).
 
 `react-helmet` relies on `react-side-effect`, which is not thread-safe. If you are doing anything asynchronous on the server, you need Helmet to encapsulate data on a per-request basis, this package does just that.
 
+Release notes, including breaking changes, are in [CHANGELOG.md](./CHANGELOG.md).
+
 ## React 19
 
 React 19 has built-in support for hoisting `<title>`, `<meta>`, `<link>`, `<style>`, and `<script>` elements to `<head>`. Starting with version 3.0.0, this package detects the React version at runtime:
