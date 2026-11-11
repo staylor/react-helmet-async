@@ -234,7 +234,14 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
       <Dispatcher {...newProps} context={helmetData.value} />
     ) : (
       <Context.Consumer>
-        {(context) => <Dispatcher {...newProps} context={context as DispatcherContextProp} />}
+        {(context) => {
+          invariant(
+            'helmetInstances' in context,
+            '<Helmet> must be rendered inside a <HelmetProvider> or be given a helmetData prop. If it is, check that only one copy of react-helmet-async is bundled.'
+          );
+
+          return <Dispatcher {...newProps} context={context as DispatcherContextProp} />;
+        }}
       </Context.Consumer>
     );
   }
