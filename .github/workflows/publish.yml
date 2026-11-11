@@ -69,6 +69,14 @@ jobs:
       - if: steps.check.outputs.publish || steps.check.outputs.release
         run: pnpm install --frozen-lockfile
 
+      # Runs before anything is published, so a version without a CHANGELOG.md section
+      # fails here instead of after the irreversible npm publish.
+      - if: steps.check.outputs.publish || steps.check.outputs.release
+        name: Read the release notes from CHANGELOG.md
+        env:
+          VERSION: ${{ steps.check.outputs.version }}
+        run: pnpm --silent release-notes "$VERSION" > "$RUNNER_TEMP/notes.md"
+
       - if: steps.check.outputs.publish
         name: Type checks
         run: pnpm tsc
@@ -88,6 +96,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           VERSION: ${{ steps.check.outputs.version }}
-        run: |
-          pnpm --silent release-notes "$VERSION" > "$RUNNER_TEMP/notes.md"
-          gh release create "v$VERSION" --target "$GITHUB_SHA" --title "v$VERSION" --notes-file "$RUNNER_TEMP/notes.md"
+        run: gh release create "v$VERSION" --target "$GITHUB_SHA" --title "v$VERSION" --notes-file "$RUNNER_TEMP/notes.md"
