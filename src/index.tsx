@@ -1,4 +1,3 @@
-import invariant from 'invariant';
 import type { PropsWithChildren, ReactElement, ReactNode } from 'react';
 import React, { Component } from 'react';
 import fastCompare from 'react-fast-compare';
@@ -12,7 +11,7 @@ import React19Dispatcher from './React19Dispatcher';
 import { TAG_NAMES, VALID_TAG_NAMES, HTML_TAG_MAP } from './constants';
 import { isReact19 } from './reactVersion';
 import type { HelmetProps } from './types';
-import { without } from './utils';
+import { invariant, without } from './utils';
 
 export type {
   Attributes,

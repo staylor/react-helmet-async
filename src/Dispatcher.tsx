@@ -1,5 +1,4 @@
-import { Component } from 'react';
-import shallowEqual from 'shallowequal';
+import { PureComponent } from 'react';
 
 import Provider from './Provider';
 import handleStateChangeOnClient from './client';
@@ -20,12 +19,8 @@ interface DispatcherProps {
   context: DispatcherContextProp;
 }
 
-export default class HelmetDispatcher extends Component<DispatcherProps> {
+export default class HelmetDispatcher extends PureComponent<DispatcherProps> {
   rendered = false;
-
-  shouldComponentUpdate(nextProps: DispatcherProps) {
-    return !shallowEqual(nextProps, this.props);
-  }
 
   componentDidUpdate() {
     this.emitChange();

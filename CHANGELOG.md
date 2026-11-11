@@ -4,6 +4,30 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+### Added
+
+- `react-helmet-async/package.json` resolves again. The `exports` map added in 3.0.0 had left it out.
+
+### Changed
+
+- On React 19, mounted `<Helmet>` instances are merged again, as on React 16–18: the innermost `<title>` wins and uses the nearest `titleTemplate` and `defaultTitle`, and a tag that several `<Helmet>`s set, such as `<meta name="description">`, renders once, from the innermost one. Server rendering still outputs every `<Helmet>`'s tags, because instances only merge once they mount, and when hydrating React reuses only the first server-rendered `<title>`, so a second one stays in `<head>`.
+- With `prioritizeSeoTags`, `<meta charset>` moves from `helmet.meta` to the start of `helmet.priority`, because browsers only honor a charset declared within the first 1024 bytes of the document. A template that prints `helmet.meta` but not `helmet.priority` no longer outputs it.
+- The errors `<Helmet>` throws for invalid children or a missing `<HelmetProvider>` are plain `Error`s, named `Error` instead of `Invariant Violation`.
+
+### Removed
+
+- The `invariant` and `shallowequal` dependencies.
+
+### Fixed
+
+- On React 16–18, a `<Helmet>` with no `<HelmetProvider>` above it and no `helmetData` prop throws `<Helmet> must be rendered inside a <HelmetProvider> or be given a helmetData prop. If it is, check that only one copy of react-helmet-async is bundled.` instead of `TypeError: Cannot read properties of undefined (reading 'add')`.
+- On React 16–18, entries in the `meta`, `link`, `script`, `style` and `noscript` props that use React attribute names such as `itemProp`, `charSet` or `httpEquiv` are no longer dropped. Their React names are written as HTML attribute names, as for JSX children, so `httpEquiv` becomes `http-equiv` and `className` becomes `class` in the DOM and in `toString()`.
+- `<link>`, `<meta>`, `<noscript>`, `<script>` and `<style>` tags inside a fragment are no longer dropped when `<Helmet>` has more than one fragment, or a fragment next to a tag of the same type.
+- On React 16–18, function props such as `onLoad` are attached as event handlers instead of being written as attributes that contain the function's source, and `toString()` leaves them out. Handlers receive the native `Event`, not a React synthetic event.
+- `lib/index.js` and `lib/index.esm.js` are compiled to ES2018, so webpack 4, which Create React App 3 and 4 use, can parse them. Since 2.0.0 they contained class fields and optional chaining.
+- On React 16–18 with `defer` on (the default), changes made while the tab is in the background are applied within about a second instead of when the tab is shown again.
+- A `<base>` with only a `target` attribute is no longer dropped. The HTML spec allows `href`, `target`, or both.
+
 ## [3.0.0] - 2026-03-03
 
 ### Added

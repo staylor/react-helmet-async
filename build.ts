@@ -1,23 +1,8 @@
 import { build } from 'esbuild';
 
-import { dependencies, peerDependencies } from './package.json';
+import { bundles } from './build.config';
 
-const shared = {
-  entryPoints: ['src/index.tsx'],
-  bundle: true,
-  external: Object.keys(dependencies).concat(Object.keys(peerDependencies)),
-  // webpack 4 (Create React App 3–4) can't parse class fields, `?.` or `??` (#212).
-  target: 'es2018',
-};
-
-build({
-  ...shared,
-  format: 'cjs',
-  outfile: 'lib/index.js',
-});
-
-build({
-  ...shared,
-  outfile: 'lib/index.esm.js',
-  format: 'esm',
+// esbuild prints its own errors; make a failed build fail the command too.
+Promise.all(bundles.map((options) => build(options))).catch(() => {
+  process.exitCode = 1;
 });

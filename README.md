@@ -11,11 +11,19 @@ This package is a fork of [React Helmet](https://github.com/nfl/react-helmet).
 
 Release notes, including breaking changes, are in [CHANGELOG.md](./CHANGELOG.md).
 
+## Installation
+
+```bash
+npm install react-helmet-async
+```
+
+`react` 16.6 through 19 is a peer dependency.
+
 ## React 19
 
 React 19 has built-in support for hoisting `<title>`, `<meta>`, `<link>`, `<style>`, and `<script>` elements to `<head>`. Starting with version 3.0.0, this package detects the React version at runtime:
 
-- **React 19+**: `<Helmet>` renders actual DOM elements and lets React handle hoisting them to `<head>`. Mounted `<Helmet>` instances are merged as on React 16–18: the innermost title wins and uses the nearest `titleTemplate`, and duplicate tags render once, from the innermost instance, with the exceptions noted below. `<HelmetProvider>` becomes a transparent passthrough. The existing API is fully compatible — you do not need to change any code.
+- **React 19+**: `<Helmet>` renders actual DOM elements and lets React handle hoisting them to `<head>`. Mounted `<Helmet>` instances are merged as on React 16–18: the innermost title wins and uses the nearest `titleTemplate`, and duplicate tags render once, from the innermost instance, with the exceptions noted below. `<HelmetProvider>` becomes a transparent passthrough. In the browser the API works as before, except that `onChangeClientState` is never called and `defer` has no effect. Server rendering needs changes: `<HelmetProvider>` doesn't fill in `context`, so render the whole document with React instead of reading `helmetContext.helmet` (see [Streams](#streams)); `htmlAttributes` and `bodyAttributes` are only applied in the browser; and `prioritizeSeoTags` and the `helmetData` prop have no effect.
 - **React 16–18**: The existing behavior is preserved. `<Helmet>` collects all instances, deduplicates tags, and applies changes to the DOM via manual manipulation (client) or serializes them for the response (server).
 
 > **Note:** `htmlAttributes` and `bodyAttributes` do not have a React 19 equivalent, so they are still applied via direct DOM manipulation on both code paths.
@@ -26,7 +34,7 @@ React 19 has built-in support for hoisting `<title>`, `<meta>`, `<link>`, `<styl
 
 > **Note:** With `createRoot`, React leaves a `<title>` it did not render, such as a placeholder in `index.html`, where it is. Helmet's `<title>` goes before it, so browsers show Helmet's title and fall back to the placeholder when no `<Helmet>` sets one. Remove the placeholder if you don't want two `<title>` elements.
 
-If you are starting a new React 19 project and do not need `htmlAttributes`/`bodyAttributes`, SSR `context` serialization, `onChangeClientState`, `prioritizeSeoTags`, `titleTemplate` support, or merging of nested `<Helmet>`s, you may not need this package at all — React 19's built-in metadata handling may be sufficient.
+If you are starting a new React 19 project and do not need `htmlAttributes`/`bodyAttributes`, `titleTemplate`/`defaultTitle`, or merging of nested `<Helmet>`s, you may not need this package at all — React 19's built-in metadata handling may be sufficient.
 
 ## Usage
 
@@ -84,7 +92,7 @@ const { helmet } = helmetContext;
 // helmet.title.toString() etc…
 ```
 
-> **React 19 SSR note:** When using React 19, `<title>`, `<meta>`, and `<link>` tags rendered inside `<Helmet>` are included directly in the React render output and hoisted to `<head>` by React itself. The `context` object will not be populated with helmet state on React 19. If you rely on the `context` for server rendering, you can render these tags directly in your component tree instead and let React 19 handle them natively.
+> **React 19 SSR note:** When using React 19, `<title>`, `<meta>`, and `<link>` tags rendered inside `<Helmet>` are included directly in the React render output and hoisted to `<head>` by React itself. The `context` object will not be populated with helmet state on React 19. If you rely on the `context` for server rendering, render the whole document, `<html>` and `<head>` included, with React instead of a string template; see the React 19 note under [Streams](#streams).
 
 ## Streams
 
@@ -309,6 +317,20 @@ pnpm test            # unit tests
 pnpm run test:e2e    # server + browser e2e tests
 pnpm run test:all    # everything
 ```
+
+CI runs the type check, lint and all tests on every push, and on pull requests from forks.
+
+### Releasing
+
+Add each user-facing change to the `## [Unreleased]` section of [CHANGELOG.md](./CHANGELOG.md) in the pull request that makes it. To release, run this on an up-to-date `main`:
+
+```bash
+pnpm release minor   # or major, patch, or an exact version such as 3.1.0
+```
+
+It moves the unreleased entries into a section for the new version, bumps `package.json`, and opens a `release/v<version>` pull request. Merging that pull request runs the [Publish workflow](./.github/workflows/publish.yml), which publishes the package to npm with provenance and creates the `v<version>` GitHub release and tag, with the changelog section as the release notes. `pnpm release minor --dry-run` prints the next version and its notes without changing anything.
+
+The workflow authenticates to npm through [trusted publishing](https://docs.npmjs.com/trusted-publishers), so there is no npm token to manage. On npmjs.com, the package's trusted publisher has to be GitHub Actions with user `staylor`, repository `react-helmet-async` and workflow `publish.yml`, with `npm publish` allowed.
 
 ## License
 
