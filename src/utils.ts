@@ -119,13 +119,15 @@ const getTagsFromPropsList = (
       }
       return false;
     })
-    .map((props) => props[tagName].map(convertReactPropsToHtmlAttributes))
+    .map((props) => props[tagName])
     .reverse()
     .reduce((approvedTags, instanceTags) => {
       const instanceSeenTags: SeenTags = {};
 
       instanceTags
-        .filter((tag: PropList) => {
+        .filter((original: PropList) => {
+          // Match on HTML attribute names (itemProp -> itemprop) but keep the caller's object.
+          const tag = convertReactPropsToHtmlAttributes(original);
           let primaryAttributeKey;
           const keys = Object.keys(tag);
           for (let i = 0; i < keys.length; i += 1) {

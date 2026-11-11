@@ -1,4 +1,4 @@
-import { HELMET_ATTRIBUTE, TAG_NAMES, TAG_PROPERTIES } from './constants';
+import { HELMET_ATTRIBUTE, HTML_TAG_MAP, TAG_NAMES, TAG_PROPERTIES } from './constants';
 import type { Attributes, StateUpdate, TagList } from './types';
 import { flattenArray } from './utils';
 
@@ -32,7 +32,10 @@ const updateTags = (type: string, tags: HTMLElement[]) => {
           } else {
             const attr = attribute as keyof HTMLElement;
             const value = typeof tag[attr] === 'undefined' ? '' : tag[attr];
-            newElement.setAttribute(attribute, value as string);
+            newElement.setAttribute(
+              (HTML_TAG_MAP as Record<string, string>)[attribute] || attribute,
+              value as string
+            );
           }
         }
       }
