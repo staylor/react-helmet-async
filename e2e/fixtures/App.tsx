@@ -66,7 +66,32 @@ function NestedPage() {
   );
 }
 
-type Page = 'meta' | 'title-template' | 'api' | 'nested';
+function FragmentsPage() {
+  return (
+    <Helmet>
+      <meta name="description" content="Sibling description" />
+      <link rel="stylesheet" href="/sibling.css" />
+      <>
+        <meta property="og:title" content="First fragment title" />
+        <link rel="stylesheet" href="/first-fragment.css" />
+        <script src="/first-fragment.js" />
+      </>
+      <script src="/sibling.js" />
+      <>
+        <meta property="og:description" content="Second fragment description" />
+        <link rel="stylesheet" href="/second-fragment.css" />
+        <script src="/second-fragment.js" />
+        <>
+          <meta property="og:image" content="https://example.com/nested-fragment.png" />
+          <link rel="stylesheet" href="/nested-fragment.css" />
+          <script src="/nested-fragment.js" />
+        </>
+      </>
+    </Helmet>
+  );
+}
+
+type Page = 'meta' | 'title-template' | 'api' | 'nested' | 'fragments';
 
 function getPage(): Page {
   if (typeof window !== 'undefined') {
@@ -84,6 +109,7 @@ export function App({ page: serverPage }: { page?: Page }) {
       {page === 'title-template' && <TitleTemplatePage />}
       {page === 'api' && <ApiPage />}
       {page === 'nested' && <NestedPage />}
+      {page === 'fragments' && <FragmentsPage />}
       <p id="page-indicator">{page}</p>
     </div>
   );

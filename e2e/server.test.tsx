@@ -140,3 +140,31 @@ describe('SSR E2E — nested page', () => {
     expect(metaStr).toContain('inner,nested');
   });
 });
+
+describe('SSR E2E — fragments page', () => {
+  const { helmet } = renderPage('fragments');
+
+  it('keeps meta tags from sibling tags and every fragment', () => {
+    const metaStr = helmet!.meta.toString();
+    expect(metaStr).toContain('Sibling description');
+    expect(metaStr).toContain('First fragment title');
+    expect(metaStr).toContain('Second fragment description');
+    expect(metaStr).toContain('https://example.com/nested-fragment.png');
+  });
+
+  it('keeps link tags from sibling tags and every fragment', () => {
+    const linkStr = helmet!.link.toString();
+    expect(linkStr).toContain('/sibling.css');
+    expect(linkStr).toContain('/first-fragment.css');
+    expect(linkStr).toContain('/second-fragment.css');
+    expect(linkStr).toContain('/nested-fragment.css');
+  });
+
+  it('keeps script tags from sibling tags and every fragment', () => {
+    const scriptStr = helmet!.script.toString();
+    expect(scriptStr).toContain('/sibling.js');
+    expect(scriptStr).toContain('/first-fragment.js');
+    expect(scriptStr).toContain('/second-fragment.js');
+    expect(scriptStr).toContain('/nested-fragment.js');
+  });
+});

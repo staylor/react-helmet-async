@@ -177,7 +177,7 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
   private mapChildrenToProps(children: ReactNode, newProps: Props) {
     let arrayTypeChildren = {};
 
-    React.Children.forEach(children as JSX.Element, (child: ReactElement) => {
+    const mapChildToProps = (child: ReactElement) => {
       if (!child || !child.props) {
         return;
       }
@@ -198,7 +198,7 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
 
       switch (type) {
         case TAG_NAMES.FRAGMENT:
-          newProps = this.mapChildrenToProps(nestedChildren, newProps);
+          React.Children.forEach(nestedChildren, mapChildToProps);
           break;
 
         case TAG_NAMES.LINK:
@@ -218,7 +218,9 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
           newProps = this.mapObjectTypeChildren(child, newProps, newChildProps, nestedChildren);
           break;
       }
-    });
+    };
+
+    React.Children.forEach(children as JSX.Element, mapChildToProps);
 
     return this.mapArrayTypeChildrenToProps(arrayTypeChildren, newProps);
   }
