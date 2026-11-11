@@ -82,54 +82,96 @@ const { helmet } = helmetContext;
 
 ## Streams
 
-This package only works with streaming if your `<head>` data is output outside of `renderToNodeStream()`.
-This is possible if your data hydration method already parses your React tree. Example:
+On React 18, `<Helmet>` adds nothing to React's HTML output; it collects tags into `helmetContext`. To stream with [`renderToPipeableStream`](https://react.dev/reference/react-dom/server/renderToPipeableStream), write the `<head>` yourself in `onShellReady`, then call `pipe()`. At that point React hasn't written anything yet, and `helmetContext.helmet` holds the tags from every `<Helmet>` in the shell:
 
 ```javascript
-import { getDataFromTree } from 'react-apollo';
-import { renderToNodeStream } from 'react-dom/server';
+import { createServer } from 'node:http';
+import { PassThrough } from 'node:stream';
+
+import React from 'react';
+import { renderToPipeableStream } from 'react-dom/server';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import template from 'server/template';
-import through from 'through';
 
-const helmetContext = {};
-
-const app = (
-  <HelmetProvider context={helmetContext}>
-    <App>
-      <Helmet>
-        <title>Hello World</title>
-        <link rel="canonical" href="https://www.tacobell.com/" />
-      </Helmet>
-      <h1>Hello World</h1>
-    </App>
-  </HelmetProvider>
+const App = () => (
+  <>
+    <Helmet>
+      <title>Hello World</title>
+      <link rel="canonical" href="https://www.tacobell.com/" />
+    </Helmet>
+    <h1>Hello World</h1>
+  </>
 );
 
-await getDataFromTree(app);
+// Returns the HTML that goes before and after the app
+const template = (helmet) => [
+  `<!DOCTYPE html>
+<html ${helmet.htmlAttributes.toString()}>
+  <head>
+    ${helmet.title.toString()}
+    ${helmet.meta.toString()}
+    ${helmet.link.toString()}
+  </head>
+  <body ${helmet.bodyAttributes.toString()}>
+    <div id="root">`,
+  `</div>
+  </body>
+</html>`,
+];
 
-const [header, footer] = template({
-  helmet: helmetContext.helmet,
-});
+createServer((req, res) => {
+  const helmetContext = {};
 
-res.status(200);
-res.write(header);
-renderToNodeStream(app)
-  .pipe(
-    through(
-      function write(data) {
-        this.queue(data);
+  const { pipe } = renderToPipeableStream(
+    <HelmetProvider context={helmetContext}>
+      <App />
+    </HelmetProvider>,
+    {
+      onShellReady() {
+        const [header, footer] = template(helmetContext.helmet);
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.write(header);
+        // pipe() ends its destination, so give it a PassThrough and end res yourself
+        const body = new PassThrough();
+        body.pipe(res, { end: false });
+        body.on('end', () => res.end(footer));
+        pipe(body);
       },
-      function end() {
-        this.queue(footer);
-        this.queue(null);
-      }
-    )
-  )
-  .pipe(res);
+      onShellError() {
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.end('<h1>Something went wrong</h1>');
+      },
+    }
+  );
+}).listen(3000);
 ```
 
-> **React 19:** React 19's `renderToReadableStream` natively handles `<title>`, `<meta>`, and `<link>` hoisting during streaming, so the manual context extraction shown above is not necessary.
+Write `base`, `style`, `script`, `noscript`, and `priority` (see [Prioritizing tags for SEO](#prioritizing-tags-for-seo)) into the template the same way if your `<Helmet>`s use them.
+
+To hydrate the page, add your client bundle with the `bootstrapScripts` option, for example `bootstrapScripts: ['/client.js']` (the handler above renders the app for every URL, so serve that file separately), and call `hydrateRoot(document.getElementById('root'), <HelmetProvider><App /></HelmetProvider>)` in it.
+
+`onShellReady` doesn't wait for `<Suspense>` boundaries that are still loading. A `<Helmet>` inside one renders after the head has gone out, so its tags are missing from the HTML. `<Helmet>` applies them in the browser once that boundary hydrates, but crawlers that don't run JavaScript never see them. If crawlers need those tags, keep that `<Helmet>` outside the boundary, or write the head in `onAllReady` instead, which fires once every boundary has resolved. The response then doesn't start until the whole page is ready, so you may want to do that only for crawlers. With the body of `onShellReady` moved into a `send()` function:
+
+```javascript
+const isCrawler = /bot|crawler|spider/i.test(req.headers['user-agent'] ?? '');
+
+const { pipe } = renderToPipeableStream(app, {
+  onShellReady() {
+    if (!isCrawler) send();
+  },
+  onAllReady() {
+    // Also fires after a shell error, once onShellError has responded
+    if (isCrawler && !res.headersSent) send();
+  },
+  onShellError() {
+    // Same as above
+  },
+});
+```
+
+`renderToNodeStream`, which this section used to show, is deprecated in React 18 and removed in React 19. React 18's version waits for every Suspense boundary before it writes anything, so to keep that behavior when you switch, write the head in `onAllReady` instead of `onShellReady`.
+
+> **React 19:** `<HelmetProvider>` doesn't fill in `context` on React 19, so `helmetContext.helmet` stays `undefined` and the template above doesn't apply. React 19 hoists the `<title>`, `<meta>`, and `<link>` tags that `<Helmet>` renders into `<head>` itself, including when streaming with `renderToPipeableStream` or `renderToReadableStream`, so render the whole document, `<html>` included, and pipe it straight to the response. Tags inside a boundary that's still loading arrive later with that boundary's content, after `</head>`, so pipe in `onAllReady` if crawlers need them in `<head>`.
 
 ## Usage in Jest
 
