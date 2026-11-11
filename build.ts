@@ -6,6 +6,8 @@ const shared = {
   entryPoints: ['src/index.tsx'],
   bundle: true,
   external: Object.keys(dependencies).concat(Object.keys(peerDependencies)),
+  // webpack 4 (Create React App 3–4) can't parse class fields, `?.` or `??` (#212).
+  target: 'es2018',
 };
 
 build({

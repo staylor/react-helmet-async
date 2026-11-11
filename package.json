@@ -41,6 +41,7 @@
     "@types/shallowequal": "1.1.5",
     "@vitejs/plugin-react": "6.3.0",
     "@wonderboymusic/oxc-config": "2.0.0",
+    "acorn": "8.19.0",
     "esbuild": "0.28.2",
     "husky": "9.1.7",
     "jsdom": "31.0.0",

@@ -51,6 +51,9 @@ importers:
       '@wonderboymusic/oxc-config':
         specifier: 2.0.0
         version: 2.0.0(oxfmt@0.77.0)(oxlint@1.93.0)
+      acorn:
+        specifier: 8.19.0
+        version: 8.19.0
       esbuild:
         specifier: 0.28.2
         version: 0.28.2
@@ -934,6 +937,11 @@ packages:
         optional: true
       oxlint:
         optional: true
+
+  acorn@8.19.0:
+    resolution: {integrity: sha512-oJlA3XiRm7Cyk6qFD2Jn8ak9B7jSy0qy00ADO3+8dpT0LSjFihQYv4C02LFCSYJV3Q37xYwwRy5m+IpIiUzqWw==}
+    engines: {node: '>=0.4.0'}
+    hasBin: true
 
   ajv@8.20.0:
     resolution: {integrity: sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA==}
@@ -2160,6 +2168,8 @@ snapshots:
     optionalDependencies:
       oxfmt: 0.77.0
       oxlint: 1.93.0
+
+  acorn@8.19.0: {}
 
   ajv@8.20.0:
     dependencies:
