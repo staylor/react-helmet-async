@@ -46,7 +46,7 @@
   "devDependencies": {
     "@commitlint/cli": "21.2.4",
     "@commitlint/config-conventional": "21.2.4",
-    "@playwright/test": "1.65.0",
+    "@playwright/test": "1.65.1",
     "@testing-library/dom": "10.4.2",
     "@testing-library/jest-dom": "7.0.1",
     "@types/node": "24.19.2",
@@ -57,8 +57,8 @@
     "acorn": "8.19.0",
     "esbuild": "0.28.2",
     "husky": "9.1.7",
-    "jsdom": "31.0.0",
-    "oxfmt": "0.77.0",
+    "jsdom": "31.0.1",
+    "oxfmt": "0.78.0",
     "oxlint": "1.93.0",
     "react": "18.3.1",
     "react-19": "npm:react@19.3.0",
@@ -67,7 +67,7 @@
     "rimraf": "6.1.4",
     "tsx": "4.23.15",
     "typescript": "7.0.2",
-    "vite": "8.3.7",
+    "vite": "8.3.8",
     "vitest": "5.1.0"
   },
   "peerDependencies": {
