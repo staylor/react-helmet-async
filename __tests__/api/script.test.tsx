@@ -394,5 +394,20 @@ describe('script tags', () => {
         'http://localhost/second.js',
       ]);
     });
+
+    it('joins children that mix text and values', () => {
+      const id = 'abc';
+
+      render(
+        <Helmet>
+          <script>var id = "{id}";</script>
+        </Helmet>
+      );
+
+      const scripts = [...document.head.querySelectorAll(`script[${HELMET_ATTRIBUTE}]`)];
+
+      expect(scripts).toHaveLength(1);
+      expect(scripts[0].innerHTML).toBe('var id = "abc";');
+    });
   });
 });

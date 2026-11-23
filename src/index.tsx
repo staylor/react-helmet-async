@@ -65,16 +65,19 @@ export class Helmet extends Component<PropsWithChildren<HelmetProps>> {
       return null;
     }
 
+    // Children like the ones in <script>var a = {a};</script> are an array of strings.
+    const content = Array.isArray(nestedChildren) ? nestedChildren.join('') : nestedChildren;
+
     switch (child.type) {
       case TAG_NAMES.SCRIPT:
       case TAG_NAMES.NOSCRIPT:
         return {
-          innerHTML: nestedChildren,
+          innerHTML: content,
         };
 
       case TAG_NAMES.STYLE:
         return {
-          cssText: nestedChildren,
+          cssText: content,
         };
       default:
         throw new Error(
