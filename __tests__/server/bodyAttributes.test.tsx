@@ -43,5 +43,24 @@ describe('server', () => {
       expect(body.bodyAttributes.toString).toBeDefined();
       expect(body.bodyAttributes.toString()).toMatchSnapshot();
     });
+
+    it('leaves out attributes set to false or null, as React does', () => {
+      const head = renderContext(
+        <Helmet>
+          <body
+            hidden={false}
+            // @ts-expect-error -- null on purpose
+            dir={null}
+            spellCheck={false}
+            data-menu-open={false}
+            data-count={0}
+          />
+        </Helmet>
+      );
+
+      expect(head.bodyAttributes.toString()).toBe(
+        'spellCheck="false" data-menu-open="false" data-count="0"'
+      );
+    });
   });
 });

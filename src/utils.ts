@@ -241,6 +241,14 @@ const reducePropsToState = (propsList: PropsList) => ({
 export const flattenArray = (possibleArray: string[] | string) =>
   Array.isArray(possibleArray) ? possibleArray.join('') : possibleArray;
 
+// React writes false as "false" for these attributes.
+const FALSE_AS_STRING = /^(?:data-|aria-)|^(?:contenteditable|draggable|spellcheck)$/i;
+
+// True when React would leave the attribute out: its value is null, or false on an attribute that
+// doesn't take "false". Writing defer="false" would turn defer on, as any value does.
+export const isAttributeOmitted = (name: string, value: unknown) =>
+  value === null || (value === false && !FALSE_AS_STRING.test(name));
+
 export { reducePropsToState };
 
 const checkIfPropsMatch = (props: PropList, toMatch: MatchProps) => {

@@ -9,7 +9,7 @@ import {
   SEO_PRIORITY_TAGS,
 } from './constants';
 import type { MappedServerState } from './types';
-import { flattenArray, prioritizer } from './utils';
+import { flattenArray, isAttributeOmitted, prioritizer } from './utils';
 
 const SELF_CLOSING_TAGS: string[] = [TAG_NAMES.NOSCRIPT, TAG_NAMES.SCRIPT, TAG_NAMES.STYLE];
 
@@ -29,10 +29,13 @@ const encodeSpecialCharacters = (str: string, encode = true) => {
 type Attributes = { [key: string]: string | number | boolean };
 
 const generateElementAttributesAsString = (attributes: Attributes) =>
-  Object.keys(attributes).reduce((str, key) => {
-    const attr = typeof attributes[key] !== 'undefined' ? `${key}="${attributes[key]}"` : `${key}`;
-    return str ? `${str} ${attr}` : attr;
-  }, '');
+  Object.keys(attributes)
+    .filter((key) => !isAttributeOmitted(key, attributes[key]))
+    .reduce((str, key) => {
+      const attr =
+        typeof attributes[key] !== 'undefined' ? `${key}="${attributes[key]}"` : `${key}`;
+      return str ? `${str} ${attr}` : attr;
+    }, '');
 
 const generateTitleAsString = (
   type: string,
@@ -61,7 +64,8 @@ const generateTagsAsString = (type: string, tags: HTMLElement[], encode = true) 
         (attribute) =>
           !(attribute === TAG_PROPERTIES.INNER_HTML || attribute === TAG_PROPERTIES.CSS_TEXT) &&
           // Event handlers such as onLoad can't be serialized.
-          typeof tag[attribute] !== 'function'
+          typeof tag[attribute] !== 'function' &&
+          !isAttributeOmitted(attribute, tag[attribute])
       )
       .reduce((string, attribute) => {
         const attr =

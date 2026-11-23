@@ -346,5 +346,32 @@ describe('script tags', () => {
       expect(firstOnLoad).not.toHaveBeenCalled();
       expect(secondOnLoad).toHaveBeenCalledTimes(1);
     });
+
+    it('leaves out attributes set to false or null, as React does', () => {
+      render(
+        <Helmet>
+          <script
+            src="http://localhost/test.js"
+            async
+            defer={false}
+            noModule={false}
+            // @ts-expect-error -- null on purpose
+            crossOrigin={null}
+            data-cfasync={false}
+          />
+        </Helmet>
+      );
+
+      const script = document.head.querySelector(
+        `script[${HELMET_ATTRIBUTE}]`
+      ) as HTMLScriptElement;
+
+      expect(script).toHaveAttribute('async');
+      expect(script).not.toHaveAttribute('defer');
+      expect(script).not.toHaveAttribute('nomodule');
+      expect(script).not.toHaveAttribute('crossorigin');
+      expect(script).toHaveAttribute('data-cfasync', 'false');
+      expect(script.defer).toBe(false);
+    });
   });
 });

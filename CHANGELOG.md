@@ -4,6 +4,11 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+### Fixed
+
+- On React 16–18, attributes set to `false` or `null`, such as `defer={false}` on a `<script>` or `hidden={false}` in `bodyAttributes`, are left out of `toString()` and the DOM, as React leaves them out. They were written as `defer="false"`, or as an empty `hidden=""` for `bodyAttributes`, `htmlAttributes` and `titleAttributes` in the DOM, and browsers treat a boolean attribute with any value as on. As in React, `false` is still written as `"false"` for `data-*` and `aria-*` attributes and for `contenteditable`, `draggable` and `spellcheck`.
+- On React 16–18, a `0` in `bodyAttributes`, `htmlAttributes` or `titleAttributes`, such as `tabIndex={0}`, is set as `0` in the DOM instead of an empty value.
+
 ## [3.1.0] - 2026-11-11
 
 ### Added

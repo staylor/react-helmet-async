@@ -122,5 +122,28 @@ describe('server', () => {
         '<script data-rh="true" src="http://localhost/test.js"></script>'
       );
     });
+
+    it('leaves out attributes set to false or null, as React does', () => {
+      const head = renderContext(
+        <Helmet>
+          <script
+            src="http://localhost/test.js"
+            async
+            defer={false}
+            noModule={false}
+            // @ts-expect-error -- null on purpose
+            crossOrigin={null}
+            data-cfasync={false}
+          />
+        </Helmet>
+      );
+
+      expect(head.script.toString()).toBe(
+        '<script data-rh="true" src="http://localhost/test.js" async="true" data-cfasync="false"></script>'
+      );
+      expect(ReactServer.renderToStaticMarkup(head.script.toComponent())).toBe(
+        '<script data-rh="true" src="http://localhost/test.js" async="" data-cfasync="false"></script>'
+      );
+    });
   });
 });

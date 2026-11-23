@@ -1,6 +1,6 @@
 import { HELMET_ATTRIBUTE, TAG_NAMES, TAG_PROPERTIES } from './constants';
 import type { Attributes, StateUpdate, TagList } from './types';
-import { flattenArray } from './utils';
+import { flattenArray, isAttributeOmitted } from './utils';
 
 interface TagUpdates {
   oldTags: HTMLElement[];
@@ -34,7 +34,7 @@ const updateTags = (type: string, tags: HTMLElement[]) => {
           } else if (typeof tag[attr] === 'function') {
             // setAttribute() would stringify a function, so onLoad becomes the onload handler.
             handlers[attribute.toLowerCase()] = tag[attr];
-          } else {
+          } else if (!isAttributeOmitted(attribute, tag[attr])) {
             const value = typeof tag[attr] === 'undefined' ? '' : tag[attr];
             newElement.setAttribute(attribute, value as string);
           }
@@ -79,10 +79,13 @@ const updateAttributes = (tagName: string, attributes: Attributes) => {
   const helmetAttributeString = elementTag.getAttribute(HELMET_ATTRIBUTE);
   const helmetAttributes = helmetAttributeString ? helmetAttributeString.split(',') : [];
   const attributesToRemove = [...helmetAttributes];
-  const attributeKeys = Object.keys(attributes);
+  // An attribute that's left out is removed below if an earlier update set it.
+  const attributeKeys = Object.keys(attributes).filter(
+    (attribute) => !isAttributeOmitted(attribute, attributes[attribute])
+  );
 
   for (const attribute of attributeKeys) {
-    const value = attributes[attribute] || '';
+    const value = typeof attributes[attribute] === 'undefined' ? '' : String(attributes[attribute]);
 
     if (elementTag.getAttribute(attribute) !== value) {
       elementTag.setAttribute(attribute, value);
