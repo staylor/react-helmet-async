@@ -373,5 +373,26 @@ describe('script tags', () => {
       expect(script).toHaveAttribute('data-cfasync', 'false');
       expect(script.defer).toBe(false);
     });
+
+    it('keeps scripts in order when one of them changes', () => {
+      const Scripts = ({ id }: { id: number }) => (
+        <Helmet>
+          <script>{`var data = { id: ${id} };`}</script>
+          <script src="http://localhost/first.js" />
+          <script src="http://localhost/second.js" />
+        </Helmet>
+      );
+
+      render(<Scripts id={1} />);
+      render(<Scripts id={2} />);
+
+      const scripts = [...document.head.querySelectorAll(`script[${HELMET_ATTRIBUTE}]`)];
+
+      expect(scripts.map((tag) => tag.getAttribute('src') || tag.innerHTML)).toEqual([
+        'var data = { id: 2 };',
+        'http://localhost/first.js',
+        'http://localhost/second.js',
+      ]);
+    });
   });
 });

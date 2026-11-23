@@ -649,5 +649,52 @@ describe('link tags', () => {
       expect(firstTag).toHaveAttribute('href', 'http://localhost/helmet/component');
       expect(firstTag.outerHTML).toMatchSnapshot();
     });
+
+    it('keeps stylesheets in order when one of them changes', () => {
+      const hrefs = () =>
+        [...document.head.querySelectorAll(`link[${HELMET_ATTRIBUTE}]`)].map((tag) =>
+          tag.getAttribute('href')
+        );
+      const Styles = ({ rtl }: { rtl: boolean }) => (
+        <Helmet>
+          <link rel="stylesheet" href={rtl ? '/components-rtl.css' : '/components.css'} />
+          <link rel="stylesheet" href="/main.css" />
+        </Helmet>
+      );
+
+      render(<Styles rtl={false} />);
+      const main = document.head.querySelector('link[href="/main.css"]');
+
+      render(<Styles rtl />);
+
+      expect(hrefs()).toEqual(['/components-rtl.css', '/main.css']);
+      // The unchanged stylesheet is kept, not added again.
+      expect(document.head.querySelector('link[href="/main.css"]')).toBe(main);
+    });
+
+    it('moves stylesheets when their order changes', () => {
+      render(
+        <Helmet>
+          <link rel="stylesheet" href="/a.css" />
+          <link rel="stylesheet" href="/b.css" />
+          <link rel="stylesheet" href="/c.css" />
+        </Helmet>
+      );
+
+      render(
+        <Helmet>
+          <link rel="stylesheet" href="/c.css" />
+          <link rel="stylesheet" href="/new.css" />
+          <link rel="stylesheet" href="/a.css" />
+          <link rel="stylesheet" href="/b.css" />
+        </Helmet>
+      );
+
+      expect(
+        [...document.head.querySelectorAll(`link[${HELMET_ATTRIBUTE}]`)].map((tag) =>
+          tag.getAttribute('href')
+        )
+      ).toEqual(['/c.css', '/new.css', '/a.css', '/b.css']);
+    });
   });
 });
