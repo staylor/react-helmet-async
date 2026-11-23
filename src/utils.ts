@@ -90,6 +90,49 @@ const getBaseTagFromPropsList = (primaryAttributes: AttributeList, propsList: Pr
 
 const warn = (msg: string) => console && typeof console.warn === 'function' && console.warn(msg);
 
+// The tag's key for an attribute. A lowercase name matches a key in any case, as HTML attribute
+// names do; innerHTML and cssText have to match exactly.
+const findKey = (tag: PropList, name: string) =>
+  Object.keys(tag).find((key) => key === name || key.toLowerCase() === name);
+
+// The attribute that identifies a tag: a tag from an inner <Helmet> replaces the tags of outer
+// <Helmet>s that have the same value for it. Returns its name and the tag's key for it, or
+// nothing if the tag can't be identified. The order of the tag's keys doesn't matter.
+const getPrimaryAttribute = (tagName: string, tag: PropList, primaryAttributes: AttributeList) => {
+  const keys: { [name: string]: string | undefined } = {};
+  for (const name of primaryAttributes) {
+    keys[name] = findKey(tag, name);
+  }
+
+  let name: string | undefined;
+
+  if (tagName === TAG_NAMES.LINK) {
+    const rel = keys.rel && typeof tag[keys.rel] === 'string' ? tag[keys.rel].toLowerCase() : '';
+
+    if (rel === 'canonical') {
+      name = TAG_PROPERTIES.REL;
+    } else if (
+      rel === 'alternate' &&
+      keys.hreflang &&
+      tag[keys.hreflang] &&
+      // A feed or a version for other media isn't a translation of the page.
+      !findKey(tag, 'type') &&
+      !findKey(tag, 'media')
+    ) {
+      name = TAG_PROPERTIES.HREFLANG;
+    } else if (keys.href) {
+      name = TAG_PROPERTIES.HREF;
+    } else if (keys.rel && rel !== 'stylesheet') {
+      name = TAG_PROPERTIES.REL;
+    }
+  } else {
+    // The last of the primary attributes that the tag has
+    name = [...primaryAttributes].reverse().find((attribute) => keys[attribute]);
+  }
+
+  return name ? { name, key: keys[name] as string } : undefined;
+};
+
 const getTagsFromPropsList = (
   tagName: string,
   primaryAttributes: AttributeList,
@@ -119,42 +162,14 @@ const getTagsFromPropsList = (
 
       instanceTags
         .filter((tag: PropList) => {
-          let primaryAttributeKey;
-          const keys = Object.keys(tag);
-          for (let i = 0; i < keys.length; i += 1) {
-            const attributeKey = keys[i];
-            const lowerCaseAttributeKey = attributeKey.toLowerCase();
+          const primaryAttribute = getPrimaryAttribute(tagName, tag, primaryAttributes);
 
-            // Special rule with link tags, since rel and href are both primary tags, rel takes priority
-            if (
-              primaryAttributes.indexOf(lowerCaseAttributeKey) !== -1 &&
-              !(
-                primaryAttributeKey === TAG_PROPERTIES.REL &&
-                tag[primaryAttributeKey].toLowerCase() === 'canonical'
-              ) &&
-              !(
-                lowerCaseAttributeKey === TAG_PROPERTIES.REL &&
-                tag[lowerCaseAttributeKey].toLowerCase() === 'stylesheet'
-              )
-            ) {
-              primaryAttributeKey = lowerCaseAttributeKey;
-            }
-            // Special case for innerHTML which doesn't work lowercased
-            if (
-              primaryAttributes.indexOf(attributeKey) !== -1 &&
-              (attributeKey === TAG_PROPERTIES.INNER_HTML ||
-                attributeKey === TAG_PROPERTIES.CSS_TEXT ||
-                attributeKey === TAG_PROPERTIES.ITEM_PROP)
-            ) {
-              primaryAttributeKey = attributeKey;
-            }
-          }
-
-          if (!primaryAttributeKey || !tag[primaryAttributeKey]) {
+          if (!primaryAttribute || !tag[primaryAttribute.key]) {
             return false;
           }
 
-          const value = tag[primaryAttributeKey].toLowerCase();
+          const primaryAttributeKey = primaryAttribute.name;
+          const value = String(tag[primaryAttribute.key]).toLowerCase();
 
           if (!approvedSeenTags[primaryAttributeKey]) {
             approvedSeenTags[primaryAttributeKey] = {};
@@ -211,7 +226,7 @@ const reducePropsToState = (propsList: PropsList) => ({
   htmlAttributes: getAttributesFromPropsList(ATTRIBUTE_NAMES.HTML, propsList),
   linkTags: getTagsFromPropsList(
     TAG_NAMES.LINK,
-    [TAG_PROPERTIES.REL, TAG_PROPERTIES.HREF],
+    [TAG_PROPERTIES.REL, TAG_PROPERTIES.HREF, TAG_PROPERTIES.HREFLANG],
     propsList
   ),
   metaTags: getTagsFromPropsList(

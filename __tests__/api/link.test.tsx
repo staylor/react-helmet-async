@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Helmet } from '../../src';
 import { HELMET_ATTRIBUTE } from '../../src/constants';
-import { render } from '../utils';
+import { render, unmount } from '../utils';
 
 Helmet.defaultProps.defer = false;
 
@@ -695,6 +695,92 @@ describe('link tags', () => {
           tag.getAttribute('href')
         )
       ).toEqual(['/c.css', '/new.css', '/a.css', '/b.css']);
+    });
+
+    it('matches link tags the same way whatever order their attributes are in', () => {
+      const links = () =>
+        [...document.head.querySelectorAll(`link[${HELMET_ATTRIBUTE}]`)].map(
+          (tag) => `${tag.getAttribute('rel')} ${tag.getAttribute('href')}`
+        );
+
+      render(
+        <>
+          <Helmet>
+            <link href="/feed.xml" rel="alternate" type="application/rss+xml" />
+            <link href="/favicon.ico" rel="icon" />
+            {/* @ts-expect-error -- null href on purpose */}
+            <link href={null} rel="icon" sizes="192x192" />
+          </Helmet>
+          <Helmet>
+            <link href="/comments.xml" rel="alternate" type="application/rss+xml" />
+            <link href="/page-icon.png" rel="icon" />
+          </Helmet>
+        </>
+      );
+      const hrefFirst = links();
+
+      // Reordered props are equal for <Helmet>, so start over instead of rendering again.
+      unmount();
+      render(
+        <>
+          <Helmet>
+            <link rel="alternate" href="/feed.xml" type="application/rss+xml" />
+            <link rel="icon" href="/favicon.ico" />
+            {/* @ts-expect-error -- null href on purpose */}
+            <link rel="icon" sizes="192x192" href={null} />
+          </Helmet>
+          <Helmet>
+            <link rel="alternate" href="/comments.xml" type="application/rss+xml" />
+            <link rel="icon" href="/page-icon.png" />
+          </Helmet>
+        </>
+      );
+
+      expect(hrefFirst).toEqual([
+        'alternate /feed.xml',
+        'icon /favicon.ico',
+        'alternate /comments.xml',
+        'icon /page-icon.png',
+      ]);
+      expect(links()).toEqual(hrefFirst);
+    });
+
+    it('replaces alternate links for the same language', () => {
+      render(
+        <>
+          <Helmet>
+            <link rel="canonical" href="https://example.com/docs/" />
+            <link rel="alternate" hrefLang="en" href="https://example.com/docs/" />
+            <link rel="alternate" hrefLang="fr" href="https://example.com/fr/docs/" />
+            <link rel="alternate" hrefLang="x-default" href="https://example.com/docs/" />
+            <link
+              rel="alternate"
+              hrefLang="en"
+              type="application/rss+xml"
+              href="https://example.com/feed.xml"
+            />
+          </Helmet>
+          <Helmet>
+            <link rel="canonical" href="https://example.com/docs/page/" />
+            <link rel="alternate" hrefLang="en" href="https://example.com/docs/page/" />
+            <link rel="alternate" hrefLang="x-default" href="https://example.com/docs/page/" />
+          </Helmet>
+        </>
+      );
+
+      expect(
+        [...document.head.querySelectorAll(`link[${HELMET_ATTRIBUTE}]`)].map(
+          (tag) =>
+            `${tag.getAttribute('rel')} ${tag.getAttribute('hreflang')} ${tag.getAttribute('href')}`
+        )
+      ).toEqual([
+        'alternate fr https://example.com/fr/docs/',
+        // Not a translation of the page, so it's matched by href
+        'alternate en https://example.com/feed.xml',
+        'canonical null https://example.com/docs/page/',
+        'alternate en https://example.com/docs/page/',
+        'alternate x-default https://example.com/docs/page/',
+      ]);
     });
   });
 });

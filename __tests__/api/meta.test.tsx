@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Helmet } from '../../src';
 import { HELMET_ATTRIBUTE } from '../../src/constants';
-import { render } from '../utils';
+import { render, unmount } from '../utils';
 
 Helmet.defaultProps.defer = false;
 
@@ -507,6 +507,41 @@ describe('meta tags', () => {
       const existingTags = [].slice.call(tagNodes);
 
       expect(existingTags).toHaveLength(0);
+    });
+
+    it('matches meta tags the same way whatever order their attributes are in', () => {
+      const contents = () =>
+        [...document.head.querySelectorAll(`meta[${HELMET_ATTRIBUTE}]`)].map((tag) =>
+          tag.getAttribute('content')
+        );
+
+      render(
+        <>
+          <Helmet>
+            <meta name="description" property="og:description" content="Outer" />
+          </Helmet>
+          <Helmet>
+            <meta property="og:description" content="Inner" />
+          </Helmet>
+        </>
+      );
+      const nameFirst = contents();
+
+      // Reordered props are equal for <Helmet>, so start over instead of rendering again.
+      unmount();
+      render(
+        <>
+          <Helmet>
+            <meta property="og:description" name="description" content="Outer" />
+          </Helmet>
+          <Helmet>
+            <meta property="og:description" content="Inner" />
+          </Helmet>
+        </>
+      );
+
+      expect(nameFirst).toEqual(['Inner']);
+      expect(contents()).toEqual(nameFirst);
     });
   });
 });
