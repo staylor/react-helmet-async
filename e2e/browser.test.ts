@@ -52,18 +52,17 @@ test.describe('Browser E2E — Declarative meta page', () => {
     expect(text).toContain('"@context"');
   });
 
+  // <html> and <body> exist before Helmet updates them, so these assertions retry until it has.
   test('sets html attributes', async ({ page }) => {
-    const lang = await page.locator('html').getAttribute('lang');
-    expect(lang).toBe('en');
-    const cls = await page.locator('html').getAttribute('class');
-    expect(cls).toContain('e2e-html');
+    const html = page.locator('html');
+    await expect(html).toHaveAttribute('lang', 'en');
+    await expect(html).toHaveAttribute('class', /\be2e-html\b/);
   });
 
   test('sets body attributes', async ({ page }) => {
-    const cls = await page.locator('body').getAttribute('class');
-    expect(cls).toContain('e2e-body');
-    const dataPage = await page.locator('body').getAttribute('data-page');
-    expect(dataPage).toBe('meta');
+    const body = page.locator('body');
+    await expect(body).toHaveAttribute('class', /\be2e-body\b/);
+    await expect(body).toHaveAttribute('data-page', 'meta');
   });
 });
 
@@ -99,13 +98,11 @@ test.describe('Browser E2E — API props page', () => {
   });
 
   test('sets html lang via htmlAttributes', async ({ page }) => {
-    const lang = await page.locator('html').getAttribute('lang');
-    expect(lang).toBe('fr');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
   });
 
   test('sets body class via bodyAttributes', async ({ page }) => {
-    const cls = await page.locator('body').getAttribute('class');
-    expect(cls).toContain('api-body');
+    await expect(page.locator('body')).toHaveAttribute('class', /\bapi-body\b/);
   });
 });
 
