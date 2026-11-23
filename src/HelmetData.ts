@@ -38,8 +38,12 @@ export default class HelmetData implements HelmetDataType {
         (this.canUseDOM ? instances : this.instances).push(instance);
       },
       remove: (instance: HelmetDispatcher) => {
-        const index = (this.canUseDOM ? instances : this.instances).indexOf(instance);
-        (this.canUseDOM ? instances : this.instances).splice(index, 1);
+        const list = this.canUseDOM ? instances : this.instances;
+        const index = list.indexOf(instance);
+        // splice(-1, 1) would remove the last instance instead
+        if (index !== -1) {
+          list.splice(index, 1);
+        }
       },
     },
   };

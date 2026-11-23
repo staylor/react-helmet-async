@@ -4,8 +4,13 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+### Changed
+
+- On React 16–18, a `<Helmet>` in the browser counts once it mounts instead of when it first renders. In development, `<StrictMode>` mounts components, unmounts them and mounts them again, so with `defer={false}` a newly mounted `<Helmet>`'s tags are removed and added again, and `onChangeClientState` is called again. With `defer` on, the default, those changes are applied together, once.
+
 ### Fixed
 
+- On React 16–18, a `<Helmet>` inside a `<Suspense>` boundary applies its tags once the boundary shows it. When a sibling suspended, the tags were applied while the fallback showed, and since React threw that render away, they stayed after the boundary unmounted, leaving the title of a page that was gone. When a boundary that had shown its content showed its fallback again, the `<Helmet>`'s tags were removed and not added back once the content showed, and when that `<Helmet>` unmounted, another `<Helmet>`'s tags were removed instead.
 - On React 16–18, attributes set to `false` or `null`, such as `defer={false}` on a `<script>` or `hidden={false}` in `bodyAttributes`, are left out of `toString()` and the DOM, as React leaves them out. They were written as `defer="false"`, or as an empty `hidden=""` for `bodyAttributes`, `htmlAttributes` and `titleAttributes` in the DOM, and browsers treat a boolean attribute with any value as on. As in React, `false` is still written as `"false"` for `data-*` and `aria-*` attributes and for `contenteditable`, `draggable` and `spellcheck`.
 - On React 16–18, a `0` in `bodyAttributes`, `htmlAttributes` or `titleAttributes`, such as `tabIndex={0}`, is set as `0` in the DOM instead of an empty value.
 

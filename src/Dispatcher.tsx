@@ -20,13 +20,25 @@ interface DispatcherProps {
 }
 
 export default class HelmetDispatcher extends PureComponent<DispatcherProps> {
-  rendered = false;
+  registered = false;
+
+  componentDidMount() {
+    this.register();
+  }
 
   componentDidUpdate() {
     this.emitChange();
   }
 
+  // Also runs when a <Suspense> boundary hides this instance again to show its fallback;
+  // componentDidMount runs once the boundary shows it again.
   componentWillUnmount() {
+    if (!this.registered) {
+      return;
+    }
+
+    this.registered = false;
+
     const { helmetInstances } = this.props.context;
     helmetInstances.remove(this);
     this.emitChange();
@@ -50,15 +62,12 @@ export default class HelmetDispatcher extends PureComponent<DispatcherProps> {
     setHelmet(serverState);
   }
 
-  // componentWillMount will be deprecated
-  // for SSR, initialize on first render
-  // constructor is also unsafe in StrictMode
-  init() {
-    if (this.rendered) {
+  register() {
+    if (this.registered) {
       return;
     }
 
-    this.rendered = true;
+    this.registered = true;
 
     const { helmetInstances } = this.props.context;
     helmetInstances.add(this);
@@ -66,7 +75,12 @@ export default class HelmetDispatcher extends PureComponent<DispatcherProps> {
   }
 
   render() {
-    this.init();
+    // In the browser, instances register in componentDidMount: React can throw a render away
+    // without committing it, as when a sibling suspends, and then componentWillUnmount never
+    // runs to remove the instance. A server render never mounts, so there it happens here.
+    if (!Provider.canUseDOM) {
+      this.register();
+    }
 
     return null;
   }

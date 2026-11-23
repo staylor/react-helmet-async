@@ -47,6 +47,9 @@ describe('misc', () => {
         />
       );
 
+      // In development, StrictMode mounts, unmounts and mounts again, so count calls from here
+      const callsAfterMount = onChange.mock.calls.length;
+
       // Re-rendering will pass new props to an already mounted Helmet
       render(
         <Helmet
@@ -56,7 +59,7 @@ describe('misc', () => {
         />
       );
 
-      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange).toHaveBeenCalledTimes(callsAfterMount);
     });
 
     it('does not write the DOM if the client and server are identical', () => {
@@ -114,6 +117,9 @@ describe('misc', () => {
       expect(addedTags.linkTags[0].outerHTML).toMatchSnapshot();
       expect(removedTags).toEqual({});
 
+      // In development, StrictMode mounts, unmounts and mounts again, so count calls from here
+      const callsAfterMount = onChange.mock.calls.length;
+
       // Re-rendering will pass new props to an already mounted Helmet
       render(
         <Helmet
@@ -134,10 +140,9 @@ describe('misc', () => {
         />
       );
 
-      expect(onChange).toHaveBeenCalledTimes(2);
+      expect(onChange).toHaveBeenCalledTimes(callsAfterMount + 1);
 
-      addedTags = onChange.mock.calls[1][1];
-      removedTags = onChange.mock.calls[1][2];
+      [, addedTags, removedTags] = onChange.mock.lastCall!;
 
       expect(addedTags).toHaveProperty('metaTags');
       expect(addedTags.metaTags[0]).toBeDefined();
@@ -243,6 +248,9 @@ describe('misc', () => {
         </Helmet>
       );
 
+      // In development, StrictMode mounts, unmounts and mounts again, so count calls from here
+      const callsAfterMount = onChange.mock.calls.length;
+
       // Re-rendering will pass new props to an already mounted Helmet
       render(
         <Helmet onChangeClientState={onChange}>
@@ -251,7 +259,7 @@ describe('misc', () => {
         </Helmet>
       );
 
-      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange).toHaveBeenCalledTimes(callsAfterMount);
     });
 
     it('does not write the DOM if the client and server are identical', () => {
@@ -297,6 +305,9 @@ describe('misc', () => {
       expect(addedTags.linkTags[0].outerHTML).toMatchSnapshot();
       expect(removedTags).toEqual({});
 
+      // In development, StrictMode mounts, unmounts and mounts again, so count calls from here
+      const callsAfterMount = onChange.mock.calls.length;
+
       // Re-rendering will pass new props to an already mounted Helmet
       render(
         <Helmet onChangeClientState={onChange}>
@@ -306,10 +317,9 @@ describe('misc', () => {
         </Helmet>
       );
 
-      expect(onChange).toHaveBeenCalledTimes(2);
+      expect(onChange).toHaveBeenCalledTimes(callsAfterMount + 1);
 
-      addedTags = onChange.mock.calls[1][1];
-      removedTags = onChange.mock.calls[1][2];
+      [, addedTags, removedTags] = onChange.mock.lastCall!;
 
       expect(addedTags).toHaveProperty('metaTags');
       expect(addedTags.metaTags[0]).toBeDefined();
