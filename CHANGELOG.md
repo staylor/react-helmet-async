@@ -4,6 +4,8 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+## [3.2.0] - 2026-11-24
+
 ### Changed
 
 - On React 16–18, a `<Helmet>` in the browser counts once it mounts instead of when it first renders. In development, `<StrictMode>` mounts components, unmounts them and mounts them again, so with `defer={false}` a newly mounted `<Helmet>`'s tags are removed and added again, and `onChangeClientState` is called again. With `defer` on, the default, those changes are applied together, once.
@@ -140,7 +142,8 @@ The package was rewritten in TypeScript and is built with esbuild instead of Bab
 
 See the [git history up to 1.3.0](https://github.com/staylor/react-helmet-async/commits/b1ee65880e71df9124c4e01d07c086d8ce2fc63a).
 
-[Unreleased]: https://github.com/staylor/react-helmet-async/compare/v3.1.0...HEAD
+[Unreleased]: https://github.com/staylor/react-helmet-async/compare/v3.2.0...HEAD
+[3.2.0]: https://github.com/staylor/react-helmet-async/compare/v3.1.0...v3.2.0
 [3.1.0]: https://github.com/staylor/react-helmet-async/compare/ba5d5fb820750dcf29c9621e9feafe2b8388d60b...v3.1.0
 [3.0.0]: https://github.com/staylor/react-helmet-async/compare/5f4da3896c8b70bedcd3c05d406ff5241601933c...ba5d5fb820750dcf29c9621e9feafe2b8388d60b
 [2.0.5]: https://github.com/staylor/react-helmet-async/compare/6a37f732662d7f73d868f7d83ba61465a3905cb2...5f4da3896c8b70bedcd3c05d406ff5241601933c
