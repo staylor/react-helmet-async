@@ -2,6 +2,7 @@ export enum TAG_PROPERTIES {
   CHARSET = 'charset',
   CSS_TEXT = 'cssText',
   HREF = 'href',
+  HREFLANG = 'hreflang',
   HTTPEQUIV = 'http-equiv',
   INNER_HTML = 'innerHTML',
   ITEM_PROP = 'itemprop',

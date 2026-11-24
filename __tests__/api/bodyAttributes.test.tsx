@@ -160,6 +160,36 @@ describe('body attributes', () => {
     expect(bodyTag).toHaveAttribute(HELMET_ATTRIBUTE, 'id,title');
   });
 
+  it('leaves out attributes set to false or null, as React does', () => {
+    render(
+      <Helmet>
+        <body hidden lang="en" />
+      </Helmet>
+    );
+
+    render(
+      <Helmet>
+        <body
+          hidden={false}
+          // @ts-expect-error -- null on purpose
+          lang={null}
+          spellCheck={false}
+          data-menu-open={false}
+          data-count={0}
+        />
+      </Helmet>
+    );
+
+    const bodyTag = document.body;
+
+    expect(bodyTag).not.toHaveAttribute('hidden');
+    expect(bodyTag).not.toHaveAttribute('lang');
+    expect(bodyTag).toHaveAttribute('spellcheck', 'false');
+    expect(bodyTag).toHaveAttribute('data-menu-open', 'false');
+    expect(bodyTag).toHaveAttribute('data-count', '0');
+    expect(bodyTag).toHaveAttribute(HELMET_ATTRIBUTE, 'spellCheck,data-menu-open,data-count');
+  });
+
   describe('initialized outside of helmet', () => {
     beforeEach(() => {
       const bodyTag = document.body;

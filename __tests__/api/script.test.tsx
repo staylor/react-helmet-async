@@ -346,5 +346,68 @@ describe('script tags', () => {
       expect(firstOnLoad).not.toHaveBeenCalled();
       expect(secondOnLoad).toHaveBeenCalledTimes(1);
     });
+
+    it('leaves out attributes set to false or null, as React does', () => {
+      render(
+        <Helmet>
+          <script
+            src="http://localhost/test.js"
+            async
+            defer={false}
+            noModule={false}
+            // @ts-expect-error -- null on purpose
+            crossOrigin={null}
+            data-cfasync={false}
+          />
+        </Helmet>
+      );
+
+      const script = document.head.querySelector(
+        `script[${HELMET_ATTRIBUTE}]`
+      ) as HTMLScriptElement;
+
+      expect(script).toHaveAttribute('async');
+      expect(script).not.toHaveAttribute('defer');
+      expect(script).not.toHaveAttribute('nomodule');
+      expect(script).not.toHaveAttribute('crossorigin');
+      expect(script).toHaveAttribute('data-cfasync', 'false');
+      expect(script.defer).toBe(false);
+    });
+
+    it('keeps scripts in order when one of them changes', () => {
+      const Scripts = ({ id }: { id: number }) => (
+        <Helmet>
+          <script>{`var data = { id: ${id} };`}</script>
+          <script src="http://localhost/first.js" />
+          <script src="http://localhost/second.js" />
+        </Helmet>
+      );
+
+      render(<Scripts id={1} />);
+      render(<Scripts id={2} />);
+
+      const scripts = [...document.head.querySelectorAll(`script[${HELMET_ATTRIBUTE}]`)];
+
+      expect(scripts.map((tag) => tag.getAttribute('src') || tag.innerHTML)).toEqual([
+        'var data = { id: 2 };',
+        'http://localhost/first.js',
+        'http://localhost/second.js',
+      ]);
+    });
+
+    it('joins children that mix text and values', () => {
+      const id = 'abc';
+
+      render(
+        <Helmet>
+          <script>var id = "{id}";</script>
+        </Helmet>
+      );
+
+      const scripts = [...document.head.querySelectorAll(`script[${HELMET_ATTRIBUTE}]`)];
+
+      expect(scripts).toHaveLength(1);
+      expect(scripts[0].innerHTML).toBe('var id = "abc";');
+    });
   });
 });

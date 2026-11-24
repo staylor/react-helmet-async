@@ -1,6 +1,6 @@
 import { HELMET_ATTRIBUTE, TAG_NAMES, TAG_PROPERTIES } from './constants';
 import type { Attributes, StateUpdate, TagList } from './types';
-import { flattenArray } from './utils';
+import { flattenArray, isAttributeOmitted } from './utils';
 
 interface TagUpdates {
   oldTags: HTMLElement[];
@@ -16,6 +16,8 @@ const updateTags = (type: string, tags: HTMLElement[]) => {
   const tagNodes = headElement.querySelectorAll(`${type}[${HELMET_ATTRIBUTE}]`);
   const oldTags: HTMLElement[] = [].slice.call(tagNodes);
   const newTags: HTMLElement[] = [];
+  // The element for each tag, kept or new, in the order the tags are given
+  const elements: HTMLElement[] = [];
   let indexToDelete: number;
 
   if (tags && tags.length) {
@@ -34,7 +36,7 @@ const updateTags = (type: string, tags: HTMLElement[]) => {
           } else if (typeof tag[attr] === 'function') {
             // setAttribute() would stringify a function, so onLoad becomes the onload handler.
             handlers[attribute.toLowerCase()] = tag[attr];
-          } else {
+          } else if (!isAttributeOmitted(attribute, tag[attr])) {
             const value = typeof tag[attr] === 'undefined' ? '' : tag[attr];
             newElement.setAttribute(attribute, value as string);
           }
@@ -52,16 +54,39 @@ const updateTags = (type: string, tags: HTMLElement[]) => {
       ) {
         // isEqualNode() doesn't compare handlers, so the kept tag takes the current ones.
         Object.assign(oldTags[indexToDelete], handlers);
+        elements.push(oldTags[indexToDelete]);
         oldTags.splice(indexToDelete, 1);
       } else {
         Object.assign(newElement, handlers);
         newTags.push(newElement);
+        elements.push(newElement);
       }
     });
   }
 
   oldTags.forEach((tag: Node) => tag.parentNode?.removeChild(tag));
-  newTags.forEach((tag) => headElement.appendChild(tag));
+
+  // Going from the last tag to the first, put each new element before the element of the tag
+  // after it, so a changed tag keeps its place, as the order of stylesheets and scripts matters.
+  // Kept elements only move if the tags were reordered; new elements at the end are appended.
+  const added = new Set(newTags);
+  let nextElement: HTMLElement | null = null;
+  for (let i = elements.length - 1; i >= 0; i -= 1) {
+    const element = elements[i];
+
+    if (!nextElement) {
+      if (added.has(element)) {
+        headElement.appendChild(element);
+      }
+    } else if (
+      added.has(element) ||
+      element.compareDocumentPosition(nextElement) & Node.DOCUMENT_POSITION_PRECEDING
+    ) {
+      (nextElement.parentNode || headElement).insertBefore(element, nextElement);
+    }
+
+    nextElement = element;
+  }
 
   return {
     oldTags,
@@ -79,10 +104,13 @@ const updateAttributes = (tagName: string, attributes: Attributes) => {
   const helmetAttributeString = elementTag.getAttribute(HELMET_ATTRIBUTE);
   const helmetAttributes = helmetAttributeString ? helmetAttributeString.split(',') : [];
   const attributesToRemove = [...helmetAttributes];
-  const attributeKeys = Object.keys(attributes);
+  // An attribute that's left out is removed below if an earlier update set it.
+  const attributeKeys = Object.keys(attributes).filter(
+    (attribute) => !isAttributeOmitted(attribute, attributes[attribute])
+  );
 
   for (const attribute of attributeKeys) {
-    const value = attributes[attribute] || '';
+    const value = typeof attributes[attribute] === 'undefined' ? '' : String(attributes[attribute]);
 
     if (elementTag.getAttribute(attribute) !== value) {
       elementTag.setAttribute(attribute, value);
